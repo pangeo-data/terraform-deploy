@@ -64,6 +64,8 @@ module "eks" {
   # is fixed
   subnets      = module.vpc.public_subnets
   vpc_id       = module.vpc.vpc_id
+  enable_irsa  = true
+
 
   node_groups_defaults = {
     ami_type  = "AL2_x86_64"
