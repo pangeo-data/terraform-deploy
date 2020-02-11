@@ -48,12 +48,12 @@ module "vpc" {
 
   public_subnet_tags = {
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
-    "kubernetes.io/role/elb"                      = "1"
+    "kubernetes.io/role/elb"                    = "1"
   }
 
   private_subnet_tags = {
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
-    "kubernetes.io/role/internal-elb"             = "1"
+    "kubernetes.io/role/internal-elb"           = "1"
   }
 }
 
@@ -77,9 +77,10 @@ module "eks" {
       min_capacity     = 1
 
       instance_type = "m5.large"
-      k8s_labels = {
+      k8s_labels    = {
         "hub.jupyter.org/node-purpose" =  "core"
       }
+
       additional_tags = {
       }
     }
@@ -99,11 +100,11 @@ module "eks" {
 
   worker_groups_launch_template = [
     {
-      name = "user-spot"
+      name                    = "user-spot"
       override_instance_types = ["m5.2xlarge", "m4.2xlarge"]
-      spot_instance_pools = 2
-      asg_max_size = 100
-      asg_desired_capacity = 0
+      spot_instance_pools     = 2
+      asg_max_size            = 100
+      asg_desired_capacity    = 0
 
       # Use this to set labels / taints
       kubelet_extra_args = <<EOT
@@ -114,23 +115,23 @@ module "eks" {
 
       tags = [
         {
-          "key" = "k8s.io/cluster-autoscaler/node-template/label/hub.jupyter.org/node-purpose" 
+          "key"                 = "k8s.io/cluster-autoscaler/node-template/label/hub.jupyter.org/node-purpose" 
           "propagate_at_launch" = "false"
-          "value" = "user"
+          "value"               = "user"
         },
         {
-          "key" = "k8s.io/cluster-autoscaler/node-template/taint/hub.jupyter.org/dedicated" 
+          "key"                 = "k8s.io/cluster-autoscaler/node-template/taint/hub.jupyter.org/dedicated" 
           "propagate_at_launch" = "false"
-          "value" = "user:NoSchedule"
+          "value"               = "user:NoSchedule"
         }
       ]
     },
     {
-      name = "worker-spot"
+      name                    = "worker-spot"
       override_instance_types = ["r5.2xlarge", "r4.2xlarge"]
-      spot_instance_pools = 2
-      asg_max_size = 100
-      asg_desired_capacity = 0
+      spot_instance_pools     = 2
+      asg_max_size            = 100
+      asg_desired_capacity    = 0
 
       # Use this to set labels / taints
       kubelet_extra_args = <<EOT
@@ -141,14 +142,14 @@ module "eks" {
 
       tags = [
         {
-          "key" = "k8s.io/cluster-autoscaler/node-template/label/k8s.dask.org/node-purpose" 
+          "key"                 = "k8s.io/cluster-autoscaler/node-template/label/k8s.dask.org/node-purpose" 
           "propagate_at_launch" = "false"
-          "value" = "worker"
+          "value"               = "worker"
         },
         {
-          "key" = "k8s.io/cluster-autoscaler/node-template/taint/k8s.dask.org/dedicated" 
+          "key"                 = "k8s.io/cluster-autoscaler/node-template/taint/k8s.dask.org/dedicated" 
           "propagate_at_launch" = "false"
-          "value" = "worker:NoSchedule"
+          "value"               = "worker:NoSchedule"
         }
       ]
     }
