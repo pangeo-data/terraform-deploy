@@ -107,8 +107,8 @@ module "eks" {
 
       # Use this to set labels / taints
       kubelet_extra_args = <<EOT
-                            --node-taints=hub.jupyter.org/dedicated=user:NoSchedule \n
-                            --node-labels=node-role.kubernetes.io/user=user \n
+                            --node-taints=hub.jupyter.org/dedicated=user:NoSchedule
+                            --node-labels=node-role.kubernetes.io/user=user
                             --node-labels=hub.jupyter.org/node-purpose=user
                             EOT
 
@@ -134,8 +134,8 @@ module "eks" {
 
       # Use this to set labels / taints
       kubelet_extra_args = <<EOT
-                            --node-taints=k8s.dask.org/dedicated=worker:NoSchedule \n
-                            --node-labels=node-role.kubernetes.io/worker=worker \n
+                            --node-taints=k8s.dask.org/dedicated=worker:NoSchedule
+                            --node-labels=node-role.kubernetes.io/worker=worker
                             --node-labels=k8s.dask.org/node-purpose=worker
                             EOT
 
