@@ -1,0 +1,17 @@
+proxy:
+  service:
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-type: nlb
+
+scheduling:
+  userScheduler:
+    enabled: false
+
+prePuller:
+  continuous:
+    enabled: false
+
+singleuser:
+  storage:
+    dynamic:
+      storageClass: aws-efs
