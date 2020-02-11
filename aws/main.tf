@@ -132,7 +132,7 @@ module "eks" {
           "value"               = "true"
         },
         {
-          "key"                 = "k8s.io/cluster-autoscaler/${local.cluster_name}"
+          "key"                 = "k8s.io/cluster-autoscaler/${var.cluster_name}"
           "propagate_at_launch" = "false"
           "value"               = "true"
         }
@@ -169,7 +169,7 @@ module "eks" {
           "value"               = "true"
         },
         {
-          "key"                 = "k8s.io/cluster-autoscaler/${local.cluster_name}"
+          "key"                 = "k8s.io/cluster-autoscaler/${var.cluster_name}"
           "propagate_at_launch" = "false"
           "value"               = "true"
         }
