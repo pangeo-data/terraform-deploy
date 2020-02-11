@@ -53,7 +53,7 @@ Once this is all done, you should:
 
 a. `cd aws`
 b. Run `terraform init` to set up appropriate plugins
-c. Run `terraform apply -var-file<your-cluster>.tfvars`, referring to
+c. Run `terraform apply -var-file=<your-cluster>.tfvars`, referring to
    The `tfvars` file you made in step 3
 d. Type `yes` when prompted
 e. ![Wait for a while](https://imgs.xkcd.com/comics/compiling.png).
