@@ -63,8 +63,7 @@ module "eks" {
   # FIXME: We can use private subnets once https://github.com/aws/containers-roadmap/issues/607
   # is fixed
   subnets      = module.vpc.public_subnets
-
-  vpc_id = module.vpc.vpc_id
+  vpc_id       = module.vpc.vpc_id
 
   node_groups_defaults = {
     ami_type  = "AL2_x86_64"
