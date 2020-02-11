@@ -67,7 +67,7 @@ that was just set up.
 a. Based on the variables you set in your `tfvars` file, run this command
 
    ```
-   aws eks update-kubeconfig --region=<your-region> --name <your-cluster>
+   aws eks update-kubeconfig --region=<your-region> --name=<your-cluster>
    ```
 
    This should connect `kubectl` to the kubernetes cluster we just built.
