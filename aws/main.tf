@@ -90,7 +90,7 @@ module "eks" {
      max_capacity     = 10
      min_capacity     = 1
 
-     instance_type = "m5.xlarge"
+     instance_type = "m5.large"
      k8s_labels = {
        "hub.jupyter.org/node-purpose" =  "user"
      }
