@@ -43,7 +43,7 @@ should help.
 #### 3. Fill in your variable names
 
 The terraform deployment needs several variable names set before it
-can start. You can copy the file `aws/template.tfvars` into a file
+can start. You can copy the file `aws/your-cluster.tfvars.template` into a file
 named `aws/<your-cluster>.tfvars`, and modify the placeholders there
 as appropriate.
 
@@ -53,7 +53,7 @@ Once this is all done, you should:
 
 a. `cd aws`
 b. Run `terraform init` to set up appropriate plugins
-c. Run `terraform apply -var-file<your-cluster>.tfvars`, referring to
+c. Run `terraform apply -var-file=<your-cluster>.tfvars`, referring to
    The `tfvars` file you made in step 3
 d. Type `yes` when prompted
 e. ![Wait for a while](https://imgs.xkcd.com/comics/compiling.png).
@@ -67,7 +67,7 @@ that was just set up.
 a. Based on the variables you set in your `tfvars` file, run this command
 
    ```
-   aws eks update-kubeconfig --region=<your-region> --name <your-cluster>
+   aws eks update-kubeconfig --region=<your-region> --name=<your-cluster>
    ```
 
    This should connect `kubectl` to the kubernetes cluster we just built.

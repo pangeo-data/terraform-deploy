@@ -28,7 +28,7 @@ resource "kubernetes_namespace" "staging" {
 resource "helm_release" "jupyterhub" {
   name = "staging"
   namespace = kubernetes_namespace.staging.metadata.0.name
-  repository =data.helm_repository.jupyterhub.metadata[0].name
+  repository = data.helm_repository.jupyterhub.metadata[0].name
   chart = "jupyterhub"
   version = "0.9.0-beta.3.n023.h6a2b994"
 

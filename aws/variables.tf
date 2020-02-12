@@ -2,21 +2,18 @@ variable "region" {
   default = "us-east-1"
 }
 
-variable "az" {
-  # FIXME: Pick a random default here?
-  default = "us-east-1b"
+variable "cluster_name" {
+  default = "test-cluster-change-name"
 }
 
-variable "cluster_name" {
-  default = "test-eks-cluster-1"
+variable "vpc_name" {
+  default = "vpc-test-cluster-change-name"
 }
 
 variable "map_accounts" {
   description = "Additional AWS account numbers to add to the aws-auth configmap."
   type        = list(string)
-
-  default = [
-  ]
+  default = [ ]
 }
 
 variable "map_roles" {

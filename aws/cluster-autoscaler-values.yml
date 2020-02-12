@@ -1,0 +1,7 @@
+rbac:
+  create: true
+
+cloudProvider: aws
+
+autoDiscovery:
+  enabled: true

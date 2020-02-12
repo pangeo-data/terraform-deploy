@@ -1,4 +1,6 @@
 proxy:
+  https:
+    enabled: false
   service:
     annotations:
       service.beta.kubernetes.io/aws-load-balancer-type: nlb
@@ -6,12 +8,47 @@ proxy:
 scheduling:
   userScheduler:
     enabled: false
+  userPods:
+    nodeAffinity:
+      matchNodePurpose: require
 
 prePuller:
   continuous:
     enabled: false
 
 singleuser:
+  defaultUrl: "/lab"
+  startTimeout: 600
+  cpu:
+    limit: 4
+    guarantee: 3
+  memory:
+    limit: 16G
+    guarantee: 14G
+
+  profileList:
+    - display_name: "Base-notebook (m5.2xlarge | 4 cores, 16Gb)"
+      description: "latest base-notebook from pangeo-stacks"
+      kubespawner_override:
+        image: pangeo/base-notebook:2019.12.07
+    - display_name: "Pangeo-notebook (m5.2xlarge | 4 cores, 16Gb)"
+      description: "latest pangeo-notebook from pangeo-stacks"
+      default: true
+      kubespawner_override:
+        image: pangeo/pangeo-notebook:2019.12.07
+
   storage:
     dynamic:
       storageClass: aws-efs
+
+hub:
+  requests:
+    cpu: 0.1
+    memory: 256M
+  limits:
+    cpu: 1
+    memory: 1G
+
+  extraConfig:
+    jupyterlab: |
+      c.Spawner.cmd = ['jupyter-labhub']
