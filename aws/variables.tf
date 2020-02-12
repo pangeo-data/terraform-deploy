@@ -12,7 +12,7 @@ variable "cluster_name" {
 }
 
 variable "vpc_name" {
-  default = "test-vpc"
+  default = "vpc-salvis"
 }
 
 variable "map_accounts" {
