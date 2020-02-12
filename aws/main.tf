@@ -105,6 +105,7 @@ module "eks" {
       name                    = "user-spot"
       override_instance_types = ["m5.2xlarge", "m4.2xlarge"]
       spot_instance_pools     = 2
+      autoscaling_enabled     = true
       asg_max_size            = 100
       asg_min_size            = 0
       asg_desired_capacity    = 0
@@ -126,16 +127,6 @@ module "eks" {
           "key"                 = "k8s.io/cluster-autoscaler/node-template/taint/hub.jupyter.org/dedicated" 
           "propagate_at_launch" = "true"
           "value"               = "user:NoSchedule"
-        },
-        {
-          "key"                 = "k8s.io/cluster-autoscaler/enabled"
-          "propagate_at_launch" = "true"
-          "value"               = "true"
-        },
-        {
-          "key"                 = "k8s.io/cluster-autoscaler/${var.cluster_name}"
-          "propagate_at_launch" = "true"
-          "value"               = "true"
         }
       ]
     },
@@ -143,6 +134,7 @@ module "eks" {
       name                    = "worker-spot"
       override_instance_types = ["r5.2xlarge", "r4.2xlarge"]
       spot_instance_pools     = 2
+      autoscaling_enabled     = true
       asg_max_size            = 100
       asg_min_size            = 0
       asg_desired_capacity    = 0
@@ -164,16 +156,6 @@ module "eks" {
           "key"                 = "k8s.io/cluster-autoscaler/node-template/taint/k8s.dask.org/dedicated" 
           "propagate_at_launch" = "true"
           "value"               = "worker:NoSchedule"
-        },
-        {
-          "key"                 = "k8s.io/cluster-autoscaler/enabled"
-          "propagate_at_launch" = "true"
-          "value"               = "true"
-        },
-        {
-          "key"                 = "k8s.io/cluster-autoscaler/${var.cluster_name}"
-          "propagate_at_launch" = "true"
-          "value"               = "true"
         }
       ]
     }
