@@ -46,11 +46,3 @@ variable "map_users" {
   default = [
   ]
 }
-
-variable "k8s_service_account_namespace" {
-  default = "kube-system"
-}
-
-variable "k8s_service_account_name" {
-  default = "cluster-autoscaler-serviceaccount"
-}
