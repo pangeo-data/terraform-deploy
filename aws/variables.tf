@@ -11,6 +11,10 @@ variable "cluster_name" {
   default = "eks-cluster-salvis"
 }
 
+variable "vpc_name" {
+  default = "test-vpc"
+}
+
 variable "map_accounts" {
   description = "Additional AWS account numbers to add to the aws-auth configmap."
   type        = list(string)
