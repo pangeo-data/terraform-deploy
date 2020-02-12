@@ -9,7 +9,7 @@ resource "helm_release" "cluster-autoscaler" {
   repository = data.helm_repository.stable.metadata[0].name
   chart = "cluster-autoscaler"
 
-  values =[
+  values = [
     file("cluster-autoscaler-values.yml")
   ]
 }
