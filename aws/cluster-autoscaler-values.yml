@@ -2,8 +2,6 @@ rbac:
   create: true
 
 cloudProvider: aws
-awsRegion: us-west-2
 
 autoDiscovery:
-  clusterName: eks-cluster-salvis
   enabled: true
