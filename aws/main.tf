@@ -121,12 +121,12 @@ module "eks" {
       tags = [
         {
           "key"                 = "k8s.io/cluster-autoscaler/node-template/label/hub.jupyter.org/node-purpose" 
-          "propagate_at_launch" = "true"
+          "propagate_at_launch" = "false"
           "value"               = "user"
         },
         {
           "key"                 = "k8s.io/cluster-autoscaler/node-template/taint/hub.jupyter.org/dedicated" 
-          "propagate_at_launch" = "true"
+          "propagate_at_launch" = "false"
           "value"               = "user:NoSchedule"
         }
       ]
@@ -150,12 +150,12 @@ module "eks" {
       tags = [
         {
           "key"                 = "k8s.io/cluster-autoscaler/node-template/label/k8s.dask.org/node-purpose" 
-          "propagate_at_launch" = "true"
+          "propagate_at_launch" = "false"
           "value"               = "worker"
         },
         {
           "key"                 = "k8s.io/cluster-autoscaler/node-template/taint/k8s.dask.org/dedicated" 
-          "propagate_at_launch" = "true"
+          "propagate_at_launch" = "false"
           "value"               = "worker:NoSchedule"
         }
       ]
