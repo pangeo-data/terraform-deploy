@@ -118,22 +118,22 @@ module "eks" {
       tags = [
         {
           "key"                 = "k8s.io/cluster-autoscaler/node-template/label/hub.jupyter.org/node-purpose" 
-          "propagate_at_launch" = "false"
+          "propagate_at_launch" = "true"
           "value"               = "user"
         },
         {
           "key"                 = "k8s.io/cluster-autoscaler/node-template/taint/hub.jupyter.org/dedicated" 
-          "propagate_at_launch" = "false"
+          "propagate_at_launch" = "true"
           "value"               = "user:NoSchedule"
         },
         {
           "key"                 = "k8s.io/cluster-autoscaler/enabled"
-          "propagate_at_launch" = "false"
+          "propagate_at_launch" = "true"
           "value"               = "true"
         },
         {
           "key"                 = "k8s.io/cluster-autoscaler/${var.cluster_name}"
-          "propagate_at_launch" = "false"
+          "propagate_at_launch" = "true"
           "value"               = "true"
         }
       ]
@@ -155,22 +155,22 @@ module "eks" {
       tags = [
         {
           "key"                 = "k8s.io/cluster-autoscaler/node-template/label/k8s.dask.org/node-purpose" 
-          "propagate_at_launch" = "false"
+          "propagate_at_launch" = "true"
           "value"               = "worker"
         },
         {
           "key"                 = "k8s.io/cluster-autoscaler/node-template/taint/k8s.dask.org/dedicated" 
-          "propagate_at_launch" = "false"
+          "propagate_at_launch" = "true"
           "value"               = "worker:NoSchedule"
         },
         {
           "key"                 = "k8s.io/cluster-autoscaler/enabled"
-          "propagate_at_launch" = "false"
+          "propagate_at_launch" = "true"
           "value"               = "true"
         },
         {
           "key"                 = "k8s.io/cluster-autoscaler/${var.cluster_name}"
-          "propagate_at_launch" = "false"
+          "propagate_at_launch" = "true"
           "value"               = "true"
         }
       ]
