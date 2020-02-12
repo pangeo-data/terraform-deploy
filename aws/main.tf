@@ -82,7 +82,8 @@ module "eks" {
       k8s_labels    = {
         "hub.jupyter.org/node-purpose" =  "core"
       }
-
+      # Use kubelet_extra_args to set --node-labels=node-role.kubernetes.io/core=core?
+      kubelet_extra_args = "--node-labels=node-role.kubernetes.io/core=core"
       additional_tags = {
       }
     }
