@@ -1,14 +1,14 @@
 variable "region" {
-  default = "us-east-1"
+  default = "us-west-2"
 }
 
-variable "az" {
-  # FIXME: Pick a random default here?
-  default = "us-east-1b"
-}
+#variable "az" {
+#  # FIXME: Pick a random default here?
+#  default = "us-east-1b"
+#}
 
 variable "cluster_name" {
-  default = "test-eks-cluster-1"
+  default = "eks-cluster-salvis"
 }
 
 variable "map_accounts" {
