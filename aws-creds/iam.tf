@@ -10,21 +10,21 @@
 # TODO: You will need to manually configure awscli to use these access keys
 # This is what I do for pangeo
 
-#resource "aws_iam_user" "user" {
-#  name = "terraform-bot"
-#}
+resource "aws_iam_user" "user" {
+  name = "terraform-bot"
+}
 
-#resource "aws_iam_policy" "terraform_iam_policy" {
-#    name = "terraform-policy"
-#    path = "/"
-#    description = "Permissions for Terraform-controlled EKS cluster creation and management"
-#    policy = data.aws_iam_policy_document.terraform_iam_policy_source.json
-#}
+resource "aws_iam_policy" "terraform_iam_policy" {
+    name = "terraform-policy"
+    path = "/"
+    description = "Permissions for Terraform-controlled EKS cluster creation and management"
+    policy = data.aws_iam_policy_document.terraform_iam_policy_source.json
+}
 
-#resource "aws_iam_user_policy_attachment" "attach-terraform-permissions" {
-#  user        = aws_iam_user.user.name
-#  policy_arn  = aws_iam_policy.terraform_iam_policy.arn
-#}
+resource "aws_iam_user_policy_attachment" "attach-terraform-permissions" {
+  user        = aws_iam_user.user.name
+  policy_arn  = aws_iam_policy.terraform_iam_policy.arn
+}
 
 
 # Create a role with the policy json
