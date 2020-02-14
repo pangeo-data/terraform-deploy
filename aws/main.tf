@@ -82,85 +82,23 @@ module "eks" {
       k8s_labels    = {
         "hub.jupyter.org/node-purpose" =  "core"
       }
-      # Use kubelet_extra_args to set --node-labels=node-role.kubernetes.io/core=core?
-      kubelet_extra_args = "--node-labels=node-role.kubernetes.io/core=core"
       additional_tags = {
       }
     }
-    #notebook = {
-    #  desired_capacity = 1
-    #  max_capacity     = 10
-    #  min_capacity     = 1
+    notebook = {
+     desired_capacity = 1
+     max_capacity     = 10
+     min_capacity     = 1
 
-    #  instance_type = "m5.xlarge"
-    #  k8s_labels = {
-    #    "hub.jupyter.org/node-purpose" =  "user"
-    #  }
-    #  additional_tags = {
-    #  }
-    #}
+     instance_type = "m5.large"
+     k8s_labels = {
+       "hub.jupyter.org/node-purpose" =  "user"
+     }
+     additional_tags = {
+     }
+    }
   }
 
-  worker_groups_launch_template = [
-    {
-      name                    = "user-spot"
-      override_instance_types = ["m5.2xlarge", "m4.2xlarge"]
-      spot_instance_pools     = 2
-      autoscaling_enabled     = true
-      asg_max_size            = 100
-      asg_min_size            = 0
-      asg_desired_capacity    = 0
-
-      # Use this to set labels / taints
-      kubelet_extra_args = <<EOT
-                            --node-taints=hub.jupyter.org/dedicated=user:NoSchedule
-                            --node-labels=node-role.kubernetes.io/user=user
-                            --node-labels=hub.jupyter.org/node-purpose=user
-                            EOT
-
-      tags = [
-        {
-          "key"                 = "k8s.io/cluster-autoscaler/node-template/label/hub.jupyter.org/node-purpose" 
-          "propagate_at_launch" = "false"
-          "value"               = "user"
-        },
-        {
-          "key"                 = "k8s.io/cluster-autoscaler/node-template/taint/hub.jupyter.org/dedicated" 
-          "propagate_at_launch" = "false"
-          "value"               = "user:NoSchedule"
-        }
-      ]
-    },
-    {
-      name                    = "worker-spot"
-      override_instance_types = ["r5.2xlarge", "r4.2xlarge"]
-      spot_instance_pools     = 2
-      autoscaling_enabled     = true
-      asg_max_size            = 100
-      asg_min_size            = 0
-      asg_desired_capacity    = 0
-
-      # Use this to set labels / taints
-      kubelet_extra_args = <<EOT
-                            --node-taints=k8s.dask.org/dedicated=worker:NoSchedule
-                            --node-labels=node-role.kubernetes.io/worker=worker
-                            --node-labels=k8s.dask.org/node-purpose=worker
-                            EOT
-
-      tags = [
-        {
-          "key"                 = "k8s.io/cluster-autoscaler/node-template/label/k8s.dask.org/node-purpose" 
-          "propagate_at_launch" = "false"
-          "value"               = "worker"
-        },
-        {
-          "key"                 = "k8s.io/cluster-autoscaler/node-template/taint/k8s.dask.org/dedicated" 
-          "propagate_at_launch" = "false"
-          "value"               = "worker:NoSchedule"
-        }
-      ]
-    }
-  ]
 
   map_roles    = var.map_roles
   map_users    = var.map_users

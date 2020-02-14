@@ -20,11 +20,11 @@ singleuser:
   defaultUrl: "/lab"
   startTimeout: 600
   cpu:
-    limit: 4
-    guarantee: 3
+    limit: 2
+    guarantee: 1.5
   memory:
-    limit: 16G
-    guarantee: 14G
+    limit: 9.5G
+    guarantee: 9G
 
   profileList:
     - display_name: "Base-notebook (m5.2xlarge | 4 cores, 16Gb)"
