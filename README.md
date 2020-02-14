@@ -40,6 +40,16 @@ local machine - terraform will just read from the same source. The
 [documentation on configuring AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
 should help.
 
+It is highly recommended that you create a separate role or user to run Terraform.
+To do this:
+a. Go to the `aws-creds` directory
+b. Change `iam.tf` file if you would rather create a role than a standalone user
+c. Change the default region in `variables.tf` if need be
+d. Run `terraform plan`
+e. Run `terraform apply`
+f. If you created the standalone user, go to the [IAM](https://console.aws.amazon.com/iam/home?region=us-west-2#/home) page and generate access keys. Apply these access keys to your terminal with `aws configure --profile terraform-bot`.
+g. Make sure the default user in `aws/variables.tf` is set to the correct user.
+
 #### 3. Fill in your variable names
 
 The terraform deployment needs several variable names set before it

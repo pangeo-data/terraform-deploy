@@ -3,6 +3,10 @@
 # https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/docs/iam-permissions.md
 # Here are a few implementations
 
+provider "aws" {
+  version = ">= 2.28.1"
+  region  = var.region
+}
 
 # Create a new user named terraform-bot
 # Create policy in IAM and attach to terraform-bot
