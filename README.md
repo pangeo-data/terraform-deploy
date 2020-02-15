@@ -69,7 +69,16 @@ d. Type `yes` when prompted
 e. ![Wait for a while](https://imgs.xkcd.com/comics/compiling.png).
    This could take a while!
 
-#### 5. Test out your hub!
+#### 5. Enable Prometheus / Grafana (optional)
+
+The `monitoring` directory contains everything you need to enable Prometheus and Grafana. 
+
+a. Make edits to `monitoring/variables.tf`
+b. Run `terraform init` to set up appropriate plugins
+c. Run `terraform apply` and type `yes` when prompted
+d. Running `kubectl get svc -n grafana` should give you the IP address you need to connect to Grafana and set up dashboards.
+
+#### 6. Test out your hub!
 
 Once Step 4 finishes, you should find the public endpoint of the hub
 that was just set up.
