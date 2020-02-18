@@ -34,7 +34,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 2.6"
 
-  name                 = var.vpc_name
+  name                 = "${var.cluster_name}-vpc"
   cidr                 = "172.16.0.0/16"
   azs                  = data.aws_availability_zones.available.names
   # We can use private subnets too once https://github.com/aws/containers-roadmap/issues/607
