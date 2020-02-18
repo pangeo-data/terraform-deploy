@@ -9,7 +9,3 @@ variable "region" {
 variable "cluster_name" {
   default = "eks-cluster-example-name"
 }
-
-variable "vpc_name" {
-  default = "vpc-example-name"
-}
