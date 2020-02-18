@@ -113,3 +113,10 @@ provider "helm" {
     token                  = data.aws_eks_cluster_auth.cluster.token
   }
 }
+
+module "monitoring" {
+  source       = "../monitoring/"
+  cluster_name = var.cluster_name
+  region       = "us-west-2"
+  profile      = "default"
+}

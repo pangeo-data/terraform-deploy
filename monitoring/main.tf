@@ -22,7 +22,7 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
   token                  = data.aws_eks_cluster_auth.cluster.token
   load_config_file       = false
-  version                = "~> 1.11.0"
+  version                = "~> 1.10.0"
 }
 
 provider "helm" {
@@ -55,7 +55,7 @@ resource "kubernetes_storage_class" "prometheus" {
   parameters          = {
     type = "gp2"
   }
-  mount_options       = ["debug"]
+  #mount_options       = ["debug"]
 }
 
 resource "helm_release" "prometheus" {
@@ -65,7 +65,7 @@ resource "helm_release" "prometheus" {
   chart = "prometheus"
 
   values = [
-    file("prometheus-values.yaml")
+    file("../monitoring/prometheus-values.yaml")
   ]
 }
 
@@ -83,7 +83,7 @@ resource "helm_release" "grafana" {
   chart = "grafana"
 
   values = [
-    file("grafana-values.yaml")
+    file("../monitoring/grafana-values.yaml")
   ]
 
 }
