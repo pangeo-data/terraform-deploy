@@ -43,7 +43,7 @@ should help.
 #### 3. Fill in your variable names
 
 The terraform deployment needs several variable names set before it
-can start. You can copy the file `aws/template.tfvars` into a file
+can start. You can copy the file `aws/your-cluster.tfvars.template` into a file
 named `aws/<your-cluster>.tfvars`, and modify the placeholders there
 as appropriate.
 
