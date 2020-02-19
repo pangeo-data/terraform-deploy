@@ -117,7 +117,7 @@ provider "helm" {
 
 module "monitoring" {
   source       = "../monitoring/"
-  cluster_name = var.cluster_name
+  cluster_name = module.eks.cluster_id
   region       = "us-west-2"
   profile      = "default"
 }
