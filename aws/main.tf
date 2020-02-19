@@ -101,8 +101,50 @@ module "eks" {
 
 
   map_roles    = var.map_roles
-  map_users    = var.map_users
   map_accounts = var.map_accounts
+
+
+  map_users = concat([{
+    userarn  = aws_iam_user.hubploy_eks_user.arn
+    username  = aws_iam_user.hubploy_eks_user.name
+    # FIXME: Narrow these permissions down?
+    groups   = ["system:masters"]
+  }], var.map_users)
+}
+
+resource "aws_iam_user" "hubploy_eks_user" {
+  name = "${var.cluster_name}-hubploy-eks"
+}
+
+resource "aws_iam_policy" "hubploy_eks_policy" {
+  name = "${var.cluster_name}-hubploy-eks"
+  description = "Just enough access to get EKS credentials"
+
+  # FIXME: restrict this to just the EKS cluster we created
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+      {
+          "Sid": "VisualEditor0",
+          "Effect": "Allow",
+          "Action": "eks:DescribeCluster",
+          "Resource": "*"
+      }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_user_policy_attachment" "hubploy_eks_user_policy_attachment" {
+  user = aws_iam_user.hubploy_eks_user.name
+  policy_arn = aws_iam_policy.hubploy_eks_policy.arn
+}
+
+# FIXME: UHHHHHHHH, WHAT DOES THIS MEAN FOR OUR STATE FILES?!
+# FIXME: WE SHOULD DEFINITELY MAYBE PUT A PGP KEY IN HERE
+resource "aws_iam_access_key" "hubploy_eks_user_secret_key" {
+  user = aws_iam_user.hubploy_eks_user.name
 }
 
 
