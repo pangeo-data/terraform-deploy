@@ -71,12 +71,9 @@ e. ![Wait for a while](https://imgs.xkcd.com/comics/compiling.png).
 
 #### 5. Enable Prometheus / Grafana (optional)
 
-The `monitoring` directory contains everything you need to enable Prometheus and Grafana. 
+The `monitoring` directory contains everything you need to enable Prometheus and Grafana. It is present as a module, which is called at the bottom of `/aws/main.tf`. By default, this module is enabled, but you can comment it out if need be. You shouldn't need to change anything in the `monitoring` directory.
 
-a. Make edits to `monitoring/variables.tf`
-b. Run `terraform init` to set up appropriate plugins
-c. Run `terraform apply` and type `yes` when prompted
-d. Running `kubectl get svc -n grafana` should give you the IP address you need to connect to Grafana and set up dashboards.
+If you make the cluster with monitoring enabled, running `kubectl get svc -n grafana` should give you the IP address you need to connect to Grafana and set up dashboards.
 
 #### 6. Test out your hub!
 
