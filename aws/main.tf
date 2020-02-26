@@ -73,21 +73,21 @@ module "eks" {
     disk_size = 50
   }
 
-  node_groups = {
-    core = {
-      desired_capacity = 1
-      max_capacity     = 3
-      min_capacity     = 1
+  #node_groups = {
+    #core = {
+    #  desired_capacity = 1
+    #  max_capacity     = 3
+    #  min_capacity     = 1
 
-      instance_type = "m5.large"
-      k8s_labels    = {
-        "hub.jupyter.org/node-purpose" =  "core"
-      }
+    #  instance_type = "m5.large"
+    #  k8s_labels    = {
+    #    "hub.jupyter.org/node-purpose" =  "core"
+    #  }
       # Use kubelet_extra_args to set --node-labels=node-role.kubernetes.io/core=core?
-      kubelet_extra_args = "--node-labels=node-role.kubernetes.io/core=core"
-      additional_tags = {
-      }
-    }
+    #  kubelet_extra_args = "--node-labels=node-role.kubernetes.io/core=core"
+    #  additional_tags = {
+    #  }
+    #}
     #notebook = {
     #  desired_capacity = 1
     #  max_capacity     = 10
@@ -100,7 +100,22 @@ module "eks" {
     #  additional_tags = {
     #  }
     #}
-  }
+  #}
+
+  worker_groups = [
+    {
+      name                    = "core"
+      autoscaling_enabled     = true
+      public_ip               = true
+      asg_max_size            = 1
+      asg_min_size            = 1
+      asg_desired_capacity    = 1
+      instance_type           = "m5.large"
+
+      # Use this to set labels / taints
+      kubelet_extra_args      = "--node-labels=node-role.kubernetes.io/core=core,hub.jupyter.org/node-purpose=core"
+    }
+  ]
 
   worker_groups_launch_template = [
     {
