@@ -137,11 +137,7 @@ module "eks" {
       asg_desired_capacity    = 0
 
       # Use this to set labels / taints
-      kubelet_extra_args = <<EOT
-                            --node-taints=hub.jupyter.org/dedicated=user:NoSchedule
-                            --node-labels=node-role.kubernetes.io/user=user
-                            --node-labels=hub.jupyter.org/node-purpose=user
-                            EOT
+      kubelet_extra_args = "--node-labels=node-role.kubernetes.io/user=user,hub.jupyter.org/node-purpose=user --register-with-taints hub.jupyter.org/dedicated=user:NoSchedule"
 
       tags = [
         {
@@ -167,11 +163,7 @@ module "eks" {
       asg_desired_capacity    = 0
 
       # Use this to set labels / taints
-      kubelet_extra_args = <<EOT
-                            --node-taints=k8s.dask.org/dedicated=worker:NoSchedule
-                            --node-labels=node-role.kubernetes.io/worker=worker
-                            --node-labels=k8s.dask.org/node-purpose=worker
-                            EOT
+      kubelet_extra_args = "--node-labels node-role.kubernetes.io/worker=worker,k8s.dask.org/node-purpose=worker --register-with-taints k8s.dask.org/dedicated=worker:NoSchedule"
 
       tags = [
         {
