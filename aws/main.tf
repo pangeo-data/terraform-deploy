@@ -41,6 +41,7 @@ module "vpc" {
   # is fixed
   public_subnets       = ["172.16.1.0/24", "172.16.2.0/24", "172.16.3.0/24"]
   enable_dns_hostnames = true
+  enable_dns_support   = true
 
   tags = {
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
@@ -107,6 +108,7 @@ module "eks" {
       override_instance_types = ["m5.2xlarge", "m4.2xlarge"]
       spot_instance_pools     = 2
       autoscaling_enabled     = true
+      public_ip               = true
       asg_max_size            = 100
       asg_min_size            = 0
       asg_desired_capacity    = 0
@@ -135,6 +137,7 @@ module "eks" {
       name                    = "worker-spot"
       override_instance_types = ["r5.2xlarge", "r4.2xlarge"]
       spot_instance_pools     = 2
+      public_ip               = true
       autoscaling_enabled     = true
       asg_max_size            = 100
       asg_min_size            = 0
