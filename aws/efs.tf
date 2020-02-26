@@ -20,6 +20,11 @@ resource "aws_security_group" "home_dirs_sg" {
     to_port          = 2049
     protocol         = "tcp"
   }
+
+  tags = {
+    AutoTag_UserName = split("/", data.aws_caller_identity.current.arn)[1]
+    AutoTag_Creator = data.aws_caller_identity.current.arn
+  }
 }
 
 resource "aws_efs_mount_target" "home_dirs_targets" {

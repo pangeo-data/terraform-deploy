@@ -11,6 +11,8 @@ provider "template" {
   version = "~> 2.1"
 }
 
+data "aws_caller_identity" "current" {}
+
 data "aws_eks_cluster" "cluster" {
   name = module.eks.cluster_id
 }
@@ -45,6 +47,8 @@ module "vpc" {
 
   tags = {
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
+    AutoTag_UserName = split("/", data.aws_caller_identity.current.arn)[1]
+    AutoTag_Creator = data.aws_caller_identity.current.arn
   }
 
   public_subnet_tags = {
@@ -67,6 +71,10 @@ module "eks" {
   vpc_id       = module.vpc.vpc_id
   enable_irsa  = true
 
+  tags = {
+    AutoTag_UserName = split("/", data.aws_caller_identity.current.arn)[1]
+    AutoTag_Creator = data.aws_caller_identity.current.arn
+  }
 
   node_groups_defaults = {
     ami_type  = "AL2_x86_64"
