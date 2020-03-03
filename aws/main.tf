@@ -113,7 +113,6 @@ module "eks" {
   worker_groups = [
     {
       name                    = "core"
-      autoscaling_enabled     = true
       public_ip               = true
       asg_max_size            = 1
       asg_min_size            = 1
@@ -122,6 +121,19 @@ module "eks" {
 
       # Use this to set labels / taints
       kubelet_extra_args      = "--node-labels=node-role.kubernetes.io/core=core,hub.jupyter.org/node-purpose=core"
+      
+      tags = [
+        {
+          "key"                 = "k8s.io/cluster-autoscaler/enabled"
+          "propagate_at_launch" = "false"
+          "value"               = "true"
+        },
+        {
+          "key"                 = "k8s.io/cluster-autoscaler/${var.cluster_name}"
+          "propagate_at_launch" = "false"
+          "value"               = "true"
+        }
+      ]
     }
   ]
 
@@ -130,7 +142,6 @@ module "eks" {
       name                    = "user-spot"
       override_instance_types = ["m5.2xlarge", "m4.2xlarge"]
       spot_instance_pools     = 2
-      autoscaling_enabled     = true
       public_ip               = true
       asg_max_size            = 100
       asg_min_size            = 0
@@ -149,6 +160,16 @@ module "eks" {
           "key"                 = "k8s.io/cluster-autoscaler/node-template/taint/hub.jupyter.org/dedicated" 
           "propagate_at_launch" = "false"
           "value"               = "user:NoSchedule"
+        },
+        {
+          "key"                 = "k8s.io/cluster-autoscaler/enabled"
+          "propagate_at_launch" = "false"
+          "value"               = "true"
+        },
+        {
+          "key"                 = "k8s.io/cluster-autoscaler/${var.cluster_name}"
+          "propagate_at_launch" = "false"
+          "value"               = "true"
         }
       ]
     },
@@ -157,7 +178,6 @@ module "eks" {
       override_instance_types = ["r5.2xlarge", "r4.2xlarge"]
       spot_instance_pools     = 2
       public_ip               = true
-      autoscaling_enabled     = true
       asg_max_size            = 100
       asg_min_size            = 0
       asg_desired_capacity    = 0
@@ -175,6 +195,16 @@ module "eks" {
           "key"                 = "k8s.io/cluster-autoscaler/node-template/taint/k8s.dask.org/dedicated" 
           "propagate_at_launch" = "false"
           "value"               = "worker:NoSchedule"
+        },
+        {
+          "key"                 = "k8s.io/cluster-autoscaler/enabled"
+          "propagate_at_launch" = "false"
+          "value"               = "true"
+        },
+        {
+          "key"                 = "k8s.io/cluster-autoscaler/${var.cluster_name}"
+          "propagate_at_launch" = "false"
+          "value"               = "true"
         }
       ]
     }
