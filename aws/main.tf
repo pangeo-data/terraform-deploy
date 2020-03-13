@@ -119,6 +119,7 @@ module "eks" {
       asg_min_size            = 1
       asg_desired_capacity    = 1
       instance_type           = "t3a.small"
+      subnets                 = [module.vpc.public_subnets[0]]
 
       # Use this to set labels / taints
       kubelet_extra_args      = "--node-labels=node-role.kubernetes.io/core=core,hub.jupyter.org/node-purpose=core"
