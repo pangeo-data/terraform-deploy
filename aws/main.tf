@@ -47,7 +47,7 @@ module "vpc" {
 
   tags = {
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
-    AutoTag_UserName = split("/", data.aws_caller_identity.current.arn)[1]
+    Owner = split("/", data.aws_caller_identity.current.arn)[1]
     AutoTag_Creator = data.aws_caller_identity.current.arn
   }
 
@@ -72,7 +72,7 @@ module "eks" {
   enable_irsa  = true
 
   tags = {
-    AutoTag_UserName = split("/", data.aws_caller_identity.current.arn)[1]
+    Owner = split("/", data.aws_caller_identity.current.arn)[1]
     AutoTag_Creator = data.aws_caller_identity.current.arn
   }
 

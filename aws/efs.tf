@@ -22,7 +22,7 @@ resource "aws_security_group" "home_dirs_sg" {
   }
 
   tags = {
-    AutoTag_UserName = split("/", data.aws_caller_identity.current.arn)[1]
+    Owner = split("/", data.aws_caller_identity.current.arn)[1]
     AutoTag_Creator = data.aws_caller_identity.current.arn
   }
 }

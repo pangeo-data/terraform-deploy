@@ -13,7 +13,7 @@ module "iam_assumable_role_admin" {
   oidc_fully_qualified_subjects = ["system:serviceaccount:kube-system:cluster-autoscaler-aws-cluster-autoscaler"]
 
   tags = {
-    AutoTag_UserName = split("/", data.aws_caller_identity.current.arn)[1]
+    Owner = split("/", data.aws_caller_identity.current.arn)[1]
     AutoTag_Creator = data.aws_caller_identity.current.arn
   }
 }
