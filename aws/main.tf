@@ -42,8 +42,11 @@ module "vpc" {
   # We can use private subnets too once https://github.com/aws/containers-roadmap/issues/607
   # is fixed
   public_subnets       = ["172.16.1.0/24", "172.16.2.0/24", "172.16.3.0/24"]
+  private_subnets      = ["172.16.4.0/24", "172.16.5.0/24", "172.16.6.0/24"]
   enable_dns_hostnames = true
   enable_dns_support   = true
+  enable_nat_gateway   = true
+  single_nat_gateway   = true
 
   tags = {
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
@@ -68,9 +71,11 @@ module "eks" {
   cluster_version = "1.15"
   # FIXME: We can use private subnets once https://github.com/aws/containers-roadmap/issues/607
   # is fixed
-  subnets      = module.vpc.public_subnets
+  subnets      = module.vpc.private_subnets
   vpc_id       = module.vpc.vpc_id
   enable_irsa  = true
+
+  cluster_endpoint_private_access = true
 
   tags = {
     Owner = split("/", data.aws_caller_identity.current.arn)[1]
@@ -114,12 +119,11 @@ module "eks" {
   worker_groups = [
     {
       name                    = "core"
-      public_ip               = true
       asg_max_size            = 1
       asg_min_size            = 1
       asg_desired_capacity    = 1
       instance_type           = "t3a.medium"
-      subnets                 = [module.vpc.public_subnets[0]]
+      subnets                 = [module.vpc.private_subnets[0]]
 
       # Use this to set labels / taints
       kubelet_extra_args      = "--node-labels=node-role.kubernetes.io/core=core,hub.jupyter.org/node-purpose=core"
@@ -144,7 +148,6 @@ module "eks" {
       name                    = "user-spot"
       override_instance_types = ["m5.2xlarge", "m4.2xlarge"]
       spot_instance_pools     = 2
-      public_ip               = true
       asg_max_size            = 100
       asg_min_size            = 0
       asg_desired_capacity    = 0
@@ -179,7 +182,6 @@ module "eks" {
       name                    = "worker-spot"
       override_instance_types = ["r5.2xlarge", "r4.2xlarge"]
       spot_instance_pools     = 2
-      public_ip               = true
       asg_max_size            = 100
       asg_min_size            = 0
       asg_desired_capacity    = 0
