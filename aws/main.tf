@@ -39,8 +39,7 @@ module "vpc" {
   name                 = var.vpc_name
   cidr                 = "172.16.0.0/16"
   azs                  = data.aws_availability_zones.available.names
-  # We can use private subnets too once https://github.com/aws/containers-roadmap/issues/607
-  # is fixed
+  
   public_subnets       = ["172.16.1.0/24", "172.16.2.0/24", "172.16.3.0/24"]
   private_subnets      = ["172.16.4.0/24", "172.16.5.0/24", "172.16.6.0/24"]
   enable_dns_hostnames = true
@@ -69,8 +68,7 @@ module "eks" {
   source       = "terraform-aws-modules/eks/aws"
   cluster_name = var.cluster_name
   cluster_version = "1.14"
-  # FIXME: We can use private subnets once https://github.com/aws/containers-roadmap/issues/607
-  # is fixed
+
   subnets      = module.vpc.private_subnets
   vpc_id       = module.vpc.vpc_id
   enable_irsa  = true
@@ -86,35 +84,6 @@ module "eks" {
     ami_type  = "AL2_x86_64"
     disk_size = 50
   }
-
-  #node_groups = {
-    #core = {
-    #  desired_capacity = 1
-    #  max_capacity     = 3
-    #  min_capacity     = 1
-
-    #  instance_type = "m5.large"
-    #  k8s_labels    = {
-    #    "hub.jupyter.org/node-purpose" =  "core"
-    #  }
-      # Use kubelet_extra_args to set --node-labels=node-role.kubernetes.io/core=core?
-    #  kubelet_extra_args = "--node-labels=node-role.kubernetes.io/core=core"
-    #  additional_tags = {
-    #  }
-    #}
-    #notebook = {
-    #  desired_capacity = 1
-    #  max_capacity     = 10
-    #  min_capacity     = 1
-
-    #  instance_type = "m5.xlarge"
-    #  k8s_labels = {
-    #    "hub.jupyter.org/node-purpose" =  "user"
-    #  }
-    #  additional_tags = {
-    #  }
-    #}
-  #}
 
   worker_groups = [
     {
