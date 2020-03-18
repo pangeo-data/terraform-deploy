@@ -39,7 +39,7 @@ module "vpc" {
   name                 = var.vpc_name
   cidr                 = "172.16.0.0/16"
   azs                  = data.aws_availability_zones.available.names
-  
+
   public_subnets       = ["172.16.1.0/24", "172.16.2.0/24", "172.16.3.0/24"]
   private_subnets      = ["172.16.4.0/24", "172.16.5.0/24", "172.16.6.0/24"]
   enable_dns_hostnames = true
@@ -65,13 +65,13 @@ module "vpc" {
 }
 
 module "eks" {
-  source       = "terraform-aws-modules/eks/aws"
-  cluster_name = var.cluster_name
+  source          = "terraform-aws-modules/eks/aws"
+  cluster_name    = var.cluster_name
   cluster_version = "1.14"
 
-  subnets      = module.vpc.private_subnets
-  vpc_id       = module.vpc.vpc_id
-  enable_irsa  = true
+  subnets         = module.vpc.private_subnets
+  vpc_id          = module.vpc.vpc_id
+  enable_irsa     = true
 
   cluster_endpoint_private_access = true
 
