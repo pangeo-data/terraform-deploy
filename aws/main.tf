@@ -68,7 +68,7 @@ module "vpc" {
 module "eks" {
   source       = "terraform-aws-modules/eks/aws"
   cluster_name = var.cluster_name
-  cluster_version = "1.15"
+  cluster_version = "1.14"
   # FIXME: We can use private subnets once https://github.com/aws/containers-roadmap/issues/607
   # is fixed
   subnets      = module.vpc.private_subnets
