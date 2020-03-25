@@ -6,10 +6,6 @@ variable "cluster_name" {
   default = "test-cluster-change-name"
 }
 
-variable "vpc_name" {
-  default = "vpc-test-cluster-change-name"
-}
-
 variable "map_accounts" {
   description = "Additional AWS account numbers to add to the aws-auth configmap."
   type        = list(string)
