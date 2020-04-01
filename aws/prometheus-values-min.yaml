@@ -1,0 +1,11 @@
+alertmanager:
+  persistentVolume:
+    storageClass: prometheus
+server:
+  persistentVolume:
+    storageClass: prometheus
+# The following is the basic instructions
+# This is not recommended for a production environment
+  service:
+    type: NodePort
+    nodePort: 30900

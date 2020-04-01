@@ -1,0 +1,16 @@
+persistence:
+  storageClassName: prometheus
+# These should be secrets in the future
+adminUser: admin
+adminPassword: testing123!
+datasources: 
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+    - name: Prometheus
+      type: prometheus
+      url: http://prometheus-server.prometheus.svc.cluster.local
+      access: proxy
+      isDefault: true
+service:
+  type: LoadBalancer
