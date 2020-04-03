@@ -78,7 +78,7 @@ module "eks" {
       max_capacity     = 3
       min_capacity     = 1
 
-      instance_type = "m5.large"
+      instance_type = "t3.micro"
       k8s_labels    = {
         "hub.jupyter.org/node-purpose" =  "core"
       }
@@ -90,7 +90,7 @@ module "eks" {
      max_capacity     = 10
      min_capacity     = 1
 
-     instance_type = "m5.large"
+     instance_type = "t3.medium"
      k8s_labels = {
        "hub.jupyter.org/node-purpose" =  "user"
      }
