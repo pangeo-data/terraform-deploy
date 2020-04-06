@@ -66,6 +66,7 @@ resource "helm_release" "cluster-autoscaler" {
   namespace = "kube-system"
   repository = data.helm_repository.stable.metadata[0].name
   chart = "cluster-autoscaler"
+  version = "7.2.0"
 
   values = [
     file("cluster-autoscaler-values.yml")
