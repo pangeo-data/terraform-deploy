@@ -1,5 +1,12 @@
 terraform {
   required_version = ">= 0.12.6"
+
+  backend "s3" {
+    bucket         = "hackweek-terraform-state-bucket"
+    key            = "hackweek-cluster-config.tfstate"
+    region         = "us-west-2"
+    encrypt        = true
+  }
 }
 
 provider "aws" {
