@@ -1,4 +1,5 @@
 # Attached to deployers group to let them assume the role we need
+# Attached to hubploy-deployer role as well
 data "aws_iam_policy_document" "hubploy_deployers" {
   statement {
     sid = "1"
@@ -62,7 +63,6 @@ resource "aws_iam_role_policy_attachment" "hubploy_eks" {
   policy_arn = aws_iam_policy.hubploy_eks.arn
 }
 
-
 resource "aws_iam_policy" "hubploy_deployers" {
   name = "${var.cluster_name}-hubploy-deployers"
 
@@ -85,4 +85,35 @@ resource "aws_iam_role_policy_attachment" "hubploy_ecr_policy_attachment" {
   role = aws_iam_role.hubploy_ecr.name
   # FIXME: Restrict resources to the ECR repository we created
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser"
+}
+
+
+data "aws_iam_policy_document" "hubploy_deployer_ec2_policy" {
+  statement {
+    sid = "1"
+    actions = [
+      "sts:AssumeRole",
+    ]
+    principals {
+        type = "Service"
+        identifiers = [
+            "ec2.amazonaws.com"
+        ]
+    }
+  }
+}
+
+resource "aws_iam_role" "hubploy_deployer" {
+  name = "${var.cluster_name}-hubploy-deployer"
+  assume_role_policy = data.aws_iam_policy_document.hubploy_deployer_ec2_policy.json
+}
+
+resource "aws_iam_policy" "hubploy_deployer" {
+  name = "${var.cluster_name}-hubploy-deployer"
+  policy = data.aws_iam_policy_document.hubploy_deployers.json
+}
+
+resource "aws_iam_role_policy_attachment" "hubploy_deployer" {
+  role       = aws_iam_role.hubploy_deployer.name
+  policy_arn = aws_iam_policy.hubploy_deployer.arn
 }
