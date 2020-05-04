@@ -102,16 +102,16 @@ module "eks" {
   }
 
 
-  map_roles    = var.map_roles
   map_accounts = var.map_accounts
+  map_users = var.map_users
 
 
-  # map_users = concat([{
-  #   userarn  = aws_iam_user.hubploy_eks_user.arn
-  #   username  = aws_iam_user.hubploy_eks_user.name
-  #   # FIXME: Narrow these permissions down?
-  #   groups   = ["system:masters"]
-  # }], var.map_users)
+  map_roles = concat([{
+    rolearn  = aws_iam_role.hubploy_eks.arn
+    username = aws_iam_role.hubploy_eks.name
+    # FIXME: Narrow these permissions down?
+    groups   = ["system:masters"]
+  }], var.map_roles)
 }
 
 
