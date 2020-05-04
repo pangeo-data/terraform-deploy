@@ -6,8 +6,8 @@ data "aws_iam_policy_document" "hubploy_deployers" {
       "sts:AssumeRole",
     ]
     resources = [
-        aws_iam_role.hubploy_eks.arn
-        #aws_iam_role.hubploy_ecr.arn
+        aws_iam_role.hubploy_eks.arn,
+        aws_iam_role.hubploy_ecr.arn
     ]
   }
 }
@@ -83,5 +83,6 @@ resource "aws_iam_role" "hubploy_ecr" {
 
 resource "aws_iam_role_policy_attachment" "hubploy_ecr_policy_attachment" {
   role = aws_iam_role.hubploy_ecr.name
+  # FIXME: Restrict resources to the ECR repository we created
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser"
 }
