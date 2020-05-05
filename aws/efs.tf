@@ -28,15 +28,15 @@ resource "aws_security_group" "home_dirs_sg" {
 }
 
 resource "aws_efs_mount_target" "home_dirs_targets" {
-  count = length(module.vpc.private_subnets)
-  file_system_id = aws_efs_file_system.home_dirs.id
-  subnet_id = module.vpc.private_subnets[count.index]
+  count           = length(module.vpc.private_subnets)
+  file_system_id  = aws_efs_file_system.home_dirs.id
+  subnet_id       = module.vpc.private_subnets[count.index]
   security_groups = [ aws_security_group.home_dirs_sg.id ]
 }
 
 data "helm_repository" "stable" {
   name = "stable"
-  url = "https://kubernetes-charts.storage.googleapis.com"
+  url  = "https://kubernetes-charts.storage.googleapis.com"
 }
 
 resource "kubernetes_namespace" "support" {
@@ -46,19 +46,19 @@ resource "kubernetes_namespace" "support" {
 }
 
 resource "helm_release" "efs-provisioner" {
-  name = "efs-provisioner"
-  namespace = kubernetes_namespace.support.metadata.0.name
+  name       = "efs-provisioner"
+  namespace  = kubernetes_namespace.support.metadata.0.name
   repository = data.helm_repository.stable.metadata[0].name
-  chart = "efs-provisioner"
-  version = "0.11.0"
+  chart      = "efs-provisioner"
+  version    = "0.11.0"
 
   set{
-    name = "efsProvisioner.efsFileSystemId"
+    name  = "efsProvisioner.efsFileSystemId"
     value = aws_efs_file_system.home_dirs.id
   }
 
   set {
-      name = "efsProvisioner.awsRegion"
+      name  = "efsProvisioner.awsRegion"
       value = var.region
   }
 
@@ -66,17 +66,17 @@ resource "helm_release" "efs-provisioner" {
       # We don't entirely know the effects of dynamic gid allocation,
       # particularly on the ability to re-use EFS when we recreate
       # clusters. Turn it off for now.
-      name = "efsProvisioner.storageClass.gidAllocate.enabled"
+      name  = "efsProvisioner.storageClass.gidAllocate.enabled"
       value = false
   }
 
   set {
-    name = "efsProvisioner.path"
+    name  = "efsProvisioner.path"
     value = "/"
   }
 
   set {
-    name = "efsProvisioner.provisionerName"
+    name  = "efsProvisioner.provisionerName"
     value = "aws.amazon.com/efs"
   }
 }
