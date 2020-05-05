@@ -145,6 +145,8 @@ data "aws_iam_policy_document" "terraform_iam_policy_source" {
       "eks:DeleteCluster",
       "eks:DescribeCluster",
       "eks:ListClusters",
+      "eks:TagResource",
+      "eks:UntagResource",
       "eks:UpdateClusterConfig",
       "eks:DescribeUpdate",
       "iam:AddRoleToInstanceProfile",
