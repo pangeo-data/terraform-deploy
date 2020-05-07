@@ -1,21 +1,3 @@
-resource "local_file" "hubploy_ecr_user_creds" {
-  filename = "aws-ecr-creds.cfg"
-  content = <<EOF
-[default]
-aws_access_key_id = ${aws_iam_access_key.hubploy_ecr_user_secret_key.id}
-aws_secret_access_key = ${aws_iam_access_key.hubploy_ecr_user_secret_key.secret}
-EOF
-}
-
-resource "local_file" "hubploy_eks_user_creds" {
-  filename = "aws-eks-creds.cfg"
-  content = <<EOF
-[default]
-aws_access_key_id = ${aws_iam_access_key.hubploy_eks_user_secret_key.id}
-aws_secret_access_key = ${aws_iam_access_key.hubploy_eks_user_secret_key.secret}
-EOF
-}
-
 resource "local_file" "hubploy_yaml" {
   filename = "hubploy.yaml"
   content = <<EOF
@@ -26,15 +8,15 @@ images:
     provider: aws
     aws:
       zone: ${var.region}
-      service_key: aws-ecr-creds.cfg
-      project: # FILL ME IN FOR NOW
+      service_key: # FIXME: Use role assumpmtions when hubploy supports them
+      project: ${data.aws_caller_identity.current.account_id}
 
 
 cluster:
   provider: aws
   aws:
       zone: ${var.region}
-      service_key: aws-eks-creds.cfg
+      service_key: # FIXME: Use role assumpmtions when hubploy supports them
       cluster: ${module.eks.cluster_id}
 EOF
 }

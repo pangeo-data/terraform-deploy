@@ -2,11 +2,6 @@ resource "aws_iam_user" "hubploy_ecr_user" {
   name = "${var.cluster_name}-hubploy-ecr-pusher"
 }
 
-resource "aws_iam_user_policy_attachment" "hubploy_ecr_image_pusher_policy_attachment" {
-  user = aws_iam_user.hubploy_ecr_user.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser"
-}
-
 # FIXME: UHHHHHHHH, WHAT DOES THIS MEAN FOR OUR STATE FILES?!
 # FIXME: WE SHOULD DEFINITELY MAYBE PUT A PGP KEY IN HERE
 resource "aws_iam_access_key" "hubploy_ecr_user_secret_key" {
