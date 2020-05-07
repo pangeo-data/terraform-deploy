@@ -80,3 +80,41 @@ resource "helm_release" "efs-provisioner" {
     value = "aws.amazon.com/efs"
   }
 }
+
+resource "kubernetes_persistent_volume" "shared-efs-volume" {
+  metadata {
+    name = "icesat2-staging-shared-nfs"
+  }
+
+  spec {
+    capacity = {
+      storage = "1Mi"
+    }
+    access_modes = ["ReadWriteMany"]
+    persistent_volume_source {
+      nfs {
+        server = aws_efs_file_system.home_dirs.dns_name
+        path = "/"
+      }
+    }
+    storage_class_name = "manual-sc"
+  }
+}
+
+resource "kubernetes_persistent_volume_claim" "shared-efs-claim" {
+  metadata {
+    name = "shared-nfs"
+    namespace = "hackweek-hub-staging"
+  }
+
+  spec {
+    access_modes = ["ReadWriteMany"]
+    resources {
+      requests = {
+        storage = "1Mi"
+      }
+    }
+    volume_name = kubernetes_persistent_volume.shared-efs-volume.metadata.0.name
+    storage_class_name = "manual-sc"
+  }
+}
