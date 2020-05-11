@@ -10,7 +10,7 @@ terraform {
 }
 
 provider "aws" {
-  version = ">= 2.28.1"
+  version = "2.59.0"
   region  = var.region
   profile = var.profile
 }
@@ -76,6 +76,7 @@ module "eks" {
   source          = "terraform-aws-modules/eks/aws"
   cluster_name    = var.cluster_name
   cluster_version = "1.14"
+  version         = "11.1.0"
 
   subnets         = module.vpc.private_subnets
   vpc_id          = module.vpc.vpc_id
@@ -198,6 +199,7 @@ module "eks" {
 
 
 provider "helm" {
+  version = "~> 1.1"
   kubernetes {
     host                   = data.aws_eks_cluster.cluster.endpoint
     cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
