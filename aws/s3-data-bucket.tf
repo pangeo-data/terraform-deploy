@@ -60,8 +60,8 @@ module "iam_assumable_role_bucket_access" {
   role_name                     = "icesat2-hackweek-bucket-access-serviceaccount"
   provider_url                  = replace(module.eks.cluster_oidc_issuer_url, "https://", "")
   role_policy_arns              = [aws_iam_policy.hackweek-bucket-access-policy.arn]
-  oidc_fully_qualified_subjects = ["system:serviceaccount:hackweek-hub-staging:jovyan",
-                                   "system:serviceaccount:hackweek-hub-prod:jovyan"]
+  oidc_fully_qualified_subjects = ["system:serviceaccount:hackweek-hub-staging:default",
+                                   "system:serviceaccount:hackweek-hub-prod:default"]
 
   tags = {
     Owner = split("/", data.aws_caller_identity.current.arn)[1]
