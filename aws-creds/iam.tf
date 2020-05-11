@@ -175,7 +175,15 @@ data "aws_iam_policy_document" "terraform_iam_policy_source" {
       "iam:PutRolePolicy",
       "iam:RemoveRoleFromInstanceProfile",
       "iam:TagRole",
-      "iam:UpdateAssumeRolePolicy"
+      "iam:UpdateAssumeRolePolicy",
+      "s3:CreateBucket",
+      "s3:DeleteBucket",
+      "s3:DescribeJob",
+      "s3:Get*",
+      "s3:HeadBucket",
+      "s3:List*",
+      "s3:PutBucketAcl",
+      "s3:PutBucketTagging"
     ]
 
     resources = ["*"]
