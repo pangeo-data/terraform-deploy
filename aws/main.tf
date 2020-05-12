@@ -94,6 +94,10 @@ module "eks" {
     disk_size = 50
   }
 
+  workers_group_defaults = {
+    ami_id = "ami-00b8b0753e596522c"
+  }
+
   worker_groups = [
     {
       name                    = "core"
