@@ -52,7 +52,10 @@ data "aws_iam_policy_document" "hackweek-bucket-access-permissions" {
   }
 }
 
-# bucket access role and service account for jupyterhub
+# bucket access role
+# Wait for https://github.com/terraform-aws-modules/terraform-aws-iam/pull/74
+# to be merged
+# I have applied the PR manually in the meantime and it works
 module "iam_assumable_role_bucket_access" {
   source                        = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
   version                       = "~> v2.6.0"
@@ -60,8 +63,8 @@ module "iam_assumable_role_bucket_access" {
   role_name                     = "icesat2-hackweek-bucket-access-serviceaccount"
   provider_url                  = replace(module.eks.cluster_oidc_issuer_url, "https://", "")
   role_policy_arns              = [aws_iam_policy.hackweek-bucket-access-policy.arn]
-  oidc_fully_qualified_subjects = ["system:serviceaccount:hackweek-hub-staging:default",
-                                   "system:serviceaccount:hackweek-hub-prod:default"]
+  oidc_fully_qualified_subjects = ["system:serviceaccount:hackweek-hub-staging:jovyan",
+                                   "system:serviceaccount:hackweek-hub-prod:jovyan"]
 
   tags = {
     Owner = split("/", data.aws_caller_identity.current.arn)[1]
