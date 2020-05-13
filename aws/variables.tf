@@ -43,3 +43,11 @@ variable "map_users" {
   default = [
   ]
 }
+
+variable "grafana_admin" {
+  default = "admin"
+}
+
+variable "grafana_password" {
+  default = ""
+}
