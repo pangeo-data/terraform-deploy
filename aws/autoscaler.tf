@@ -72,10 +72,6 @@ resource "helm_release" "cluster-autoscaler" {
   repository = data.helm_repository.stable.metadata[0].name
   chart = "cluster-autoscaler"
 
-  values = [
-    file("cluster-autoscaler-values.yml")
-  ]
-
   # Terraform keeps this in state, so we get it automatically!
   set{
     name = "awsRegion"
@@ -85,5 +81,20 @@ resource "helm_release" "cluster-autoscaler" {
   set{
     name = "autoDiscovery.clusterName"
     value = module.eks.cluster_id
+  }
+
+  set {
+    name  = "cloudProvider"
+    value = "aws"
+  }
+
+  set {
+    name  = "rbac.create"
+    value = true
+  }
+
+  set {
+    name  = "rbac.serviceAccountAnnotations.eks\\.amazonaws\\.com/role-arn"
+    value = module.iam_assumable_role_admin.this_iam_role_arn
   }
 }

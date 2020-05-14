@@ -1,9 +1,0 @@
-rbac:
-  create: true
-  serviceAccountAnnotations:
-    eks.amazonaws.com/role-arn: "arn:aws:iam::783380859522:role/cluster-autoscaler"
-
-cloudProvider: aws
-
-autoDiscovery:
-  enabled: true
