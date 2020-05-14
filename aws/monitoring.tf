@@ -22,7 +22,7 @@ resource "helm_release" "prometheus" {
   namespace = kubernetes_namespace.prometheus.metadata.0.name
   repository = data.helm_repository.stable.metadata[0].name
   chart = "prometheus"
-  version = "~11.2.1"
+  version = "11.2.1"
 
   values = [
     file("prometheus-values-min.yaml")
