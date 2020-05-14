@@ -14,17 +14,17 @@
 #  name = "terraform-bot"
 #}
 
-#resource "aws_iam_policy" "terraform_iam_policy" {
+# resource "aws_iam_policy" "terraform_iam_policy" {
 #    name = "terraform-policy"
 #    path = "/"
 #    description = "Permissions for Terraform-controlled EKS cluster creation and management"
 #    policy = data.aws_iam_policy_document.terraform_iam_policy_source.json
-#}
+# }
 
-#resource "aws_iam_user_policy_attachment" "attach-terraform-permissions" {
+# resource "aws_iam_user_policy_attachment" "attach-terraform-permissions" {
 #  user        = aws_iam_user.user.name
 #  policy_arn  = aws_iam_policy.terraform_iam_policy.arn
-#}
+# }
 
 
 # Create a role with the policy json
@@ -33,11 +33,11 @@
 # Probably want to make a standalone user like above
 # Probably not recommended
 
-#resource "aws_iam_role" "terraform_role" {
+# resource "aws_iam_role" "terraform_role" {
 #  name = "terraform-deployment-role"
 #  path = "/"
 #  assume_role_policy = data.aws_iam_policy_document.terraform_iam_policy_source.json
-#}
+# }
 
 
 # Create the policy in IAM
@@ -45,12 +45,19 @@
 # Will leave the policy on the user EVEN AFTER finishing the terraform configuration
 # For this reason, I think this is not recommended
 
-#resource "aws_iam_policy" "terraform_iam_policy" {
-#    name = "terraform-policy"
-#    path = "/"
-#    description = "Permissions for Terraform-controlled EKS cluster creation and management"
-#    policy = data.aws_iam_policy_document.terraform_iam_policy_source.json
-#}
+resource "aws_iam_policy" "terraform_iam_policy" {
+   name = "terraform-policy"
+   path = "/"
+   description = "Permissions for Terraform-controlled EKS cluster creation and management"
+   policy = data.aws_iam_policy_document.terraform_iam_policy_source.json
+}
+
+resource "aws_iam_policy" "terraform_iam_write_policy" {
+   name = "terraform-write-policy"
+   path = "/"
+   description = "Permissions for Terraform-controlled EKS cluster creation and management"
+   policy = data.aws_iam_policy_document.terraform_iam_write_policy_source.json
+}
 
 #resource "aws_iam_user_policy_attachment" "attach-terraform-permissions" {
 #  user        = split("/", data.aws_caller_identity.current.arn)[1]
@@ -59,7 +66,64 @@
 
 #data "aws_caller_identity" "current" {}
 
+resource "aws_iam_role" "terraform_architect_iam_role" {
+  name = "terraform-architect"
+  path = "/"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::162808325377:root"
+      },
+      "Action": "sts:AssumeRole",
+      "Condition": {}
+    }
+  ]
+}
+EOF
+}
 
+resource "aws_iam_role_policy_attachment" "attach_iam"{
+  role = aws_iam_role.terraform_architect_iam_role.name
+  policy_arn = aws_iam_policy.terraform_iam_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "attach_iam_write"{
+  role = aws_iam_role.terraform_architect_iam_role.name
+  policy_arn = aws_iam_policy.terraform_iam_write_policy.arn
+}
+
+resource "aws_iam_group" "terraform_architects_iam_group" {
+  name = "terraform-architects"
+  path = "/"
+}
+
+resource "aws_iam_policy" "terraform_assume_iam_policy" {
+  name = "terraform-assume-deployment-role"
+  policy = data.aws_iam_policy_document.terraform_iam_assume_policy_source.json
+}
+
+resource "aws_iam_group_policy_attachment" "terraform_architects" {
+  group = aws_iam_group.terraform_architects_iam_group.name
+  policy_arn = aws_iam_policy.terraform_assume_iam_policy.arn 
+}
+
+# This is the data for the policy to allow a user to assume the role to create an eks cluster
+data "aws_iam_policy_document" "terraform_iam_assume_policy_source" {
+  version = "2012-10-17"
+  statement {
+    sid   = "VisualEditor0"
+
+    effect = "Allow"
+
+    actions = ["sts:AssumeRole"]
+
+    resources = [aws_iam_role.terraform_architect_iam_role.arn]  
+  }
+}
 # This is the data for the policy needed to run terraform to create an eks cluster
 data "aws_iam_policy_document" "terraform_iam_policy_source" {
 	version = "2012-10-17"
@@ -137,12 +201,37 @@ data "aws_iam_policy_document" "terraform_iam_policy_source" {
       "ec2:GetLaunchTemplateData",
       "ec2:ModifyLaunchTemplate",
       "ec2:RunInstances",
+      "ecr:CreateRepository",
+      "efs:CreateFileSystem",
       "eks:CreateCluster",
       "eks:DeleteCluster",
       "eks:DescribeCluster",
       "eks:ListClusters",
       "eks:UpdateClusterConfig",
       "eks:DescribeUpdate",
+      "iam:GetInstanceProfile",
+		  "iam:GetOpenIDConnectProvider",
+      "iam:GetPolicy",
+      "iam:GetPolicyVersion",
+      "iam:GetRole",
+      "iam:GetRolePolicy",
+      "iam:List*",
+      "iam:TagRole"
+    ]
+
+    resources = ["*"]
+  }
+}
+
+data "aws_iam_policy_document" "terraform_iam_write_policy_source" {
+	version = "2012-10-17"
+
+  statement {
+    sid     = "VisualEditor0"
+
+    effect  = "Allow"
+
+    actions = [
       "iam:AddRoleToInstanceProfile",
       "iam:AttachRolePolicy",
       "iam:CreateInstanceProfile",
@@ -158,17 +247,9 @@ data "aws_iam_policy_document" "terraform_iam_policy_source" {
       "iam:DeleteRolePolicy",
       "iam:DeleteServiceLinkedRole",
       "iam:DetachRolePolicy",
-      "iam:GetInstanceProfile",
-		  "iam:GetOpenIDConnectProvider",
-      "iam:GetPolicy",
-      "iam:GetPolicyVersion",
-      "iam:GetRole",
-      "iam:GetRolePolicy",
-      "iam:List*",
       "iam:PassRole",
       "iam:PutRolePolicy",
       "iam:RemoveRoleFromInstanceProfile",
-      "iam:TagRole",
       "iam:UpdateAssumeRolePolicy"
     ]
 
