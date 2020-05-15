@@ -118,3 +118,41 @@ resource "kubernetes_persistent_volume_claim" "shared-efs-claim" {
     storage_class_name = "manual-sc"
   }
 }
+
+resource "kubernetes_persistent_volume" "shared-efs-volume-prod" {
+  metadata {
+    name = "icesat2-prod-shared-nfs"
+  }
+
+  spec {
+    capacity = {
+      storage = "1Mi"
+    }
+    access_modes = ["ReadWriteMany"]
+    persistent_volume_source {
+      nfs {
+        server = aws_efs_file_system.home_dirs.dns_name
+        path = "/"
+      }
+    }
+    storage_class_name = "manual-sc"
+  }
+}
+
+resource "kubernetes_persistent_volume_claim" "shared-efs-claim-prod" {
+  metadata {
+    name = "shared-nfs"
+    namespace = "hackweek-hub-prod"
+  }
+
+  spec {
+    access_modes = ["ReadWriteMany"]
+    resources {
+      requests = {
+        storage = "1Mi"
+      }
+    }
+    volume_name = kubernetes_persistent_volume.shared-efs-volume-prod.metadata.0.name
+    storage_class_name = "manual-sc"
+  }
+}
