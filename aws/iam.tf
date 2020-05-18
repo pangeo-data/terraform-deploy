@@ -18,11 +18,10 @@ data "aws_iam_policy_document" "hubploy_eks" {
     statement {
         sid = "1"
         actions = [
-            "eks:DescribeCluster"
+          "eks:DescribeCluster"
         ]
         resources = [
-            # FIXME: Restrict it to just the EKS cluster we created
-            "*"
+          module.eks.cluster_arn
         ]
     }
 }
