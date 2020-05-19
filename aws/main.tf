@@ -75,7 +75,7 @@ module "vpc" {
 module "eks" {
   source          = "terraform-aws-modules/eks/aws"
   cluster_name    = var.cluster_name
-  cluster_version = "1.14"
+  cluster_version = "1.15"
   version         = "11.1.0"
 
   subnets         = module.vpc.private_subnets
@@ -95,7 +95,7 @@ module "eks" {
   }
 
   workers_group_defaults = {
-    ami_id = "ami-00b8b0753e596522c"
+    ami_id = "ami-065418523a44331e5"
   }
 
   worker_groups = [
