@@ -216,7 +216,7 @@ data "aws_iam_policy_document" "terraform_iam_policy_source" {
       "eks:DescribeUpdate",
       "eks:*",
       "iam:GetInstanceProfile",
-		  "iam:GetOpenIDConnectProvider",
+      "iam:GetOpenIDConnectProvider",
       "iam:GetPolicy",
       "iam:GetPolicyVersion",
       "iam:GetRole",
@@ -242,14 +242,14 @@ data "aws_iam_policy_document" "terraform_iam_write_policy_source" {
       "iam:AttachRolePolicy",
       "iam:CreateGroup",
       "iam:CreateInstanceProfile",
-  	  "iam:CreateOpenIDConnectProvider",
+      "iam:CreateOpenIDConnectProvider",
       "iam:CreateServiceLinkedRole",
       "iam:CreatePolicy",
       "iam:CreatePolicyVersion",
       "iam:CreateRole",
       "iam:DeleteAccessKey",
       "iam:DeleteInstanceProfile",
-		  "iam:DeleteOpenIDConnectProvider",
+      "iam:DeleteOpenIDConnectProvider",
       "iam:DeletePolicy",
       "iam:DeletePolicyVersion",
       "iam:DeleteRole",
@@ -274,4 +274,16 @@ data "aws_iam_policy_document" "terraform_iam_write_policy_source" {
     ]
     resources = ["*"]
   }
-} 
+}
+
+data "aws_iam_policy_document" "terraform_user_assume_policy" {
+  version = "2012-10-17"
+  statement {
+      effect = "Allow"
+      principals {
+        type = "AWS"
+        identifiers = ["arn:aws:iam::162808325377:root"]
+      }
+      actions = ["sts:AssumeRole"]
+  }
+}
