@@ -3,6 +3,9 @@
 # https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/docs/iam-permissions.md
 # Here are a few implementations
 
+variable "region" {
+  default = "us-east-1"
+}
 
 # Create a new user named terraform-bot
 # Create policy in IAM and attach to terraform-bot
@@ -202,13 +205,16 @@ data "aws_iam_policy_document" "terraform_iam_policy_source" {
       "ec2:ModifyLaunchTemplate",
       "ec2:RunInstances",
       "ecr:CreateRepository",
-      "efs:CreateFileSystem",
+      "ecr:DescribeRepositories",
+      "ecr:*",
+      "elasticfilesystem:*",
       "eks:CreateCluster",
       "eks:DeleteCluster",
       "eks:DescribeCluster",
       "eks:ListClusters",
       "eks:UpdateClusterConfig",
       "eks:DescribeUpdate",
+      "eks:*",
       "iam:GetInstanceProfile",
 		  "iam:GetOpenIDConnectProvider",
       "iam:GetPolicy",
@@ -216,7 +222,7 @@ data "aws_iam_policy_document" "terraform_iam_policy_source" {
       "iam:GetRole",
       "iam:GetRolePolicy",
       "iam:List*",
-      "iam:TagRole"
+      "iam:TagRole",
     ]
 
     resources = ["*"]
@@ -234,25 +240,38 @@ data "aws_iam_policy_document" "terraform_iam_write_policy_source" {
     actions = [
       "iam:AddRoleToInstanceProfile",
       "iam:AttachRolePolicy",
+      "iam:CreateGroup",
       "iam:CreateInstanceProfile",
   	  "iam:CreateOpenIDConnectProvider",
       "iam:CreateServiceLinkedRole",
       "iam:CreatePolicy",
       "iam:CreatePolicyVersion",
       "iam:CreateRole",
+      "iam:DeleteAccessKey",
       "iam:DeleteInstanceProfile",
 		  "iam:DeleteOpenIDConnectProvider",
       "iam:DeletePolicy",
+      "iam:DeletePolicyVersion",
       "iam:DeleteRole",
       "iam:DeleteRolePolicy",
       "iam:DeleteServiceLinkedRole",
+      "iam:DetachGroupPolicy",
       "iam:DetachRolePolicy",
       "iam:PassRole",
       "iam:PutRolePolicy",
       "iam:RemoveRoleFromInstanceProfile",
-      "iam:UpdateAssumeRolePolicy"
+      "iam:UpdateAssumeRolePolicy",
+      "iam:CreateGroup",
+      "iam:AddUserToGroup",
+      "iam:DeleteGroup",
+      "iam:AttachGroupPolicy",
+      "iam:DeleteUser",
+      "iam:GetGroupPolicy",
+      "iam:GetUser",
+      "iam:CreateUser",
+      "iam:GetGroup",
+      "iam:CreateAccessKey",
     ]
-
     resources = ["*"]
   }
 } 
