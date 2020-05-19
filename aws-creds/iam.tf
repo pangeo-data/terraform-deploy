@@ -148,6 +148,7 @@ data "aws_iam_policy_document" "terraform_iam_policy_source" {
       "eks:TagResource",
       "eks:UntagResource",
       "eks:UpdateClusterConfig",
+      "eks:UpdateClusterVersion",
       "eks:DescribeUpdate",
       "iam:AddRoleToInstanceProfile",
       "iam:AttachRolePolicy",
