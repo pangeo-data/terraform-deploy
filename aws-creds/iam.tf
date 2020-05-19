@@ -3,8 +3,23 @@
 # https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/docs/iam-permissions.md
 # Here are a few implementations
 
+terraform {
+  required_version = ">= 0.12.6"
+}
+
+provider "aws" {
+  version = ">= 2.28.1"
+  region  = var.region
+}
+
 variable "region" {
+  type = string
   default = "us-east-1"
+}
+
+variable "iam_prefix" {
+  type = string
+  default = ""
 }
 
 # Create a new user named terraform-bot
@@ -49,14 +64,14 @@ variable "region" {
 # For this reason, I think this is not recommended
 
 resource "aws_iam_policy" "terraform_iam_policy" {
-   name = "terraform-policy"
+   name = "${var.iam_prefix}terraform-policy"
    path = "/"
    description = "Permissions for Terraform-controlled EKS cluster creation and management"
    policy = data.aws_iam_policy_document.terraform_iam_policy_source.json
 }
 
 resource "aws_iam_policy" "terraform_iam_write_policy" {
-   name = "terraform-write-policy"
+   name = "${var.iam_prefix}terraform-write-policy"
    path = "/"
    description = "Permissions for Terraform-controlled EKS cluster creation and management"
    policy = data.aws_iam_policy_document.terraform_iam_write_policy_source.json
@@ -70,23 +85,9 @@ resource "aws_iam_policy" "terraform_iam_write_policy" {
 #data "aws_caller_identity" "current" {}
 
 resource "aws_iam_role" "terraform_architect_iam_role" {
-  name = "terraform-architect"
+  name = "${var.iam_prefix}terraform-architect"
   path = "/"
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::162808325377:root"
-      },
-      "Action": "sts:AssumeRole",
-      "Condition": {}
-    }
-  ]
-}
-EOF
+  assume_role_policy = data.aws_iam_policy_document.terraform_user_assume_policy.json
 }
 
 resource "aws_iam_role_policy_attachment" "attach_iam"{
@@ -100,12 +101,12 @@ resource "aws_iam_role_policy_attachment" "attach_iam_write"{
 }
 
 resource "aws_iam_group" "terraform_architects_iam_group" {
-  name = "terraform-architects"
+  name = "${var.iam_prefix}terraform-architects"
   path = "/"
 }
 
 resource "aws_iam_policy" "terraform_assume_iam_policy" {
-  name = "terraform-assume-deployment-role"
+  name = "${var.iam_prefix}terraform-assume-deployment-role"
   policy = data.aws_iam_policy_document.terraform_iam_assume_policy_source.json
 }
 
@@ -127,6 +128,9 @@ data "aws_iam_policy_document" "terraform_iam_assume_policy_source" {
     resources = [aws_iam_role.terraform_architect_iam_role.arn]  
   }
 }
+
+data "aws_caller_identity" "current" {}
+
 # This is the data for the policy needed to run terraform to create an eks cluster
 data "aws_iam_policy_document" "terraform_iam_policy_source" {
 	version = "2012-10-17"
@@ -282,7 +286,7 @@ data "aws_iam_policy_document" "terraform_user_assume_policy" {
       effect = "Allow"
       principals {
         type = "AWS"
-        identifiers = ["arn:aws:iam::162808325377:root"]
+        identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
       }
       actions = ["sts:AssumeRole"]
   }
