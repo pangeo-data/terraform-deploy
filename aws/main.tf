@@ -108,7 +108,7 @@ module "eks" {
       subnets                 = [module.vpc.private_subnets[0]]
 
       # Use this to set labels / taints
-      kubelet_extra_args      = "--node-labels=node-role.kubernetes.io/core=core,hub.jupyter.org/node-purpose=core"
+      kubelet_extra_args      = "--node-labels=role=core,hub.jupyter.org/node-purpose=core"
       
       tags = [
         {
@@ -135,7 +135,7 @@ module "eks" {
       asg_desired_capacity    = 0
 
       # Use this to set labels / taints
-      kubelet_extra_args = "--node-labels=node-role.kubernetes.io/user=user,hub.jupyter.org/node-purpose=user --register-with-taints hub.jupyter.org/dedicated=user:NoSchedule"
+      kubelet_extra_args = "--node-labels=role=user,hub.jupyter.org/node-purpose=user --register-with-taints hub.jupyter.org/dedicated=user:NoSchedule"
 
       tags = [
         {
@@ -169,7 +169,7 @@ module "eks" {
       asg_desired_capacity    = 0
 
       # Use this to set labels / taints
-      kubelet_extra_args = "--node-labels node-role.kubernetes.io/worker=worker,k8s.dask.org/node-purpose=worker --register-with-taints k8s.dask.org/dedicated=worker:NoSchedule"
+      kubelet_extra_args = "--node-labels role=worker,k8s.dask.org/node-purpose=worker --register-with-taints k8s.dask.org/dedicated=worker:NoSchedule"
 
       tags = [
         {
