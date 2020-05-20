@@ -169,7 +169,7 @@ module "eks" {
       asg_desired_capacity    = 0
 
       # Use this to set labels / taints
-      kubelet_extra_args = "--node-labels role=worker,k8s.dask.org/node-purpose=worker --register-with-taints k8s.dask.org/dedicated=worker:NoSchedule"
+      kubelet_extra_args = "--node-labels=role=worker,k8s.dask.org/node-purpose=worker --register-with-taints k8s.dask.org/dedicated=worker:NoSchedule"
 
       tags = [
         {
