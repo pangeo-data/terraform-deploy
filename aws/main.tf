@@ -128,8 +128,8 @@ module "eks" {
   worker_groups_launch_template = [
     {
       name                    = "user-spot"
-      override_instance_types = ["m5.2xlarge", "m4.2xlarge"]
-      spot_instance_pools     = 2
+      override_instance_types = ["m5.2xlarge", "m4.2xlarge", "m5a.2xlarge"]
+      spot_instance_pools     = 3
       asg_max_size            = 100
       asg_min_size            = 0
       asg_desired_capacity    = 0
