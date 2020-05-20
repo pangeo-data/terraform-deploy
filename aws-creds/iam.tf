@@ -141,6 +141,7 @@ data "aws_iam_policy_document" "terraform_iam_policy_source" {
       "ec2:GetLaunchTemplateData",
       "ec2:ModifyLaunchTemplate",
       "ec2:RunInstances",
+      "ec2:TerminateInstances",
       "eks:CreateCluster",
       "eks:DeleteCluster",
       "eks:DescribeCluster",
