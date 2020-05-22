@@ -72,7 +72,7 @@ resource "helm_release" "efs-provisioner" {
 
   set {
     name  = "efsProvisioner.path"
-    value = "/"
+    value = "/home-directories"
   }
 
   set {
@@ -94,7 +94,7 @@ resource "kubernetes_persistent_volume" "shared-efs-volume" {
     persistent_volume_source {
       nfs {
         server = aws_efs_file_system.home_dirs.dns_name
-        path = "/"
+        path = "/icesat-2.hackweek.io/shared/"
       }
     }
     storage_class_name = "manual-sc"
@@ -134,7 +134,7 @@ resource "kubernetes_persistent_volume" "shared-efs-volume-prod" {
     persistent_volume_source {
       nfs {
         server = aws_efs_file_system.home_dirs.dns_name
-        path = "/"
+        path = "/icesat-2.hackweek.io/shared/"
       }
     }
     storage_class_name = "manual-sc"
@@ -174,7 +174,7 @@ resource "kubernetes_persistent_volume" "tutorial-data-volume" {
     persistent_volume_source {
       nfs {
         server = aws_efs_file_system.home_dirs.dns_name
-        path = "/"
+        path = "/icesat-2.hackweek.io/tutorial-data/"
       }
     }
     storage_class_name = "manual-sc"
