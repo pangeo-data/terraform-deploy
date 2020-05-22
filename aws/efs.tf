@@ -170,11 +170,13 @@ resource "kubernetes_persistent_volume" "tutorial-data-volume" {
     capacity = {
       storage = "1Mi"
     }
-    access_modes = ["ReadWriteMany"]
+    access_modes = ["ReadOnlyMany"]
+
     persistent_volume_source {
       nfs {
         server = aws_efs_file_system.home_dirs.dns_name
         path = "/icesat-2.hackweek.io/tutorial-data/"
+        read_only = true
       }
     }
     storage_class_name = "manual-sc"
@@ -188,7 +190,8 @@ resource "kubernetes_persistent_volume_claim" "tutorial-data-claim" {
   }
 
   spec {
-    access_modes = ["ReadWriteMany"]
+    access_modes = ["ReadOnlyMany"]
+
     resources {
       requests = {
         storage = "1Mi"
