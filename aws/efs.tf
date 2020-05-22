@@ -117,6 +117,8 @@ resource "kubernetes_persistent_volume_claim" "shared-efs-claim" {
     volume_name = kubernetes_persistent_volume.shared-efs-volume.metadata.0.name
     storage_class_name = "manual-sc"
   }
+
+  wait_until_bound = false
 }
 
 resource "kubernetes_persistent_volume" "shared-efs-volume-prod" {
@@ -155,6 +157,8 @@ resource "kubernetes_persistent_volume_claim" "shared-efs-claim-prod" {
     volume_name = kubernetes_persistent_volume.shared-efs-volume-prod.metadata.0.name
     storage_class_name = "manual-sc"
   }
+
+  wait_until_bound = false
 }
 
 resource "kubernetes_persistent_volume" "tutorial-data-volume" {
@@ -193,4 +197,6 @@ resource "kubernetes_persistent_volume_claim" "tutorial-data-claim" {
     volume_name = kubernetes_persistent_volume.tutorial-data-volume.metadata.0.name
     storage_class_name = "manual-sc"
   }
+
+  wait_until_bound = false
 }
