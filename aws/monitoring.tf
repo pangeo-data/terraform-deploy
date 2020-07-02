@@ -56,4 +56,20 @@ resource "helm_release" "grafana" {
     name = "adminPassword"
     value = var.grafana_password
   }
+
+  # Preconfigured dashboard, ID 10000
+  set {
+    name = "dashboards.default.cluster-monitoring-for-kubernetes.gnetId"
+    value = "10000"
+  }
+
+  set {
+    name = "dashboards.default.cluster-monitoring-for-kubernetes.revision"
+    value = "1"
+  }
+
+  set {
+    name = "dashboards.default.cluster-monitoring-for-kubernetes.datasource"
+    value = "Prometheus"
+  }
 } 
