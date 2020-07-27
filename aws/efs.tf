@@ -87,7 +87,7 @@ resource "helm_release" "efs-provisioner" {
 
 resource "kubernetes_persistent_volume" "shared-efs-volume" {
   metadata {
-    name = "icesat2-staging-shared-nfs"
+    name = "${var.name_prefix}staging-shared-nfs"
   }
 
   spec {
@@ -127,7 +127,7 @@ resource "kubernetes_persistent_volume_claim" "shared-efs-claim" {
 
 resource "kubernetes_persistent_volume" "shared-efs-volume-prod" {
   metadata {
-    name = "icesat2-prod-shared-nfs"
+    name = "${var.name_prefix}prod-shared-nfs"
   }
 
   spec {
@@ -167,7 +167,7 @@ resource "kubernetes_persistent_volume_claim" "shared-efs-claim-prod" {
 
 resource "kubernetes_persistent_volume" "tutorial-data-volume" {
   metadata {
-    name = "icesat2-tutorial-data-volume"
+    name = "${var.name_prefix}tutorial-data-volume"
   }
 
   spec {
@@ -189,7 +189,7 @@ resource "kubernetes_persistent_volume" "tutorial-data-volume" {
 
 resource "kubernetes_persistent_volume_claim" "tutorial-data-claim" {
   metadata {
-    name = "icesat2-tutorial-data-claim"
+    name = "${var.name_prefix}tutorial-data-claim"
     namespace = "hackweek-hub-prod"
   }
 
