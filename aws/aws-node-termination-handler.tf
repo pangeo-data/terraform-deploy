@@ -12,8 +12,6 @@ resource "helm_release" "aws-node-termination-handler" {
   namespace  = "kube-system"
   repository = data.helm_repository.eks.metadata[0].name
   chart      = "aws-node-termination-handler"
-  #version = "1.3.1"
-  #version = "0.7.4"
 
   set{
     name  = "serviceAccount.name"
