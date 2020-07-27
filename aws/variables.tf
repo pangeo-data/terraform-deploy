@@ -6,12 +6,8 @@ variable "profile" {
   default = "default"
 }
 
-variable "cluster_name" {
-  default = "test-cluster-change-name"
-}
-
-variable "vpc_name" {
-  default = "vpc-test-cluster-change-name"
+variable "name_prefix" {
+  default = ""
 }
 
 variable "map_accounts" {

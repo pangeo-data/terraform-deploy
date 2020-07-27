@@ -17,6 +17,6 @@ resource "helm_release" "aws-node-termination-handler" {
 
   set{
     name  = "serviceAccount.name"
-    value = "iamserviceaccount-icesat2-hackweek-aws-node-termination-handler"
+    value = "iamserviceaccount-${var.name_prefix}aws-node-termination-handler"
   }
 }

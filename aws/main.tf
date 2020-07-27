@@ -44,7 +44,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 2.6"
 
-  name                 = var.vpc_name
+  name                 = "${var.name_prefix}vpc"
   cidr                 = "172.16.0.0/16"
   azs                  = data.aws_availability_zones.available.names
 
@@ -56,25 +56,25 @@ module "vpc" {
   single_nat_gateway   = true
 
   tags = {
-    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
+    "kubernetes.io/cluster/${module.eks.cluster_id}" = "shared"
     Owner = split("/", data.aws_caller_identity.current.arn)[1]
     AutoTag_Creator = data.aws_caller_identity.current.arn
   }
 
   public_subnet_tags = {
-    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
+    "kubernetes.io/cluster/${module.eks.cluster_id}" = "shared"
     "kubernetes.io/role/elb"                    = "1"
   }
 
   private_subnet_tags = {
-    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
+    "kubernetes.io/cluster/${module.eks.cluster_id}" = "shared"
     "kubernetes.io/role/internal-elb"           = "1"
   }
 }
 
 module "eks" {
   source          = "terraform-aws-modules/eks/aws"
-  cluster_name    = var.cluster_name
+  cluster_name    = "${var.name_prefix}cluster"
   cluster_version = "1.15"
   version         = "11.1.0"
 
@@ -117,7 +117,7 @@ module "eks" {
           "value"               = "true"
         },
         {
-          "key"                 = "k8s.io/cluster-autoscaler/${var.cluster_name}"
+          "key"                 = "k8s.io/cluster-autoscaler/${module.eks.cluster_id}"
           "propagate_at_launch" = "false"
           "value"               = "true"
         }
@@ -154,7 +154,7 @@ module "eks" {
           "value"               = "true"
         },
         {
-          "key"                 = "k8s.io/cluster-autoscaler/${var.cluster_name}"
+          "key"                 = "k8s.io/cluster-autoscaler/${module.eks.cluster_id}"
           "propagate_at_launch" = "false"
           "value"               = "true"
         }
@@ -188,7 +188,7 @@ module "eks" {
           "value"               = "true"
         },
         {
-          "key"                 = "k8s.io/cluster-autoscaler/${var.cluster_name}"
+          "key"                 = "k8s.io/cluster-autoscaler/${module.eks.cluster_id}"
           "propagate_at_launch" = "false"
           "value"               = "true"
         }

@@ -1,12 +1,12 @@
 resource "aws_efs_file_system" "home_dirs" {
   tags = {
-    Name = "${var.cluster_name}-home-dirs"
+    Name = "${var.name_prefix}home-dirs"
   }
 }
 
 
 resource "aws_security_group" "home_dirs_sg" {
-  name   = "home_dirs_sg"
+  name   = "${var.name_prefix}home_dirs_sg"
   vpc_id = module.vpc.vpc_id
 
   # NFS
