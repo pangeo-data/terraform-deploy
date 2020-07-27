@@ -1,6 +1,8 @@
 resource "aws_efs_file_system" "home_dirs" {
   tags = {
     Name = "${var.name_prefix}home-dirs"
+    Owner = split("/", data.aws_caller_identity.current.arn)[1]
+    AutoTag_Creator = data.aws_caller_identity.current.arn
   }
 }
 
