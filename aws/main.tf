@@ -89,11 +89,6 @@ module "eks" {
     AutoTag_Creator = data.aws_caller_identity.current.arn
   }
 
-  node_groups_defaults = {
-    ami_type  = "AL2_x86_64"
-    disk_size = 50
-  }
-
   workers_group_defaults = {
     ami_id = "ami-065418523a44331e5"
   }
