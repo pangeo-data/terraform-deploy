@@ -99,12 +99,17 @@ module "eks" {
   }
 
   worker_groups = [
+
+  ]
+
+  worker_groups_launch_template = [
     {
-      name                    = "core"
+      name                    = "core-spot"
       asg_max_size            = 1
       asg_min_size            = 1
       asg_desired_capacity    = 1
-      instance_type           = "t3a.xlarge"
+      instance_type           = ["t3a.xlarge", "t3a.xlarge"]
+      spot_instance_pools     = 2
       subnets                 = [module.vpc.private_subnets[0]]
 
       # Use this to set labels / taints
@@ -122,10 +127,7 @@ module "eks" {
           "value"               = "true"
         }
       ]
-    }
-  ]
-
-  worker_groups_launch_template = [
+    },
     {
       name                    = "user-spot"
       override_instance_types = ["m5.2xlarge", "m4.2xlarge", "m5a.2xlarge"]
