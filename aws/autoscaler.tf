@@ -15,6 +15,7 @@ module "iam_assumable_role_admin" {
   tags = {
     Owner = split("/", data.aws_caller_identity.current.arn)[1]
     AutoTag_Creator = data.aws_caller_identity.current.arn
+    Project = "${var.name_prefix}project"
   }
 }
 

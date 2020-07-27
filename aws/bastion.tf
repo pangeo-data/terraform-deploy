@@ -10,6 +10,7 @@ resource "aws_instance" "ecs-optimized" {
     Name = "${var.name_prefix}efs-mount"
     Owner = split("/", data.aws_caller_identity.current.arn)[1]
     AutoTag_Creator = data.aws_caller_identity.current.arn
+    Project = "${var.name_prefix}project"
   }
 }
 
@@ -34,5 +35,6 @@ resource "aws_security_group" "ecs-test" {
   tags = {
     Owner = split("/", data.aws_caller_identity.current.arn)[1]
     AutoTag_Creator = data.aws_caller_identity.current.arn
+    Project = "${var.name_prefix}project"
   }
 }

@@ -59,6 +59,7 @@ module "vpc" {
     "kubernetes.io/cluster/${module.eks.cluster_id}" = "shared"
     Owner = split("/", data.aws_caller_identity.current.arn)[1]
     AutoTag_Creator = data.aws_caller_identity.current.arn
+    Project = "${var.name_prefix}project"
   }
 
   public_subnet_tags = {
@@ -87,6 +88,7 @@ module "eks" {
   tags = {
     Owner = split("/", data.aws_caller_identity.current.arn)[1]
     AutoTag_Creator = data.aws_caller_identity.current.arn
+    Project = "${var.name_prefix}project"
   }
 
   workers_group_defaults = {

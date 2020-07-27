@@ -6,6 +6,7 @@ resource "aws_s3_bucket" "hackweek-data-bucket" {
   tags = {
     Owner = split("/", data.aws_caller_identity.current.arn)[1]
     AutoTag_Creator = data.aws_caller_identity.current.arn
+    Project = "${var.name_prefix}project"
   }
 }
 
@@ -69,5 +70,6 @@ module "iam_assumable_role_bucket_access" {
   tags = {
     Owner = split("/", data.aws_caller_identity.current.arn)[1]
     AutoTag_Creator = data.aws_caller_identity.current.arn
+    Project = "${var.name_prefix}project"
   }
 }
