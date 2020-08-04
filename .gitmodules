@@ -1,0 +1,3 @@
+[submodule "aws-codecommit-secret"]
+	path = aws-codecommit-secret
+	url = https://github.com/yuvipanda/aws-codecommit-secret.git
