@@ -42,8 +42,12 @@ module "vpc" {
   # We can use private subnets too once https://github.com/aws/containers-roadmap/issues/607
   # is fixed
   public_subnets       = ["172.16.1.0/24", "172.16.2.0/24", "172.16.3.0/24"]
+  private_subnets      = ["172.16.4.0/24", "172.16.5.0/24", "172.16.6.0/24"]
+  
   enable_dns_hostnames = true
-
+  enable_dns_support   = true
+  enable_nat_gateway   = true
+  single_nat_gateway   = true
   tags = {
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
   }
@@ -64,7 +68,8 @@ module "eks" {
   cluster_name = var.cluster_name
   # FIXME: We can use private subnets once https://github.com/aws/containers-roadmap/issues/607
   # is fixed
-  subnets      = module.vpc.public_subnets
+  subnets      = module.vpc.private_subnets
+  cluster_endpoint_private_access = true
   vpc_id       = module.vpc.vpc_id
   enable_irsa  = true
 
