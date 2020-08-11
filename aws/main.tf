@@ -37,13 +37,18 @@ module "vpc" {
   version = "~> 2.6"
 
   name                 = "${var.cluster_name}-vpc"
-  cidr                 = "172.16.0.0/16"
+  cidr                 = var.cidr
   azs                  = data.aws_availability_zones.available.names
   # We can use private subnets too once https://github.com/aws/containers-roadmap/issues/607
   # is fixed
-  public_subnets       = ["172.16.1.0/24", "172.16.2.0/24", "172.16.3.0/24"]
+  public_subnets       = var.public_subnets
+  private_subnets      = var.private_subnets
+  
   enable_dns_hostnames = true
-
+  enable_dns_support   = true  # var.use_private_subnets
+  enable_nat_gateway   = var.use_private_subnets
+  single_nat_gateway   = var.use_private_subnets
+  
   tags = {
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
   }
@@ -62,9 +67,8 @@ module "vpc" {
 module "eks" {
   source       = "terraform-aws-modules/eks/aws"
   cluster_name = var.cluster_name
-  # FIXME: We can use private subnets once https://github.com/aws/containers-roadmap/issues/607
-  # is fixed
-  subnets      = module.vpc.public_subnets
+  subnets      = var.use_private_subnets ? module.vpc.private_subnets : module.vpc.public_subnets
+  cluster_endpoint_private_access = true # var.use_private_subnets
   vpc_id       = module.vpc.vpc_id
   enable_irsa  = true
 
@@ -80,23 +84,26 @@ module "eks" {
       max_capacity     = 3
       min_capacity     = 1
 
-      instance_type = "t3.micro"
+      instance_type = "t3.small"
       k8s_labels    = {
         "hub.jupyter.org/node-purpose" =  "core"
       }
       additional_tags = {
+        "Name" : "${var.cluster_name}-core"
       }
     }
     notebook = {
      desired_capacity = 1
      max_capacity     = 10
      min_capacity     = 1
+     # subnets          = var.use_private_subnets ? module.vpc.private_subnets : module.vpc.public_subnets
 
      instance_type = "t3.medium"
      k8s_labels = {
        "hub.jupyter.org/node-purpose" =  "user"
      }
      additional_tags = {
+        "Name" :  "${var.cluster_name}-user"
      }
     }
   }
