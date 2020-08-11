@@ -37,17 +37,18 @@ module "vpc" {
   version = "~> 2.6"
 
   name                 = "${var.cluster_name}-vpc"
-  cidr                 = "172.16.0.0/16"
+  cidr                 = var.cidr
   azs                  = data.aws_availability_zones.available.names
   # We can use private subnets too once https://github.com/aws/containers-roadmap/issues/607
   # is fixed
-  public_subnets       = ["172.16.1.0/24", "172.16.2.0/24", "172.16.3.0/24"]
-  private_subnets      = ["172.16.4.0/24", "172.16.5.0/24", "172.16.6.0/24"]
+  public_subnets       = var.public_subnets
+  private_subnets      = var.private_subnets
   
   enable_dns_hostnames = true
   enable_dns_support   = true
-  enable_nat_gateway   = true
-  single_nat_gateway   = true
+  enable_nat_gateway   = var.use_private_subnets
+  single_nat_gateway   = var.use_private_subnets
+  
   tags = {
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
   }
@@ -66,9 +67,7 @@ module "vpc" {
 module "eks" {
   source       = "terraform-aws-modules/eks/aws"
   cluster_name = var.cluster_name
-  # FIXME: We can use private subnets once https://github.com/aws/containers-roadmap/issues/607
-  # is fixed
-  subnets      = module.vpc.private_subnets
+  subnets      = var.use_private_subnets ? module.vpc.private_subnets : module.vpc.public_subnets
   cluster_endpoint_private_access = true
   vpc_id       = module.vpc.vpc_id
   enable_irsa  = true
