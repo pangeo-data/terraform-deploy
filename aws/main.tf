@@ -45,7 +45,7 @@ module "vpc" {
   private_subnets      = var.private_subnets
   
   enable_dns_hostnames = true
-  enable_dns_support   = true  # var.use_private_subnets
+  enable_dns_support   = true
   enable_nat_gateway   = var.use_private_subnets
   single_nat_gateway   = var.use_private_subnets
   
@@ -68,7 +68,7 @@ module "eks" {
   source       = "terraform-aws-modules/eks/aws"
   cluster_name = var.cluster_name
   subnets      = var.use_private_subnets ? module.vpc.private_subnets : module.vpc.public_subnets
-  cluster_endpoint_private_access = true # var.use_private_subnets
+  cluster_endpoint_private_access = true
   vpc_id       = module.vpc.vpc_id
   enable_irsa  = true
 
@@ -89,21 +89,18 @@ module "eks" {
         "hub.jupyter.org/node-purpose" =  "core"
       }
       additional_tags = {
-        "Name" : "${var.cluster_name}-core"
       }
     }
     notebook = {
      desired_capacity = 1
      max_capacity     = 10
      min_capacity     = 1
-     # subnets          = var.use_private_subnets ? module.vpc.private_subnets : module.vpc.public_subnets
 
      instance_type = "t3.medium"
      k8s_labels = {
        "hub.jupyter.org/node-purpose" =  "user"
      }
      additional_tags = {
-        "Name" :  "${var.cluster_name}-user"
      }
     }
   }
