@@ -11,9 +11,7 @@ resource "aws_security_group" "home_dirs_sg" {
 
   # NFS
   ingress {
-
-    # FIXME: Is ther a way to do this without CIDR block copy/pasta
-    cidr_blocks = [ "172.16.0.0/16"]
+    cidr_blocks = [ var.cidr ]
     # FIXME: Do we need this security_groups here along with cidr_blocks
     security_groups = [ module.eks.worker_security_group_id ]
     from_port        = 2049
