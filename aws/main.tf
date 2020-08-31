@@ -21,6 +21,8 @@ data "aws_eks_cluster_auth" "cluster" {
   name = module.eks.cluster_id
 }
 
+data "aws_caller_identity" "current" {}
+
 provider "kubernetes" {
   host                   = data.aws_eks_cluster.cluster.endpoint
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
@@ -36,7 +38,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 2.6"
 
-  name                 = var.vpc_name
+  name                 = "${var.cluster_name}-vpc"
   cidr                 = "172.16.0.0/16"
   azs                  = data.aws_availability_zones.available.names
   # We can use private subnets too once https://github.com/aws/containers-roadmap/issues/607
@@ -82,139 +84,44 @@ module "eks" {
     disk_size = 50
   }
 
-  #node_groups = {
-    #core = {
-    #  desired_capacity = 1
-    #  max_capacity     = 3
-    #  min_capacity     = 1
-
-    #  instance_type = "m5.large"
-    #  k8s_labels    = {
-    #    "hub.jupyter.org/node-purpose" =  "core"
-    #  }
-      # Use kubelet_extra_args to set --node-labels=node-role.kubernetes.io/core=core?
-    #  kubelet_extra_args = "--node-labels=node-role.kubernetes.io/core=core"
-    #  additional_tags = {
-    #  }
-    #}
-    #notebook = {
-    #  desired_capacity = 1
-    #  max_capacity     = 10
-    #  min_capacity     = 1
-
-    #  instance_type = "m5.xlarge"
-    #  k8s_labels = {
-    #    "hub.jupyter.org/node-purpose" =  "user"
-    #  }
-    #  additional_tags = {
-    #  }
-    #}
-  #}
-
-  worker_groups = [
-    {
-      name                    = "core"
-      public_ip               = true
-      asg_max_size            = 1
-      asg_min_size            = 1
-      asg_desired_capacity    = 1
-      instance_type           = "t3a.small"
-      subnets                 = [module.vpc.public_subnets[0]]
-
-      # Use this to set labels / taints
-      kubelet_extra_args      = "--node-labels=node-role.kubernetes.io/core=core,hub.jupyter.org/node-purpose=core"
-      
-      tags = [
-        {
-          "key"                 = "k8s.io/cluster-autoscaler/enabled"
-          "propagate_at_launch" = "false"
-          "value"               = "true"
-        },
-        {
-          "key"                 = "k8s.io/cluster-autoscaler/${var.cluster_name}"
-          "propagate_at_launch" = "false"
-          "value"               = "true"
-        }
-      ]
+  node_groups = {
+    core = {
+      desired_capacity = 1
+      max_capacity     = 3
+      min_capacity     = 1
+      instance_type = "t3.micro"
+      k8s_labels    = {
+        "hub.jupyter.org/node-purpose" =  "core"
+      }
+      additional_tags = {
+      }
     }
-  ]
+    notebook = {
+     desired_capacity = 1
+     max_capacity     = 10
+     min_capacity     = 1
 
-  worker_groups_launch_template = [
-    {
-      name                    = "user-spot"
-      override_instance_types = ["m5.2xlarge", "m4.2xlarge"]
-      spot_instance_pools     = 2
-      public_ip               = true
-      asg_max_size            = 100
-      asg_min_size            = 0
-      asg_desired_capacity    = 0
-
-      # Use this to set labels / taints
-      kubelet_extra_args = "--node-labels=node-role.kubernetes.io/user=user,hub.jupyter.org/node-purpose=user --register-with-taints hub.jupyter.org/dedicated=user:NoSchedule"
-
-      tags = [
-        {
-          "key"                 = "k8s.io/cluster-autoscaler/node-template/label/hub.jupyter.org/node-purpose" 
-          "propagate_at_launch" = "false"
-          "value"               = "user"
-        },
-        {
-          "key"                 = "k8s.io/cluster-autoscaler/node-template/taint/hub.jupyter.org/dedicated" 
-          "propagate_at_launch" = "false"
-          "value"               = "user:NoSchedule"
-        },
-        {
-          "key"                 = "k8s.io/cluster-autoscaler/enabled"
-          "propagate_at_launch" = "false"
-          "value"               = "true"
-        },
-        {
-          "key"                 = "k8s.io/cluster-autoscaler/${var.cluster_name}"
-          "propagate_at_launch" = "false"
-          "value"               = "true"
-        }
-      ]
-    },
-    {
-      name                    = "worker-spot"
-      override_instance_types = ["r5.2xlarge", "r4.2xlarge"]
-      spot_instance_pools     = 2
-      public_ip               = true
-      asg_max_size            = 100
-      asg_min_size            = 0
-      asg_desired_capacity    = 0
-
-      # Use this to set labels / taints
-      kubelet_extra_args = "--node-labels node-role.kubernetes.io/worker=worker,k8s.dask.org/node-purpose=worker --register-with-taints k8s.dask.org/dedicated=worker:NoSchedule"
-
-      tags = [
-        {
-          "key"                 = "k8s.io/cluster-autoscaler/node-template/label/k8s.dask.org/node-purpose" 
-          "propagate_at_launch" = "false"
-          "value"               = "worker"
-        },
-        {
-          "key"                 = "k8s.io/cluster-autoscaler/node-template/taint/k8s.dask.org/dedicated" 
-          "propagate_at_launch" = "false"
-          "value"               = "worker:NoSchedule"
-        },
-        {
-          "key"                 = "k8s.io/cluster-autoscaler/enabled"
-          "propagate_at_launch" = "false"
-          "value"               = "true"
-        },
-        {
-          "key"                 = "k8s.io/cluster-autoscaler/${var.cluster_name}"
-          "propagate_at_launch" = "false"
-          "value"               = "true"
-        }
-      ]
+     instance_type = "t3.medium"
+     k8s_labels = {
+       "hub.jupyter.org/node-purpose" =  "user"
+     }
+     additional_tags = {
+     }
     }
-  ]
+  }
 
-  map_roles    = var.map_roles
-  map_users    = var.map_users
+>>>>>>> df212acf42c77d0c87a1e52b35db733d78a7af7d
+
   map_accounts = var.map_accounts
+  map_users = var.map_users
+
+
+  map_roles = concat([{
+    rolearn  = aws_iam_role.hubploy_eks.arn
+    username = aws_iam_role.hubploy_eks.name
+    # FIXME: Narrow these permissions down?
+    groups   = ["system:masters"]
+  }], var.map_roles)
 }
 
 

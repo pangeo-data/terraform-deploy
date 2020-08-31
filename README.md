@@ -59,23 +59,6 @@ d. Type `yes` when prompted
 e. ![Wait for a while](https://imgs.xkcd.com/comics/compiling.png).
    This could take a while!
 
-#### 5. Test out your hub!
-
-Once Step 4 finishes, you should find the public endpoint of the hub
-that was just set up.
-
-a. Based on the variables you set in your `tfvars` file, run this command
-
-   ```
-   aws eks update-kubeconfig --region=<your-region> --name=<your-cluster>
-   ```
-
-   This should connect `kubectl` to the kubernetes cluster we just built.
-b. You can find the JupyterHub's public URL with
-
-   ```
-   kubectl -n staging get svc proxy-public
-   ```
-
-c. Copy the long URL under 'EXTERNAL-IP' into your browser. Login with
-   any username and password, and check out your new hub!
+Your cluster is now set up! There are no hubs on it yet thoug. You should
+make a copy of the [hubploy template](https://github.com/yuvipanda/hubploy-template)
+repo, and go from there.
