@@ -26,8 +26,7 @@ provider "template" {
 }
 
 # VPC
-data "aws_availability_zones" "available" {
-}
+data "aws_availability_zones" "available" {}
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
