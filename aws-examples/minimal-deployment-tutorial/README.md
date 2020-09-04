@@ -158,7 +158,18 @@ section.
 
 ### Next Steps
 
-Make a key pair, connect via ssh
+If you want to connect to this EC2 instance, there are two options:
+
+1. Connect to it through the EC2 console. AWS Documentation says:
+> You can connect using EC2 Instance Connect with just a valid username. You
+can connect using Session Manager if you have been granted the necessary
+permissions. I have had some difficulties doing this, though.
+
+2. Create a key pair in the AWS console. You will then have to associate it
+with your EC2 instance, see more on that in the
+[Terraform documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance#key_name).
+If you create the key pair, you will need to use the AWS console to delete it.
+Terraform does not manage the key pair for you.
 
 ### Tear-Down
 
