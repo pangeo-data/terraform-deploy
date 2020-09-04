@@ -244,6 +244,14 @@ terraform init
 terraform apply --var-file=your-cluster.tfvars
 ```
 
+And type `yes` when prompted.
+
+Do not be alarmed by there being 49 resources that need creation. This is
+expected, since a lot of the networking is replicated over 3 subnets. The
+infrastructure creation process can take 15+ minutes, mostly because of
+the EKS cluster. The infrastructure will cost a few dollars a day to keep
+it up, so keep that in mind.
+
 ### Next Steps
 
 If you want to interact with the cluster after it is created, you will
