@@ -19,12 +19,12 @@ without changing tools, which lowers the barrier to trying out different
 clouds.
 
 2. Terraform is idempotent. This means that running the same commands multiple
-times does not change the end result. If you were using the `awscli` and ran
-a cluster creation bash script multiple times, it would throw errors after the
+times does not change the end result. If you use the `awscli` and run a
+cluster creation bash script multiple times, it would throw errors after the
 first one, saying the cluster has already been created. Terraform, on the
-other hand, can look at what it has created and if you tell it to make the
-cluster again, it will stop and tell you the cluster is already there so it
-doesn't need to do anything.
+other hand, can look at what it has created. If you tell it to make the
+cluster again, it will stop and tell you the cluster is already there; it
+doesn't need to do anything!
 
 Since Terraform tracks what it has created, there are some other good
 features:
@@ -57,8 +57,8 @@ cd terraform-deploy/aws-examples/minimal-deployment/
 ## EC2 Example / Intro to Terraform
 
 As a way to introduce some of the Terraform concepts, we will first deploy
-an Elastic Compute Cloud (EC2) instance, a single machine in AWS's cloud. The configuration for this
-section is in `ec2-intro-tutorial/`. 
+an Elastic Compute Cloud (EC2) instance, a single machine in AWS's cloud. The
+configuration for this section is in `ec2-intro-tutorial/`. 
 
 ### Infrastructure
 
@@ -75,7 +75,7 @@ us to create AWS infrastructure.
 #### Resources
 
 Resources describe one or more infrastructure objects. Our only resource here
-is the EC2 instance.
+is the EC2 instance, seen in `ec2-intro-tutorial/main.tf`.
 
 #### Data Sources
 
@@ -87,17 +87,21 @@ our EC2 instance.
 
 Input variables act as parameters, giving a way for users to customize a
 deployment without altering the configuration code. This also enables users
-to share configurations with others more easily.
+to share configurations with others more easily. Variables are defined in
+`ec2-intro-tutorial/variables.tf` and can be overridden in
+`ec2-intro-tutorial/your-values.tfvars`.
 
 #### Output Values
 
 Output values are the equivalent of return values. We use them here to print
 relevant information about the deployment once it is deployed, such as the
 AMI ID we used and the Amazon Resource Name (ARN) of our EC2 instance.
+Output values are defined for this folder in `ec2-intro-tutorial/outputs.tf`.
+Every data source and resource block also has outputs (see below).
 
 #### Variable Referencing
 
-Terraform has a lot of functionality allowing programmatic references
+Terraform adds functionality by allowing programmatic references
 to resources' and data sources' outputs. We use this here to set the
 AMI for the EC2 instance to be the value that our data source found.
 Also, the name of the EC2 instance is the input variable `deployment_name`.
@@ -169,7 +173,8 @@ and type `yes` when prompted.
 ## Simple Cluster Deployment
 
 This configuration deploys infrastructure that can support a
-JupyterHub. We use Terraform to deploy it on AWS.
+JupyterHub, though itis not recommended for much more than testing.
+We use Terraform to deploy it on AWS.
 
 ### Infrastructure
 
@@ -181,9 +186,6 @@ and networking.
 This configuration utilizes a Terraform module for each of these,
 enabling minimal configuration for us without sacrificing security
 and completeness.
-
-A JupyterHub can be deployed onto this infrastructure, though it
-is not recommended for much more than testing.
 
 ### Terraform Components
 
@@ -204,7 +206,7 @@ are variable references between modules! The line
   vpc_id          = module.vpc.vpc_id
 ```
 
-in `main.tf` takes in the output of the VPC module and uses it as an input
+in `main.tf` takes in an output of the VPC module and uses it as an input
 for the EKS module. This also helps Terraform realize there is a resource
 dependency, so it will create the VPC resources before the EKS ones.
 
