@@ -28,9 +28,9 @@ resource "aws_security_group" "home_dirs_sg" {
 }
 
 resource "aws_efs_mount_target" "home_dirs_targets" {
-  count = length(module.vpc.public_subnets)
+  count = length(module.vpc.private_subnets)
   file_system_id = aws_efs_file_system.home_dirs.id
-  subnet_id = module.vpc.public_subnets[count.index]
+  subnet_id = module.vpc.private_subnets[count.index]
   security_groups = [ aws_security_group.home_dirs_sg.id ]
 }
 

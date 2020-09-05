@@ -11,6 +11,8 @@ provider "template" {
   version = "~> 2.1"
 }
 
+data "aws_caller_identity" "current" {}
+
 data "aws_eks_cluster" "cluster" {
   name = module.eks.cluster_id
 }
@@ -18,8 +20,6 @@ data "aws_eks_cluster" "cluster" {
 data "aws_eks_cluster_auth" "cluster" {
   name = module.eks.cluster_id
 }
-
-data "aws_caller_identity" "current" {}
 
 provider "kubernetes" {
   host                   = data.aws_eks_cluster.cluster.endpoint
@@ -43,9 +43,12 @@ module "vpc" {
   # is fixed
   public_subnets       = ["172.16.1.0/24", "172.16.2.0/24", "172.16.3.0/24"]
   enable_dns_hostnames = true
+  enable_dns_support   = true
 
   tags = {
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
+    Owner = split("/", data.aws_caller_identity.current.arn)[1]
+    AutoTag_Creator = data.aws_caller_identity.current.arn
   }
 
   public_subnet_tags = {
@@ -62,12 +65,17 @@ module "vpc" {
 module "eks" {
   source       = "terraform-aws-modules/eks/aws"
   cluster_name = var.cluster_name
+  cluster_version = "1.15"
   # FIXME: We can use private subnets once https://github.com/aws/containers-roadmap/issues/607
   # is fixed
   subnets      = module.vpc.public_subnets
   vpc_id       = module.vpc.vpc_id
   enable_irsa  = true
 
+  tags = {
+    Owner = split("/", data.aws_caller_identity.current.arn)[1]
+    AutoTag_Creator = data.aws_caller_identity.current.arn
+  }
 
   node_groups_defaults = {
     ami_type  = "AL2_x86_64"
@@ -79,7 +87,6 @@ module "eks" {
       desired_capacity = 1
       max_capacity     = 3
       min_capacity     = 1
-
       instance_type = "t3.micro"
       k8s_labels    = {
         "hub.jupyter.org/node-purpose" =  "core"
@@ -100,7 +107,6 @@ module "eks" {
      }
     }
   }
-
 
   map_accounts = var.map_accounts
   map_users = var.map_users

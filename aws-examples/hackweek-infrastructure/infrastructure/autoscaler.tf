@@ -7,7 +7,7 @@ module "iam_assumable_role_admin" {
   source                        = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
   version                       = "~> v2.6.0"
   create_role                   = true
-  role_name                     = "${module.eks.cluster_id}-cluster-autoscaler"
+  role_name                     = "${var.name_prefix}cluster-autoscaler"
   provider_url                  = replace(module.eks.cluster_oidc_issuer_url, "https://", "")
   role_policy_arns              = [aws_iam_policy.cluster_autoscaler.arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:kube-system:cluster-autoscaler-aws-cluster-autoscaler"]
@@ -15,6 +15,7 @@ module "iam_assumable_role_admin" {
   tags = {
     Owner = split("/", data.aws_caller_identity.current.arn)[1]
     AutoTag_Creator = data.aws_caller_identity.current.arn
+    Project = "${var.name_prefix}project"
   }
 }
 
@@ -71,11 +72,6 @@ resource "helm_release" "cluster-autoscaler" {
   namespace = "kube-system"
   repository = data.helm_repository.stable.metadata[0].name
   chart = "cluster-autoscaler"
-  version = "7.2.0"
-
-  values = [
-    file("cluster-autoscaler-values.yml")
-  ]
 
   # Terraform keeps this in state, so we get it automatically!
   set{
@@ -86,5 +82,20 @@ resource "helm_release" "cluster-autoscaler" {
   set{
     name = "autoDiscovery.clusterName"
     value = module.eks.cluster_id
+  }
+
+  set {
+    name  = "cloudProvider"
+    value = "aws"
+  }
+
+  set {
+    name  = "rbac.create"
+    value = true
+  }
+
+  set {
+    name  = "rbac.serviceAccountAnnotations.eks\\.amazonaws\\.com/role-arn"
+    value = module.iam_assumable_role_admin.this_iam_role_arn
   }
 }
