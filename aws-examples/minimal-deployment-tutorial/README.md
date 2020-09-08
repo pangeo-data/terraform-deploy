@@ -182,9 +182,10 @@ We use Terraform to deploy it on AWS.
 ### Infrastructure
 
 This example is a minimally-configured deployment of:
-- A Virtual Private Cloud (VPC) using private subnets behind public subnets
-and networking.
-- An Elastic Kubernetes Service (EKS) cluster with two worker groups.
+- A Virtual Private Cloud (VPC), essentially the network in the cloud that
+the cluster lives in. Security is a high priority on this.
+- An Elastic Kubernetes Service (EKS) cluster, with one machine for the core
+JupyterHub services and one for the users.
 
 This configuration utilizes a Terraform module for each of these,
 enabling minimal configuration for us without sacrificing security
