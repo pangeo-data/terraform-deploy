@@ -8,8 +8,19 @@ Terraform's documentation.
 
 ## Why Terraform?
 
-Terraform is a tool we use to deploy cloud infrastructure. Each cloud
-provider has their own user interface you can access on the web and
+Terraform is a tool we use to deploy cloud infrastructure. This infrastructure
+can be as simple as a single computer in the cloud or as complex as hundreds
+of machines spinning up on demand for high-performance computing.
+
+![Terraform deployment diagram](https://github.com/salvis2/terraform-deploy/blob/master/terraform-aws-vpc-eks-deployment.png?raw=true)
+
+Shown above is an example deployment - the second example in this tutorial.
+The network is set up, a cluster deployed into it, and a JupyterHub can
+be put into the cluster. A more complex version of this was deployed for
+40-60 user hackweeks. You can find that in 
+`aws-examples/hackweek-infrastructure/`.
+
+Each cloud provider has their own user interface you can access on the web and
 command-line tool for more programmatic access. However, we prefer Terraform
 for two main reasons: 
 
@@ -26,14 +37,6 @@ difference between what you have deployed and what you want to deploy, then
 deploys only what it needs to. Tearing down your infrastructure is equally
 simple and you won't miss removing anything as long as everything you
 deployed was deployed with Terraform.
-
-![Terraform deployment diagram](https://github.com/salvis2/terraform-deploy/blob/master/terraform-aws-vpc-eks-deployment.png?raw=true)
-
-Shown above is an example deployment - the second example in this tutorial.
-The network is set up, a cluster deployed into it, and a JupyterHub can
-be put into the cluster. A more complex version of this was deployed for
-40-60 user hackweeks. You can find that in 
-`aws-examples/hackweek-infrastructure/`.
 
 ## Prerequisites
 
@@ -252,8 +255,7 @@ terraform apply --var-file=your-cluster.tfvars
 
 And type `yes` when prompted.
 
-Do not be alarmed by there being 49 resources that need creation. This is
-expected, since a lot of the networking is replicated over 3 subnets. The
+There should be 41 resources that need to be created. The
 infrastructure creation process can take 15+ minutes, mostly because of
 the EKS cluster. The infrastructure will cost a few dollars a day to keep
 it up, so keep that in mind.
@@ -301,8 +303,20 @@ You can get those variables with the corresponding commands:
 something like
 `arn:aws:eks:us-west-2:############:cluster/<your-cluster>`.
 
-If you had a previous `kubectl` context set, you may also want to set it to be something else with
+If you had a previous `kubectl` context set, you may also want to set it to
+be something else with
 
 ```
 kubectl config use-context <different context>
 ```
+
+## Wrap-Up
+
+In this tutorial, we learned what Terraform is and why it is useful. After
+learning the basics, we deployed and tore down a single machine in AWS's
+cloud, then a scalable cluster of machines! I hope you learned something
+useful.
+
+Feel free to get involved in this repo or ask me, Sebastian Alvis (@salvis2)
+for more information.
+
