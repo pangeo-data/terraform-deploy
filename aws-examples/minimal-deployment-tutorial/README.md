@@ -253,8 +253,8 @@ need to configure `kubectl`. Do this with:
 aws eks update-kubeconfig --name=<your-cluster> --profile=<your-profile>
 ```
 
-You should now be able to use `helm` and `kubectl` commands to deploy
-software onto the cluster or inspect it.
+You should now be able to use `kubectl` and `helm` commands to inspect
+the cluster or deploy software onto it.
 
 ### Tear-Down
 
