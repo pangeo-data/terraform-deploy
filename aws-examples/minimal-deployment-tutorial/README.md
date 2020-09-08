@@ -18,22 +18,13 @@ infrastructure. You can use it to deploy on many of the main cloud providers
 without changing tools, which lowers the barrier to trying out different
 clouds.
 
-2. Terraform is idempotent. This means that running the same commands multiple
-times does not change the end result. If you use the `awscli` and run a
-cluster creation bash script multiple times, it would throw errors after the
-first one, saying the cluster has already been created. Terraform, on the
-other hand, can look at what it has created. If you tell it to make the
-cluster again, it will stop and tell you the cluster is already there; it
-doesn't need to do anything!
-
-Since Terraform tracks what it has created, there are some other good
-features:
-
-- Incremental changes are very easy. Terraform looks at the difference between
-what you have deployed and what you want to deploy and deploys only what it
-needs to.
-- Tearing down your infrastructure is very simple and you won't miss anything,
-as long as everything you deployed was deployed with Terraform.
+2. Terraform gracefully tracks what it has created. This means that running
+the same commands multiple times does not cause errors or change the end
+result unless an incremental change is provided. Terraform looks at the
+difference between what you have deployed and what you want to deploy, then
+deploys only what it needs to. Tearing down your infrastructure is equally
+simple and you won't miss removing anything as long as everything you
+deployed was deployed with Terraform.
 
 ## Prerequisites
 
