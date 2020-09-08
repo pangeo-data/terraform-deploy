@@ -12,7 +12,7 @@ Terraform is a tool we use to deploy cloud infrastructure. This infrastructure
 can be as simple as a single computer in the cloud or as complex as hundreds
 of machines spinning up on demand for high-performance computing.
 
-![Terraform deployment diagram](https://github.com/salvis2/terraform-deploy/blob/master/terraform-aws-vpc-eks-deployment.png?raw=true)
+![Terraform deployment diagram](https://github.com/pangeo-data/terraform-deploy/blob/master/aws-examples/minimal-deployment-tutorial/terraform-aws-vpc-eks-deployment.png?raw=true)
 
 Shown above is an example deployment - the second example in this tutorial.
 The network is set up, a cluster deployed into it, and a JupyterHub can
@@ -190,7 +190,7 @@ This configuration deploys infrastructure that can support a
 JupyterHub, though itis not recommended for much more than testing.
 We use Terraform to deploy it on AWS.
 
-![Terraform deployment diagram](https://github.com/salvis2/terraform-deploy/blob/master/terraform-aws-vpc-eks-deployment.png?raw=true)
+![Terraform deployment diagram](https://github.com/pangeo-data/terraform-deploy/blob/master/aws-examples/minimal-deployment-tutorial/terraform-aws-vpc-eks-deployment.png?raw=true)
 
 Here is a visualization of the infrastructure that we will deploy, also
 seen above.
