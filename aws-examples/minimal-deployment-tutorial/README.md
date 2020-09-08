@@ -64,17 +64,6 @@ Providers are there to understand resources and API interactions for a
 given infrastructure platform. Here, we have the AWS provider to enable
 us to create AWS infrastructure.
 
-#### Resources
-
-Resources describe one or more infrastructure objects. Our only resource here
-is the EC2 instance, seen in `ec2-intro-tutorial/ec2-main.tf`.
-
-#### Data Sources
-
-Data sources fetch and compute data for use in Terraform's configuration. We
-have a data source here to find an Amazon Machine Image ID that we use for
-our EC2 instance.
-
 #### Input Variables
 
 Input variables act as parameters, giving a way for users to customize a
@@ -82,6 +71,17 @@ deployment without altering the configuration code. This also enables users
 to share configurations with others more easily. Variables are defined in
 `ec2-intro-tutorial/ec2-variables.tf` and can be overridden in
 `ec2-intro-tutorial/your-ec2-values.tfvars`.
+
+#### Data Sources
+
+Data sources fetch and compute data for use in Terraform's configuration. We
+have a data source here to find an Amazon Machine Image ID that we use for
+our EC2 instance.
+
+#### Resources
+
+Resources describe one or more infrastructure objects. Our only resource here
+is the EC2 instance, seen in `ec2-intro-tutorial/ec2-main.tf`.
 
 #### Output Values
 
