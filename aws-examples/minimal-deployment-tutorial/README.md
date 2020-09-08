@@ -2,7 +2,8 @@
 
 This example is meant as a small tutorial to Terraform. It is a very
 high-level overview of some of the concepts and should not replace
-[Terraform's tutorials](https://learn.hashicorp.com/collections/terraform/aws-get-started). A lot of the content in this README is paraphrased from
+[Terraform's tutorials](https://learn.hashicorp.com/collections/terraform/aws-get-started).
+A lot of the content in this README is paraphrased from
 Terraform's documentation.
 
 ## Why Terraform?
@@ -66,7 +67,7 @@ us to create AWS infrastructure.
 #### Resources
 
 Resources describe one or more infrastructure objects. Our only resource here
-is the EC2 instance, seen in `ec2-intro-tutorial/main.tf`.
+is the EC2 instance, seen in `ec2-intro-tutorial/ec2-main.tf`.
 
 #### Data Sources
 
@@ -79,15 +80,15 @@ our EC2 instance.
 Input variables act as parameters, giving a way for users to customize a
 deployment without altering the configuration code. This also enables users
 to share configurations with others more easily. Variables are defined in
-`ec2-intro-tutorial/variables.tf` and can be overridden in
-`ec2-intro-tutorial/your-values.tfvars`.
+`ec2-intro-tutorial/ec2-variables.tf` and can be overridden in
+`ec2-intro-tutorial/your-ec2-values.tfvars`.
 
 #### Output Values
 
 Output values are the equivalent of return values. We use them here to print
 relevant information about the deployment once it is deployed, such as the
 AMI ID we used and the Amazon Resource Name (ARN) of our EC2 instance.
-Output values are defined for this folder in `ec2-intro-tutorial/outputs.tf`.
+Output values are defined for this folder in `ec2-intro-tutorial/ec2-outputs.tf`.
 Every data source and resource block also has outputs (see below).
 
 #### Variable Referencing
@@ -106,11 +107,11 @@ privileges on your AWS account.
 
 #### Set Up Input Variables
 
-Input variables are defined in `ec2-intro-tutorial/variables.tf`. Their
+Input variables are defined in `ec2-intro-tutorial/ec2-variables.tf`. Their
 values can be overwritten by specifying entries in
-`ec2-intro-tutorial/your-values.tfvars`. When you run a plan, apply, or
+`ec2-intro-tutorial/your-ec2-values.tfvars`. When you run a plan, apply, or
 destroy command, you can supply these values to Terraform with
-`--var-file=your-values.tfvars`.
+`--var-file=your-ec2-values.tfvars`.
 
 #### Command: Plan
 
@@ -126,7 +127,7 @@ To look at the execution plan, run:
 ```
 cd ec2-intro-tutorial/
 terraform init
-terraform plan --var-file=your-values.tfvars
+terraform plan --var-file=your-ec2-values.tfvars
 ```
 
 #### Command: Apply
@@ -141,7 +142,7 @@ To deploy the configuration, run:
 ```
 cd ec2-intro-tutorial/
 terraform init
-terraform apply --var-file=your-values.tfvars
+terraform apply --var-file=your-ec2-values.tfvars
 ```
 
 The first two lines are unecessary if you ran them in the Command: Plan
@@ -167,7 +168,7 @@ Terraform does not manage the key pair for you.
 When you are ready to tear down the EC2 example, run:
 
 ```
-terraform destroy --var-file=your-values.tfvars
+terraform destroy --var-file=your-ec2-values.tfvars
 ```
 
 and type `yes` when prompted.
