@@ -27,6 +27,14 @@ deploys only what it needs to. Tearing down your infrastructure is equally
 simple and you won't miss removing anything as long as everything you
 deployed was deployed with Terraform.
 
+![Terraform deployment diagram](https://github.com/salvis2/terraform-deploy/blob/master/terraform-aws-vpc-eks-deployment.png?raw=true)
+
+Shown above is an example deployment - the second example in this tutorial.
+The network is set up, a cluster deployed into it, and a JupyterHub can
+be put into the cluster. A more complex version of this was deployed for
+40-60 user hackweeks. You can find that in 
+`aws-examples/hackweek-infrastructure/`.
+
 ## Prerequisites
 
 Before running any commands for this example, you should install a few things:
@@ -178,6 +186,11 @@ and type `yes` when prompted.
 This configuration deploys infrastructure that can support a
 JupyterHub, though itis not recommended for much more than testing.
 We use Terraform to deploy it on AWS.
+
+![Terraform deployment diagram](https://github.com/salvis2/terraform-deploy/blob/master/terraform-aws-vpc-eks-deployment.png?raw=true)
+
+Here is a visualization of the infrastructure that we will deploy, also
+seen above.
 
 ### Infrastructure
 
