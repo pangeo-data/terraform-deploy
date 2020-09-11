@@ -31,10 +31,7 @@ data "aws_iam_policy_document" "hubploy_assumptions" {
   statement {
     principals {
       type = "AWS"
-      identifiers = [
-          # Very icky, but see https://stackoverflow.com/questions/34922920/how-can-i-allow-a-group-to-assume-a-role
-          "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
-      ]
+      identifiers = var.allowed_roles
     }
     actions = [
       "sts:AssumeRole"
@@ -42,8 +39,6 @@ data "aws_iam_policy_document" "hubploy_assumptions" {
 
   }
 }
-
-
 
 resource "aws_iam_role" "hubploy_eks" {
   name = "${var.cluster_name}-hubploy-eks"

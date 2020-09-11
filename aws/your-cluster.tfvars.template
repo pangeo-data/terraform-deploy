@@ -3,3 +3,5 @@ region = "us-east-1"
 
 # Name of your cluster
 cluster_name = "<cluster-name>"
+
+allowed_roles = ["arn:aws:iam::<account-id>:role/jupyterhub-deploy"]

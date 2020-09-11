@@ -24,18 +24,6 @@ variable "map_roles" {
   ]
 }
 
-variable "map_users" {
-  description = "Additional IAM users to add to the aws-auth configmap."
-  type = list(object({
-    userarn  = string
-    username = string
-    groups   = list(string)
-  }))
-
-  default = [
-  ]
-}
-
 variable "use_private_subnets" {
     description = "Use private subnets for EKS worker nodes."
     type        = bool
@@ -58,4 +46,8 @@ variable "cidr" {
     description = "IP range of subnets"
     type = string
     default = "172.16.0.0/16"
+}
+
+variable "allowed_roles" {
+    default = []
 }
