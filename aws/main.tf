@@ -107,7 +107,7 @@ module "eks" {
 
 
   map_accounts = var.map_accounts
-  map_users = var.map_users
+  #map_users = var.map_users
 
 
   map_roles = concat([{
