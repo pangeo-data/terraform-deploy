@@ -1,2 +1,6 @@
 region = "us-east-1"
 iam_prefix = "<cluster-name>-"
+
+allowed_roles = [
+  "arn:aws:iam::<account-id>:role/jupyterhub-deploy"
+}
