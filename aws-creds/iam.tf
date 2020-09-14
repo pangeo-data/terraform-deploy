@@ -22,6 +22,11 @@ variable "iam_prefix" {
   default = ""
 }
 
+variable "allowed_roles" {
+  type = list
+  default = []
+}
+
 # Create a new user named terraform-bot
 # Create policy in IAM and attach to terraform-bot
 # TODO: You will need to manually generate access keys for this user
