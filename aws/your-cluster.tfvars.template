@@ -1,7 +1,22 @@
+
 # Put your cluster where your data is
 region = "us-east-1"
 
 # Name of your cluster
-cluster_name = "<cluster-name>"
+cluster_name = "<YOUR-HUB>"   # jmiller-hub"
 
-allowed_roles = ["arn:aws:iam::<account-id>:role/jupyterhub-deploy"]
+allowed_roles = ["<DEPLOY-ROLE>"]   
+
+# # ============================================================================================================
+
+# # Configured for unmanaged private subnets created by IT
+vpc_cidr = "<VPC-CIDR>"   #  "10.144.0.0/12"   # managed or unmanaged for EKS and EFS.  single block only
+
+vpc_name = "<VPC-NAME>"   # "DEV-WF-SC-SB"
+
+public_subnet_names = ["<PUBLIC-SUBNET-NAMES-OR-PATTERNS>"]  # ["DEV-WF-SC-SB-Public-*"]
+
+private_subnet_names = ["<PRIVATE-SUBNET-NAMES-OR-PATTERNS>"]  # ["DEV-WF-SC-SB-DMZ-*"]
+
+cluster_endpoint_public_access_extra_cidrs = []  # Public EKS API endpoint only reachable by NATs and these.
+

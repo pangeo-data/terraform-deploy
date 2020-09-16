@@ -24,30 +24,55 @@ variable "map_roles" {
   ]
 }
 
-variable "use_private_subnets" {
-    description = "Use private subnets for EKS worker nodes."
-    type        = bool
-    default = false
+variable "map_users" {
+  description = "Additional IAM users to add to the aws-auth configmap."
+  type = list(object({
+    userarn  = string
+    username = string
+    groups   = list(string)
+  }))
+
+  default = [
+  ]
 }
 
-variable "public_subnets" {  
-    description = "Public subnet IP ranges."
-    type        = list(string)
-    default = ["172.16.1.0/24", "172.16.2.0/24", "172.16.3.0/24"]
-}
+# -------------------------------------------------------------------------
+#                     Networking config 
 
-variable "private_subnets" {  
-    description = "Private subnet IP ranges."
-    type        = list(string)
-    default = []   #   ["172.16.4.0/24", "172.16.5.0/24", "172.16.6.0/24"]
-}
+# ========================================================================
+# Always define
 
-variable "cidr" {
+variable vpc_cidr {
     description = "IP range of subnets"
     type = string
-    default = "172.16.0.0/16"
+    # default = "172.16.0.0/16"
 }
 
-variable "allowed_roles" {
+variable vpc_name {
+   description = "Name of unmanaged VPC, e.g. created by IT department."
+   type = string
+}
+
+variable private_subnet_names {
+   description = "Patterns applied to Name tag to select unmanaged private subnets from the unmanaged vpc"
+   type = list(string)
+   default = ["*Private*"]
+}
+
+variable public_subnet_names {
+   description = "Patterns applied to Name tag to select unmanaged public subnets from the unmanaged vpc"
+   type = list(string)
+   default = ["*Public*"]
+}
+
+variable cluster_endpoint_public_access_extra_cidrs {
+   description = "Add other CIDRs for EKS API public endpoint access in addition to private subnet NAT EIPs."
+   type = list(string)
+   default = [ ]
+}
+
+
+# ========================================================================
+variable allowed_roles {
     default = []
 }
