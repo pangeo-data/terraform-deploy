@@ -1,5 +1,9 @@
-variable "credential-file" {
+variable "credential_file" {
   default = ""
+}
+
+variable "deployment_name" {
+  default = "test-vm"
 }
 
 variable "project" {
@@ -7,9 +11,9 @@ variable "project" {
 }
 
 variable "region" {
-  default = "us-west-2"
+  default = "us-west2"
 }
 
 variable "zone" {
-  default = ""
+  default = "us-west2-a"
 }
