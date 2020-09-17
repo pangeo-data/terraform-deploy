@@ -9,6 +9,7 @@ provider "google" {
 resource "google_compute_instance" "google-vm" {
   name = var.deployment_name
   machine_type = "e2-micro"
+
   boot_disk {
     initialize_params {
       image = "debian-cloud/debian-9"
