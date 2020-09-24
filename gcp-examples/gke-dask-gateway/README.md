@@ -1,7 +1,8 @@
 # Google Cloud VM Example
 
 Deploy a network and a GKE cluster on Google Cloud via
-Terraform.
+Terraform. This infrastructure will host a deployment of
+[`dask-gateway`](https://gateway.dask.org/).
 
 ## Setup
 
@@ -13,6 +14,7 @@ Download / Configure the following
   - [Configure](https://cloud.google.com/sdk/docs/initializing)
   - Create and download a
   [service account key](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) 
+- [Helm](https://helm.sh/docs/intro/quickstart/)
 
 ## Deployment
 
@@ -30,19 +32,56 @@ providers.
 Once you are ready to deploy, you can look at the plan with:
 
 ```
-terraform plan
+terraform plan --var-file=your-cluster.tfvars
 ```
 
 Deploy the network and cluster with:
 
 ```
-terraform apply
+terraform apply --var-file=your-cluster.tfvars
 ```
 
-## Tear Down
+## Install `dask-gateway`
+
+To install `dask-gateway` onto the cluster, there are a few
+steps:
+- Make sure Helm is installed (listed above)
+- Update your `kubeconfig` file with:
+```
+gcloud container clusters get-credentials <your-cluster-name> --region <your-region>
+```
+- Install `dask-gateway`
+```
+kubectl create ns dask-gateway
+helm repo add daskgateway https://dask.org/dask-gateway-helm-repo/
+helm repo update
+helm upgrade --install -n dask-gateway --version 0.8.0 --values dask-gateway-config.yaml dask-gateway daskgateway/dask-gateway
+```
+
+## Connecting to the Gateway
+
+To connect to the gateway, follow instructions from the
+`dask` documentation:
+https://gateway.dask.org/install-kube.html#connecting-to-the-gateway
+
+Other information for using the gateway for computations
+is in the `dask` documentation as well:
+https://gateway.dask.org/usage.html
+
+## Tear Down `dask-gateway`
+
+This must be performed before trying to tear down the
+infrastructure, otherwise the `terraform destroy` command
+will fail.
+
+```
+helm delete dask-gateway -n dask-gateway --purge
+```
+
+## Tear Down the Infrastructure
 
 Remove the network and cluster with:
 
 ```
-terraform destroy
+terraform destroy --var-file=your-cluster.tfvars
 ```
