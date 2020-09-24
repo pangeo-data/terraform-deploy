@@ -50,6 +50,12 @@ steps:
 ```
 gcloud container clusters get-credentials <your-cluster-name> --region <your-region>
 ```
+- Add your `gcloud` credentials to kubernetes as a secret.
+This is the same key references above in "create and download
+a service account key."
+```
+kubectl -n dask-gateway create secret generic dask-worker-sa-key --from-file <~/path/to/key/file.json>
+```
 - Install `dask-gateway`
 ```
 kubectl create ns dask-gateway
