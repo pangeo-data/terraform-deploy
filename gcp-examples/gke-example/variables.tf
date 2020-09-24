@@ -3,7 +3,7 @@ variable "credential_file" {
 }
 
 variable "deployment_name" {
-  default = "test-vm"
+  default = "test-deployment"
 }
 
 variable "project" {

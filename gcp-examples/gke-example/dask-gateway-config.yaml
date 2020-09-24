@@ -1,0 +1,48 @@
+gateway:
+  backend:
+    image:
+      name: tomaugspurger/pangeo-multicloud
+      tag: "2020.05.12.2"
+      pullPolicy: IfNotPresent
+      extraPodConfig:
+        tolerations:
+          - key: "k8s.dask.org/dedicated"
+            operator: "Equal"
+            value: "scheduler"
+            effect: "NoSchedule"
+          - key: "k8s.dask.org_dedicated"
+            operator: "Equal"
+            value: "scheduler"
+            effect: "NoSchedule"
+
+    scheduler:
+      cores:
+        request: 6
+      memory:
+        request: 12G
+
+    worker:
+      memory:
+        request: 4G
+      extraContainerConfig:
+        env:
+          - name: "GOOGLE_APPLICATION_CREDENTIALS"
+            value: "/var/run/secret/cloud.google.com/service-account.json"
+        volumeMounts:
+          - name: "service-account"
+            mountPath: "/var/run/secret/cloud.google.com"
+      extraPodConfig:
+        tolerations:
+          - key: "k8s.dask.org/dedicated"
+            operator: "Equal"
+            value: "worker"
+            effect: "NoSchedule"
+          - key: "k8s.dask.org_dedicated"
+            operator: "Equal"
+            value: "worker"
+            effect: "NoSchedule"
+        volumes:
+          - name: "service-account"
+            secret:
+              secretName: "dask-worker-sa-key"
+

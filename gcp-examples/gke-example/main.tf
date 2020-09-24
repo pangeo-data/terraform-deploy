@@ -1,9 +1,20 @@
-provider "google" {
-  credentials = file(var.credential_file)
+terraform {
+  required_version = ">= 0.12.6"
+}
+
+provider "google-beta" {
+  credentials = var.credential_file
   project     = var.project
   region      = var.region
   zone        = var.zone
   version     = "~>v3.39.0"
+}
+
+provider "google" {
+  credentials = var.credential_file
+  project     = var.project
+  region      = var.region
+  zone        = var.zone
 }
 
 module "vpc" {
@@ -15,34 +26,36 @@ module "vpc" {
 
   subnets = [
     {
-      subnet_name : ,
-      subnet_ip : ,
-      subnet_region : 
+      subnet_name = "${var.deployment_name}-subnet-0",
+      subnet_ip = "10.0.0.0/16",
+      subnet_region = var.region
     }
   ]
 
   secondary_ranges = {
-    var.subnet.name = [
+    "${var.deployment_name}-subnet-0" = [
       {
-        range_name = 
-        ip_cidr_range = 
+        range_name = "us-west2-gke-pods"
+        ip_cidr_range = "192.168.0.0/18"
       },
       {
-        range_name = 
-        ip_cidr_range = 
+        range_name = "us-west2-gke-services"
+        ip_cidr_range = "192.168.64.0/18"
       },
     ]
   }
 }
 
 module "gke" {
-  source = "terraform-google-modules/kubernetes-engine/google"
-  project_id = 
+  source = "terraform-google-modules/kubernetes-engine/google//modules/beta-public-cluster"
+  project_id = var.project
   name = "${var.deployment_name}-cluster"
+  region = var.region
+  #zone = var.zone
   network = module.vpc.network_name
-  subnetwork = 
-  ip_range_pods = 
-  ip_range_services = 
+  subnetwork = module.vpc.subnets_names[0]
+  ip_range_pods = "us-west2-gke-pods"
+  ip_range_services = "us-west2-gke-services"
   create_service_account = false
   remove_default_node_pool = true
   disable_legacy_metadata_endpoints = false
@@ -51,25 +64,25 @@ module "gke" {
   node_pools = [
     {
       name = "scheduler-pool"
-      machine_type = ""
-      min_count = 
-      max_count = 
+      machine_type = "n1-standard-8"
+      min_count = 0
+      max_count = 2
       #service_account = var.compute_engine_service_account
       preemptible = true
     },
     {
       name = "worker-pool"
-      machine_type = ""
-      min_count = 
-      max_count = 
+      machine_type = "n1-standard-8"
+      min_count = 0
+      max_count = 40
       #service_account = var.compute_engine_service_account
       preemptible = true
     },
     {
       name = "gateway"
-      machine_type = ""
+      machine_type = "n1-standard-8"
       auto_upgrade = true
-      initial_node_count = 
+      initial_node_count = 1
       preemptible = false
     }
   ]
@@ -78,16 +91,16 @@ module "gke" {
 
   node_pools_labels = {
     all = {
-      all-pools-example = true
-      Owner = "Sebastian Alvis"
-      Project = "gke-terraform-test-cluster"
+      all-pools-example = true,
+      Owner = "salvis",
+      Project = "gke-terraform-test-cluster",
     }
   }
 
-  node_pool_taints = {
+  node_pools_taints = {
     all = [
       {
-        key = all-pools-example
+        key = "all-pools-example"
         value = true
         effect = "PREFER_NO_SCHEDULE"
       },

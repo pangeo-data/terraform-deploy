@@ -24,6 +24,9 @@ to all `terraform` commands: `--var-file=your-cluster.tfvars`.
 In particular, you will need to supply the filepath of your
 service account key to the `credential_file` input variable.
 
+And yes, you need both the `google` and the `google-beta`
+providers.
+
 Once you are ready to deploy, you can look at the plan with:
 
 ```
