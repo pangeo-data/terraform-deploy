@@ -101,7 +101,7 @@ resource "aws_iam_role" "terraform_architect_iam_role" {
   tags = {
     "Terraform" = "True"
   }
-  permissions_boundary = "arn:aws:iam::328656936502:policy/TestRoleCreationBoundary"
+  #permissions_boundary = "arn:aws:iam::328656936502:policy/TestRoleCreationBoundary"
 }
 
 resource "aws_iam_role_policy_attachment" "attach_iam"{
