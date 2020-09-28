@@ -10,6 +10,11 @@ terraform {
 provider "aws" {
   version = ">= 2.28.1"
   region  = var.region
+#    assume_role {
+#      role_arn     = "arn:aws:iam::328656936502:role/jupyterhub-deploy2"
+#      session_name = "SESSION_NAME"
+#      external_id  = "EXTERNAL_ID"
+#  }
 }
 
 variable "region" {
@@ -93,6 +98,10 @@ resource "aws_iam_role" "terraform_architect_iam_role" {
   name = "${var.iam_prefix}terraform-architect"
   path = "/"
   assume_role_policy = data.aws_iam_policy_document.terraform_user_assume_policy.json
+  tags = {
+    "Terraform" = "True"
+  }
+  #permissions_boundary = "arn:aws:iam::328656936502:policy/TestRoleCreationBoundary"
 }
 
 resource "aws_iam_role_policy_attachment" "attach_iam"{
