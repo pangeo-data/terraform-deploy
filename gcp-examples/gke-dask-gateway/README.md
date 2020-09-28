@@ -81,7 +81,7 @@ infrastructure, otherwise the `terraform destroy` command
 will fail.
 
 ```
-helm delete dask-gateway -n dask-gateway --purge
+helm delete dask-gateway -n dask-gateway
 ```
 
 ## Tear Down the Infrastructure
@@ -90,4 +90,29 @@ Remove the network and cluster with:
 
 ```
 terraform destroy --var-file=your-cluster.tfvars
+```
+
+Your `kubeconfig` file will still have the information for the
+cluster until you manually delete it. You can remove it as
+follows:
+
+```
+kubectl config delete-cluster <your-cluster-arn>
+kubectl config delete-context <your-cluster-context>
+kubectl config unset users.<user-name>
+```
+
+You can get those variables with the corresponding commands:
+
+- `your-cluster-arn`: `kubectl config get-clusters`
+- `your-cluster-context`: `kubectl config get-contexts`
+- `user-name`: `kubectl config view`, the name you want will
+look something like
+`arn:aws:eks:us-west-2:############:cluster/<your-cluster>`.
+
+If you had a previous kubectl context set, you may also want
+to set it to be something else with
+
+```
+kubectl config use-context <different context>
 ```
