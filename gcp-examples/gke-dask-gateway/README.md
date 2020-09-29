@@ -32,13 +32,13 @@ providers.
 Once you are ready to deploy, you can look at the plan with:
 
 ```
-terraform plan --var-file=your-cluster.tfvars
+terraform plan --var-file your-cluster.tfvars
 ```
 
 Deploy the network and cluster with:
 
 ```
-terraform apply --var-file=your-cluster.tfvars
+terraform apply --var-file your-cluster.tfvars
 ```
 
 ## Install `dask-gateway`
@@ -141,7 +141,7 @@ No resources found in dask-gateway namespace.
 Remove the network and cluster with:
 
 ```
-terraform destroy --var-file=your-cluster.tfvars
+terraform destroy --var-file your-cluster.tfvars
 ```
 
 Your `kubeconfig` file will still have the information for the
