@@ -123,6 +123,19 @@ will fail.
 helm delete dask-gateway -n dask-gateway
 ```
 
+It may take a few moments after the command returns for
+
+```
+kubectl get svc -n dask-gateway
+```
+
+to show that all the `LoadBalancer`s are cleaned up. Do not
+move on until the above comand tells you
+
+```
+No resources found in dask-gateway namespace.
+```
+
 ## Tear Down the Infrastructure
 
 Remove the network and cluster with:
