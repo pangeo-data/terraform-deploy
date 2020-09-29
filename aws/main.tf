@@ -71,7 +71,7 @@ module "eks" {
   cluster_endpoint_private_access = true
   vpc_id       = module.vpc.vpc_id
   enable_irsa  = true
-
+  permissions_boundary = "arn:aws:iam::328656936502:policy/Terraform-Perm-Boundary"
 
   node_groups_defaults = {
     ami_type  = "AL2_x86_64"
@@ -109,8 +109,9 @@ module "eks" {
   map_accounts = var.map_accounts
 
   map_roles = concat([{
-    rolearn  = aws_iam_role.hubploy_eks.arn
-    username = aws_iam_role.hubploy_eks.name
+    # TODO: pull these out into variables
+    rolearn  = "arn:aws:iam::328656936502:role/jupyterhub-admin"
+    username = "jupyterhub-admin"
     # FIXME: Narrow these permissions down?
     groups   = ["system:masters"]
   }], var.map_roles)
