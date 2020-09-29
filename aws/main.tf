@@ -71,6 +71,7 @@ module "eks" {
   cluster_endpoint_private_access = true
   vpc_id       = module.vpc.vpc_id
   enable_irsa  = true
+  # TODO: pull this out into a variable
   permissions_boundary = "arn:aws:iam::328656936502:policy/Terraform-Perm-Boundary"
 
   node_groups_defaults = {
@@ -109,7 +110,7 @@ module "eks" {
   map_accounts = var.map_accounts
 
   map_roles = concat([{
-    # TODO: pull these out into variables
+    # TODO: pull these out into a variable
     rolearn  = "arn:aws:iam::328656936502:role/jupyterhub-admin"
     username = "jupyterhub-admin"
     # FIXME: Narrow these permissions down?
