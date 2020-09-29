@@ -74,6 +74,45 @@ Other information for using the gateway for computations
 is in the `dask` documentation as well:
 https://gateway.dask.org/usage.html
 
+A conda environment file is provided:
+`dask-gateway-test-env.yaml`. We use it to match the package
+versions that will be present on the dask cluster. To
+activate this environment, use
+
+```
+conda env create -f dask-gateway-test-env.yaml
+conda activate dask-gateway-test-env
+jupyter labextension install @jupyter-widgets/jupyterlab-manager
+jupyter labextension install dask-labextension
+jupyter serverextension enable dask_labextension
+```
+
+There is a Jupyter Notebook provided as an example of how
+to connect to the gateway. Launch it with
+
+```
+jupyter lab
+```
+
+Once you are done with the notebook, you should run the
+last cell that has
+
+```
+client.close()
+cluster.close()
+```
+
+to shut down your `dask-gateway` cluster. Then shut down
+the JupyterLab session at File > Shut Down.
+
+To remove this environment, run
+
+```
+conda deactivate
+conda remove --name dask-gateway-test-env --all
+```
+
+
 ## Tear Down `dask-gateway`
 
 This must be performed before trying to tear down the

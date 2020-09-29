@@ -1,0 +1,14 @@
+name: dask-gateway-test-env
+channels:
+  - conda-forge
+dependencies:
+  - python
+  - dask=2.21.0
+  - distributed=2.21.0
+  - dask-gateway=0.8.0
+  - jupyterlab
+  - nodejs
+  - ipywidgets
+  - cloudpickle=1.5.0
+  - toolz=0.10.0
+  - dask-labextension

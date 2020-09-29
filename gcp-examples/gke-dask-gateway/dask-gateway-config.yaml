@@ -1,8 +1,8 @@
 gateway:
   backend:
     image:
-      name: tomaugspurger/pangeo-multicloud
-      tag: "2020.05.12.2"
+      name: daskgateway/dask-gateway
+      tag: 0.8.0
       pullPolicy: IfNotPresent
       extraPodConfig:
         tolerations:
