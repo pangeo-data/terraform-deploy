@@ -16,6 +16,17 @@ Download / Configure the following
   [service account key](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) 
 - [Helm](https://helm.sh/docs/intro/quickstart/)
 
+If you want to run the example notebook to connect to the
+gateway, you will also need:
+
+- [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html)
+
+You will also need to install the `conda-forge` channel.
+
+```
+conda config --add channels conda-forge
+```
+
 ## Deployment
 
 Input variables into `your-cluster.tfvars` if you want
