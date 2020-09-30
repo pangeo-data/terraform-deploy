@@ -21,7 +21,7 @@ gateway, you will also need:
 
 - [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html)
 
-You will also need to install the `conda-forge` channel.
+You will also need to add the `conda-forge` channel.
 
 ```
 conda config --add channels conda-forge
@@ -62,7 +62,7 @@ steps:
 gcloud container clusters get-credentials <your-cluster-name> --region <your-region>
 ```
 - Add your `gcloud` credentials to kubernetes as a secret.
-This is the same key references above in "create and download
+This is the same key referenced above in "create and download
 a service account key."
 ```
 kubectl -n dask-gateway create secret generic dask-worker-sa-key --from-file <~/path/to/key/file.json>
@@ -77,13 +77,8 @@ helm upgrade --install -n dask-gateway --version 0.8.0 --values dask-gateway-con
 
 ## Connecting to the Gateway
 
-To connect to the gateway, follow instructions from the
-`dask` documentation:
-https://gateway.dask.org/install-kube.html#connecting-to-the-gateway
-
-Other information for using the gateway for computations
-is in the `dask` documentation as well:
-https://gateway.dask.org/usage.html
+As an example to connect to and use the gateway, there is
+a conda environment and a Jupyter notebook.
 
 A conda environment file is provided:
 `dask-gateway-test-env.yaml`. We use it to match the package
@@ -122,6 +117,14 @@ To remove this environment, run
 conda deactivate
 conda remove --name dask-gateway-test-env --all
 ```
+
+More general information on connecting to the gateway is in
+the `dask` documentation:
+https://gateway.dask.org/install-kube.html#connecting-to-the-gateway
+
+Other information for using the gateway for computations
+is in the `dask` documentation as well:
+https://gateway.dask.org/usage.html
 
 ### Notes on this `dask-gateway` Deployment
 
