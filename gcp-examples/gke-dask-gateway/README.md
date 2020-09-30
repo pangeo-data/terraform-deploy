@@ -123,6 +123,10 @@ conda deactivate
 conda remove --name dask-gateway-test-env --all
 ```
 
+### Notes on this `dask-gateway` Deployment
+
+This deployment is not secure. Anyone with the IP address
+of the dask cluster can get into it and run computations.
 
 ## Tear Down `dask-gateway`
 
