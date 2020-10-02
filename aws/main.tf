@@ -41,6 +41,7 @@ module "eks" {
   cluster_endpoint_public_access = false
   cluster_endpoint_private_access = true
 
+  # Sets additional worker security groups on console.
   cluster_create_security_group = false
   cluster_security_group_id = local.cluster_sg_id
 
