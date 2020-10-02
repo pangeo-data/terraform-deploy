@@ -4,10 +4,6 @@ output vpc_id {
        value = local.vpc_id
 }
 
-output vpc_cidr {
-       value = var.vpc_cidr
-}
-
 output vpc_name {
        value = var.vpc_name
 }
@@ -32,10 +28,3 @@ output private_subnet_names {
   value = local.private_subnet_names
 }
 
-output nat_cidrs {
-  value = local.nat_ip_cidrs
-}
-
-output cluster_endpoint_public_access_cidrs {
-  value = local.cluster_endpoint_public_access_cidrs
-}
