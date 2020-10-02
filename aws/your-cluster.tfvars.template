@@ -20,3 +20,6 @@ private_subnet_names = ["<PRIVATE-SUBNET-NAMES-OR-PATTERNS>"]  # ["DEV-WF-SC-SB-
 
 cluster_endpoint_public_access_extra_cidrs = []  # Public EKS API endpoint only reachable by NATs and these.
 
+cluster_sg_name = ""  # "jmiller-cluster-sg" modeled after Additional worker sgs first group
+worker_sg_name = ""   # "jmiller-worker-sg" modeled after Additional worker sg source group for first group
+

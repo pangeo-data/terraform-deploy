@@ -10,4 +10,7 @@ locals {
        nat_ip_cidrs = [ for nat in data.aws_nat_gateway.nat_gateways : join("", [nat.public_ip, "/32"]) ]
        cluster_endpoint_public_access_cidrs = concat(local.nat_ip_cidrs, var.cluster_endpoint_public_access_extra_cidrs)
        vpc_id = data.aws_vpc.unmanaged[0].id
+
+       cluster_sg_id = data.aws_security_group.cluster_sg.id
+       worker_sg_id = data.aws_security_group.worker_sg.id
 }

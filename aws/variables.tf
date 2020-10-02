@@ -39,9 +39,6 @@ variable "map_users" {
 # -------------------------------------------------------------------------
 #                     Networking config 
 
-# ========================================================================
-# Always define
-
 variable vpc_cidr {
     description = "IP range of subnets"
     type = string
@@ -71,6 +68,15 @@ variable cluster_endpoint_public_access_extra_cidrs {
    default = [ ]
 }
 
+variable cluster_sg_name {
+   description = "Group added to EKS cluster granting access to API endpoint 443 to members of worker sg."
+   type = string
+}
+
+variable worker_sg_name {
+   description = "Group added to unmanaged workers.  Gives workers access to cluster 443 via the above, cluster access to workers, workers to workers."
+   type = string
+}
 
 # ========================================================================
 variable allowed_roles {
