@@ -8,7 +8,4 @@ locals {
        private_subnet_names = [for s in data.aws_subnet.private : s.tags["Name"]]
 
        vpc_id = data.aws_vpc.unmanaged[0].id
-
-       cluster_sg_id = data.aws_security_group.cluster_sg.id
-       worker_sg_id = data.aws_security_group.worker_sg.id
 }
