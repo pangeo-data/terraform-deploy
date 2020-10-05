@@ -3,7 +3,7 @@
 region = "us-east-1"
 
 # Name of your cluster
-cluster_name = "<YOUR-HUB>"   # jmiller-hub"
+cluster_name = "<YOUR-HUB>"   # user-hub"
 
 allowed_roles = ["<DEPLOY-ROLE>"]   
 
@@ -17,6 +17,6 @@ public_subnet_names = ["<PUBLIC-SUBNET-NAMES-OR-PATTERNS>"]  # ["DEV-WF-SC-SB-Pu
 
 private_subnet_names = ["<PRIVATE-SUBNET-NAMES-OR-PATTERNS>"]  # ["DEV-WF-SC-SB-DMZ-*"]
 
-cluster_sg_name = ""  # "jmiller-cluster-sg" modeled after Additional worker sg
-worker_sg_name = ""   # "jmiller-worker-sg" modeled after Additional worker sg source group
+cluster_sg_name = ""  # "user-cluster-sg" modeled after Additional worker sg
+worker_sg_name = ""   # "user-worker-sg" modeled after Additional worker sg source group
 
