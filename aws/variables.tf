@@ -39,15 +39,6 @@ variable "map_users" {
 # -------------------------------------------------------------------------
 #                     Networking config 
 
-# ========================================================================
-# Always define
-
-variable vpc_cidr {
-    description = "IP range of subnets"
-    type = string
-    # default = "172.16.0.0/16"
-}
-
 variable vpc_name {
    description = "Name of unmanaged VPC, e.g. created by IT department."
    type = string
@@ -65,12 +56,15 @@ variable public_subnet_names {
    default = ["*Public*"]
 }
 
-variable cluster_endpoint_public_access_extra_cidrs {
-   description = "Add other CIDRs for EKS API public endpoint access in addition to private subnet NAT EIPs."
-   type = list(string)
-   default = [ ]
+variable cluster_sg_name {
+   description = "Group added to EKS cluster granting access to API endpoint 443 to members of worker sg."
+   type = string
 }
 
+variable worker_sg_name {
+   description = "Group added to unmanaged workers.  Gives workers access to cluster 443 via the above, cluster access to workers, workers to workers."
+   type = string
+}
 
 # ========================================================================
 variable allowed_roles {

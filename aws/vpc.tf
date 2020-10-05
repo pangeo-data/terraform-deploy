@@ -39,3 +39,17 @@ data aws_subnet public {
    id       = each.value
 }
 
+data aws_security_group cluster_sg {
+  filter {
+    name   = "tag:Name"
+    values = [var.cluster_sg_name]
+  }
+}
+
+data aws_security_group worker_sg {
+  filter {
+    name   = "tag:Name"
+    values = [var.worker_sg_name]
+  }
+}
+

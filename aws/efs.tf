@@ -11,8 +11,7 @@ resource "aws_security_group" "home_dirs_sg" {
 
   # NFS
   ingress {
-    cidr_blocks = [ var.vpc_cidr ]
-    # FIXME: Do we need this security_groups here along with cidr_blocks
+    cidr_blocks = local.private_subnet_cidrs
     security_groups = [ module.eks.worker_security_group_id ]
     from_port        = 2049
     to_port          = 2049

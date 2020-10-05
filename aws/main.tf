@@ -35,10 +35,19 @@ data "aws_availability_zones" "available" {
 module "eks" {
   source       = "terraform-aws-modules/eks/aws"
   cluster_name = var.cluster_name
+
   subnets      = local.private_subnet_ids
-  cluster_endpoint_public_access = true
-  cluster_endpoint_public_access_cidrs = local.cluster_endpoint_public_access_cidrs
-  cluster_endpoint_private_access = false
+
+  cluster_endpoint_public_access = false
+  cluster_endpoint_private_access = true
+
+  # Sets additional worker security groups on console.
+  cluster_create_security_group = false
+  cluster_security_group_id = data.aws_security_group.cluster_sg.id
+
+  worker_create_security_group = false
+  worker_security_group_id = data.aws_security_group.worker_sg.id
+  
   vpc_id       = local.vpc_id
   enable_irsa  = true
   
