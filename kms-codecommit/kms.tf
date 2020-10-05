@@ -23,6 +23,7 @@ resource "aws_s3_bucket" "sops-config" {
   bucket = var.sops_s3_bucket
   acl    = "private"
   tags = {
+    # TODO: pull this out into a variable
     Env =  "sandbox"
   }
 }

@@ -4,4 +4,7 @@ region = "us-east-1"
 # Name of your cluster
 cluster_name = "roman-sit"
 
-allowed_roles = ["arn:aws:iam::328656936502:role/jupyterhub-admin"]
+allowed_roles = [
+  "arn:aws:iam::328656936502:role/jupyterhub-admin",
+  #"arn:aws:iam::328656936502:role/roman-sit*"
+]

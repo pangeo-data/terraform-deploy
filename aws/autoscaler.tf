@@ -36,6 +36,17 @@ data "aws_iam_policy_document" "cluster_autoscaler" {
   }
 
   statement {
+    sid    = "clusterAutoscalerIAM"
+    effect = "Allow"
+
+    actions = [
+      "iam:GetRole",
+    ]
+
+    resources = ["*"]
+  }
+
+  statement {
     sid    = "clusterAutoscalerOwn"
     effect = "Allow"
 
@@ -60,6 +71,7 @@ data "aws_iam_policy_document" "cluster_autoscaler" {
     }
   }
 }
+
 resource "helm_release" "cluster-autoscaler" {
   name = "cluster-autoscaler"
   # Check that this is good, kube-system should already exist
