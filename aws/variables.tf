@@ -24,30 +24,49 @@ variable "map_roles" {
   ]
 }
 
-variable "use_private_subnets" {
-    description = "Use private subnets for EKS worker nodes."
-    type        = bool
-    default = false
+variable "map_users" {
+  description = "Additional IAM users to add to the aws-auth configmap."
+  type = list(object({
+    userarn  = string
+    username = string
+    groups   = list(string)
+  }))
+
+  default = [
+  ]
 }
 
-variable "public_subnets" {  
-    description = "Public subnet IP ranges."
-    type        = list(string)
-    default = ["172.16.1.0/24", "172.16.2.0/24", "172.16.3.0/24"]
+# -------------------------------------------------------------------------
+#                     Networking config 
+
+variable vpc_name {
+   description = "Name of unmanaged VPC, e.g. created by IT department."
+   type = string
 }
 
-variable "private_subnets" {  
-    description = "Private subnet IP ranges."
-    type        = list(string)
-    default = []   #   ["172.16.4.0/24", "172.16.5.0/24", "172.16.6.0/24"]
+variable private_subnet_names {
+   description = "Patterns applied to Name tag to select unmanaged private subnets from the unmanaged vpc"
+   type = list(string)
+   default = ["*Private*"]
 }
 
-variable "cidr" {
-    description = "IP range of subnets"
-    type = string
-    default = "172.16.0.0/16"
+variable public_subnet_names {
+   description = "Patterns applied to Name tag to select unmanaged public subnets from the unmanaged vpc"
+   type = list(string)
+   default = ["*Public*"]
 }
 
-variable "allowed_roles" {
+variable cluster_sg_name {
+   description = "Group added to EKS cluster granting access to API endpoint 443 to members of worker sg."
+   type = string
+}
+
+variable worker_sg_name {
+   description = "Group added to unmanaged workers.  Gives workers access to cluster 443 via the above, cluster access to workers, workers to workers."
+   type = string
+}
+
+# ========================================================================
+variable allowed_roles {
     default = []
 }

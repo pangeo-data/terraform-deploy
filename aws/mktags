@@ -1,0 +1,19 @@
+#! /bin/bash  -x 
+
+cluster_name="jmiller-hub"
+vpc_id="vpc-0609d0f2a72ccf96d"
+public_subnet_ids="subnet-0e5478d300d15a00c subnet-0acbd0e839b582822 subnet-0980788a037ffd5d7"
+dmz_subnet_ids="subnet-0c19c68596b826f92 subnet-01458be8f15059eee subnet-0946b77db4de4d579"
+private_subnet_ids="subnet-061c51be9ee131e6d subnet-0f049f5e66619aef4 subnet-0e0f36a4570f01b55"
+
+aws ec2 create-tags --resources $vpc_id --tags "Key=kubernetes.io/cluster/${cluster_name},Value=shared"  
+
+aws ec2 create-tags --resources $public_subnet_ids   --tags "Key=kubernetes.io/cluster/${cluster_name},Value=shared" 
+aws ec2 create-tags --resources $public_subnet_ids   --tags "Key=kubernetes.io/role/elb,Value=1"
+
+aws ec2 create-tags --resources $dmz_subnet_ids     --tags "Key=kubernetes.io/cluster/${cluster_name},Value=shared"
+aws ec2 create-tags --resources $dmz_subnet_ids     --tags "Key=kubernetes.io/role/internal-elb,Value=1"
+
+aws ec2 create-tags --resources $private_subnet_ids --tags "Key=kubernetes.io/cluster/${cluster_name},Value=shared"
+aws ec2 create-tags --resources $private_subnet_ids --tags "Key=kubernetes.io/role/internal-elb,Value=1"
+

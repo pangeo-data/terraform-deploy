@@ -6,13 +6,12 @@ resource "aws_efs_file_system" "home_dirs" {
 
 
 resource "aws_security_group" "home_dirs_sg" {
-  name   = "home_dirs_sg"
-  vpc_id = module.vpc.vpc_id
+  name   = "${var.cluster_name}-home_dirs_sg"
+  vpc_id = local.vpc_id
 
   # NFS
   ingress {
-    cidr_blocks = [ var.cidr ]
-    # FIXME: Do we need this security_groups here along with cidr_blocks
+    cidr_blocks = local.private_subnet_cidrs
     security_groups = [ module.eks.worker_security_group_id ]
     from_port        = 2049
     to_port          = 2049
@@ -20,10 +19,12 @@ resource "aws_security_group" "home_dirs_sg" {
   }
 }
 
+
+# XXXX should the EFS subnets be public or private?
 resource "aws_efs_mount_target" "home_dirs_targets" {
-  count = length(module.vpc.public_subnets)
+  count = length(local.private_subnet_ids)
   file_system_id = aws_efs_file_system.home_dirs.id
-  subnet_id = module.vpc.public_subnets[count.index]
+  subnet_id = local.private_subnet_ids[count.index]
   security_groups = [ aws_security_group.home_dirs_sg.id ]
 }
 
@@ -39,7 +40,7 @@ resource "kubernetes_namespace" "support" {
 }
 
 resource "helm_release" "efs-provisioner" {
-  name = "efs-provisioner"
+  name = "${var.cluster_name}-efs-provisioner"
   namespace = kubernetes_namespace.support.metadata.0.name
   repository = data.helm_repository.stable.metadata[0].name
   chart = "efs-provisioner"
@@ -73,3 +74,4 @@ resource "helm_release" "efs-provisioner" {
     value = "aws.amazon.com/efs"
   }
 }
+
