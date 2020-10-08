@@ -36,6 +36,19 @@ variable "map_users" {
   ]
 }
 
+variable "permission_boundary" {
+  default = ""
+}
+
+variable "rolearn" {
+  default = ""
+}
+
+variable "username" {
+  default = "jupyterhub-admin"
+}
+
+
 # -------------------------------------------------------------------------
 #                     Networking config 
 

@@ -36,8 +36,7 @@ module "eks" {
   source       = "terraform-aws-modules/eks/aws"
   cluster_name = var.cluster_name
 
-  # TODO: pull this out into a variable
-  permissions_boundary = "arn:aws:iam::328656936502:policy/Terraform-Perm-Boundary"
+  permissions_boundary = var.permissions_boundary
 
   subnets      = local.private_subnet_ids
 
@@ -49,8 +48,6 @@ module "eks" {
   cluster_security_group_id = data.aws_security_group.cluster_sg.id
   vpc_id       = module.vpc.vpc_id
   enable_irsa  = true
-
-  permissions_boundary = "arn:aws:iam::328656936502:policy/Terraform-Perm-Boundary"
 
   worker_create_security_group = false
   worker_security_group_id = data.aws_security_group.worker_sg.id
@@ -91,9 +88,8 @@ module "eks" {
   map_users = var.map_users
 
   map_roles = concat([{
-    # TODO: pull these out into a variable
-    rolearn  = "arn:aws:iam::328656936502:role/jupyterhub-admin"
-    username = "jupyterhub-admin"
+    rolearn  = var.rolearn
+    username = var.username
     # FIXME: Narrow these permissions down?
     groups   = ["system:masters"]
   }], var.map_roles)
