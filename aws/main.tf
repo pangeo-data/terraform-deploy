@@ -46,7 +46,7 @@ module "eks" {
   # Sets additional worker security groups on console.
   cluster_create_security_group = false
   cluster_security_group_id = data.aws_security_group.cluster_sg.id
-  vpc_id       = module.vpc.vpc_id
+  vpc_id       = local.vpc_id
   enable_irsa  = true
 
   worker_create_security_group = false
