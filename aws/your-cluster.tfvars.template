@@ -5,7 +5,7 @@ region = "us-east-1"
 cluster_name = "<YOUR-HUB>"   # user-hub"
 
 # Version of k8s used by EKS
-cluster_version = "1.16"
+cluster_version = "1.17"
 
 allowed_roles = ["<DEPLOY-ROLE>"]   
 

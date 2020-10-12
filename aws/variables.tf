@@ -73,7 +73,7 @@ variable allowed_roles {
 
 variable cluster_version {
     description = "Kubernetes version used by the EKS module."
-    default = "1.16"
+    default = "1.17"
     type = string
 }
 
