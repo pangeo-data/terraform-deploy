@@ -1,9 +1,11 @@
-
 # Put your cluster where your data is
 region = "us-east-1"
 
 # Name of your cluster
 cluster_name = "<YOUR-HUB>"   # user-hub"
+
+# Version of k8s used by EKS
+cluster_version = "1.16"
 
 allowed_roles = ["<DEPLOY-ROLE>"]   
 
