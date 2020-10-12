@@ -70,3 +70,10 @@ variable worker_sg_name {
 variable allowed_roles {
     default = []
 }
+
+variable cluster_version {
+    description = "Kubernetes version used by the EKS module."
+    default = "1.17"
+    type = string
+}
+
