@@ -1,3 +1,4 @@
+
 terraform {
   required_version = ">= 0.12.6"
 }
@@ -35,6 +36,7 @@ data "aws_availability_zones" "available" {
 module "eks" {
   source       = "terraform-aws-modules/eks/aws"
   cluster_name = var.cluster_name
+  cluster_version = var.cluster_version
 
   permissions_boundary = var.permissions_boundary
 
