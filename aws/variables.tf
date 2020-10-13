@@ -36,16 +36,19 @@ variable "map_users" {
   ]
 }
 
-variable "permission_boundary" {
-  default = ""
+variable "permissions_boundary" {
+  description = "Specify the policy that enforces permissions boundaries"
+  type = string
 }
 
 variable "rolearn" {
-  default = ""
+  description = "ARN of the primary deployment role"
+  type = string
 }
 
 variable "username" {
-  default = "jupyterhub-admin"
+  description = "The name of the primary deployment role"
+  type = string
 }
 
 
