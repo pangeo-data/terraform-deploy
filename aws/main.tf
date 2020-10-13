@@ -38,6 +38,8 @@ module "eks" {
   cluster_name = var.cluster_name
   cluster_version = var.cluster_version
 
+  permissions_boundary = var.permissions_boundary
+
   subnets      = local.private_subnet_ids
 
   cluster_endpoint_public_access = false
@@ -46,12 +48,11 @@ module "eks" {
   # Sets additional worker security groups on console.
   cluster_create_security_group = false
   cluster_security_group_id = data.aws_security_group.cluster_sg.id
+  vpc_id       = local.vpc_id
+  enable_irsa  = true
 
   worker_create_security_group = false
   worker_security_group_id = data.aws_security_group.worker_sg.id
-  
-  vpc_id       = local.vpc_id
-  enable_irsa  = true
   
   node_groups_defaults = {
     ami_type  = "AL2_x86_64"
@@ -89,8 +90,8 @@ module "eks" {
   map_users = var.map_users
 
   map_roles = concat([{
-    rolearn  = aws_iam_role.hubploy_eks.arn
-    username = aws_iam_role.hubploy_eks.name
+    rolearn  = var.rolearn
+    username = var.username
     # FIXME: Narrow these permissions down?
     groups   = ["system:masters"]
   }], var.map_roles)

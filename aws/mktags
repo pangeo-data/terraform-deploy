@@ -1,6 +1,6 @@
 #! /bin/bash  -x 
 
-cluster_name="jmiller-hub"
+cluster_name="roman-sit"
 vpc_id="vpc-0609d0f2a72ccf96d"
 public_subnet_ids="subnet-0e5478d300d15a00c subnet-0acbd0e839b582822 subnet-0980788a037ffd5d7"
 dmz_subnet_ids="subnet-0c19c68596b826f92 subnet-01458be8f15059eee subnet-0946b77db4de4d579"
