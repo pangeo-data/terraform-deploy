@@ -8,11 +8,6 @@ data aws_vpc unmanaged {
   }
 }
 
-data aws_nat_gateway nat_gateways {
-   count = length(local.public_subnet_ids)
-   subnet_id = local.public_subnet_ids[count.index]
-}
-
 data aws_subnet_ids private {
   vpc_id = local.vpc_id
   filter {
