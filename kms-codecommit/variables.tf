@@ -3,21 +3,26 @@ variable "region" {
 }
 
 variable "repo_name" {
-  default = "<change-this-in-tfvars>"
+  description = "Name of the CodeCommit repository"
+  type = string
 }
 
 variable "sops_s3_bucket" {
-  default = "<change-this-in-tfvars>"
+  description = "Name of secrets S3 bucket"
+  type = string
 }
 
 variable "sops_s3_key" {
-  default = "<change-this-in-tfvars>"
+  description = "The .sops.yaml file"
+  type = string
 }
 
 variable "sops_s3_source" {
-  default = "<change-this-in-tfvars>"
+  description = "The .sops.yaml file"
+  type = string
 }
 
 variable "owner_tag" {
-  default = ""
+  description = "This is for ITSD to track ownership"
+  type = string
 }
