@@ -59,6 +59,6 @@ d. Type `yes` when prompted
 e. ![Wait for a while](https://imgs.xkcd.com/comics/compiling.png).
    This could take a while!
 
-Your cluster is now set up! There are no hubs on it yet thoug. You should
+Your cluster is now set up! There are no hubs on it yet though. You should
 make a copy of the [hubploy template](https://github.com/yuvipanda/hubploy-template)
 repo, and go from there.
