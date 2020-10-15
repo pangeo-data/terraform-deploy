@@ -92,6 +92,8 @@ of EFS).
 - Image updating could use some instructions. `conda-lock` seems
 essential for our use-case. Instructions on the order of github
 actions would be nice, I (Sebastian) messed that up once.
+  - Image building was done in this repo:
+  https://github.com/ICESAT-2HackWeek/jupyter-image-2020
 - EFS permissions are configured before JupyterHub is launched. This
 makes it impossible to allow tutorial leads to manage data at a more
 permissive level than hackweek participants and puts some work onto
