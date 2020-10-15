@@ -63,9 +63,12 @@ like instantaneous CPU % versus default averages over 10 minutes)
   plots of JupyterHub usage. Some can be seen below.
 - Multi-user load testing would be nice.
   - logins https://github.com/yuvipanda/hubtraf not being updated :( 
+  - Would be nice to test that the cluster can autoscale correctly
+  with many users logging in prior to the event.
   - run tutorial content with multiple users simultaneously *instead*
   of just tutorial lead. Then you understand typical multi-user
   performance instead of single user performance.
+  - Not sure of other options.
 - Could consider a “high performance hackweek” option, where each
 person gets their own dedicated node (e.g. 8 cores, 32 Gb ram, 100Gb
 scratch drive, GPU? ) and the shared drive is AWS FSX Lustre instead
