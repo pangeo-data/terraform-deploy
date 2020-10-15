@@ -50,31 +50,31 @@ data aws_security_group worker_sg {
 
 # aws ec2 create-tags
 
-resource "null_resource" "vpc-tag" {
+resource "null_resource" "vpc_tag" {
   provisioner "local-exec" {
     command="aws ec2 create-tags --resources ${local.vpc_id} --tags Key=kubernetes.io/cluster/${var.cluster_name},Value=shared"
   }
 }
 
-resource "null_resource" "public-subnet-tag-shared" {
+resource "null_resource" "public_subnet_tags_shared" {
   provisioner "local-exec" {
      command="aws ec2 create-tags --resources ${local.public_subnet_ids_str}   --tags Key=kubernetes.io/cluster/${var.cluster_name},Value=shared"
   }
 }
 
-resource "null_resource" "public-subnet-tag-elb" {
+resource "null_resource" "public_subnet_tags_elb" {
   provisioner "local-exec" {
      command="aws ec2 create-tags --resources ${local.public_subnet_ids_str}   --tags Key=kubernetes.io/role/elb,Value=1"
   }
 }
 
-resource "null_resource" "dmz-private-subnet-tag-shared" {
+resource "null_resource" "private_subnet_tags_shared" {
   provisioner "local-exec" {
      command="aws ec2 create-tags --resources ${local.private_subnet_ids_str}  --tags Key=kubernetes.io/cluster/${var.cluster_name},Value=shared"
   }
 }
 
-resource "null_resource" "dmz-private-subnet-tag-internal-elb" {
+resource "null_resource" "private_subnet_tags_internal_elb" {
   provisioner "local-exec" {
      command="aws ec2 create-tags --resources ${local.private_subnet_ids_str}  --tags Key=kubernetes.io/role/internal-elb,Value=1"
   }
