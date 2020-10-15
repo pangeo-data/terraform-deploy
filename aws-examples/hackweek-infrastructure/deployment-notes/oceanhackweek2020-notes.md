@@ -80,6 +80,8 @@ Didn't have others hooked into infrastructure at all. No testing if
 they could actually alter it. Should have a process to set this up
 at the beginning.
 
+Grafana with GitHub login was configured and worked great! Docs for
+that are here; https://grafana.com/docs/grafana/latest/auth/github/
 Others used Grafana with GitHub login just fine, didn't mind being
 Viewers and not Editors.
 

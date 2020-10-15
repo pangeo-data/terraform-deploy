@@ -55,6 +55,12 @@ like instantaneous CPU % versus default averages over 10 minutes)
   - More practice with Grafana and more tailored dashboarding will
   help admins to utilize Grafana usefully. I’ve spent a lot of time
   just wondering how to do things in Grafana.
+  - I found a dashboard that was simple and good to work with:
+  [ID 10000](https://grafana.com/grafana/dashboards/10000).
+  Configuration to use this is present in
+  https://github.com/ICESAT-2HackWeek/terraform-deploy/blob/master/aws/grafana-values-min.yaml
+  - Grafana data was extracted for use with pandas and yielded
+  plots of JupyterHub usage. Some can be seen below.
 - Multi-user load testing would be nice.
   - logins https://github.com/yuvipanda/hubtraf not being updated :( 
   - run tutorial content with multiple users simultaneously *instead*
