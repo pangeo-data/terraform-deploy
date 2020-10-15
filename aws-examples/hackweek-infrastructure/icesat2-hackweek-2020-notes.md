@@ -91,3 +91,9 @@ and allows your server to have a clean slate every time you log in,
 which can save you some headache.
 - Should there be a policy where we tell people that we will spin
 their servers down at night unless they specifically ask us not to?
+
+### Usage Plots
+
+![IceSat-2 Hackweek Users over Time](icesat_2_hackweek_users_over_time.png)
+
+![IceSat-2 Hackweek Memory Usage over Time](icesat_2_hackweek_memory_usage_comparison.png)

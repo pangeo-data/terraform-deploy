@@ -140,3 +140,9 @@ Removed DNS records
 - (0.5 hours) secondary S3 bucket
 - (2 hours) closing thoughts call
 - (1 hour) jupyterhub teardown
+
+### Usage Plots
+
+![Ocean Hack Week Users over Time](ohw_users_over_time.png)
+
+![Ocean Hack Week Memory Usage over Time](ohw_memory_usage_comparison.png)
