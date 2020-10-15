@@ -5,6 +5,16 @@ Relevant links:
 - [Infrastructure Configuration](https://github.com/ICESAT-2HackWeek/terraform-deploy/tree/master)
 - [Computational Environment](https://github.com/ICESAT-2HackWeek/jupyter-image-2020 )
 
+### Versions:
+- Terraform version: [12.6](https://github.com/ICESAT-2HackWeek/terraform-deploy/blob/master/aws/main.tf#L2)
+- Helm Version: 3. Minor version is not recalled or recorded.
+- JupyterHub Helm chart version: [v0.9.0-beta.3.n030.h796379e](https://github.com/ICESAT-2HackWeek/jupyterhub-2020/blob/staging/hub/requirements.yaml)
+- Prometheus Helm chart version: [11.2.1](https://github.com/ICESAT-2HackWeek/terraform-deploy/blob/master/aws/monitoring.tf#L25)
+- Grafana Helm chart version: [5.0.24](https://github.com/ICESAT-2HackWeek/terraform-deploy/blob/master/aws/monitoring.tf#L44)
+- Cluster-autoscaler Helm chart version: [unspecified](https://github.com/ICESAT-2HackWeek/terraform-deploy/blob/master/aws/autoscaler.tf#L68)
+- EFS-Provisioner Helm chart version: [0.11.0](https://github.com/ICESAT-2HackWeek/terraform-deploy/blob/master/aws/efs.tf#L53)
+- AWS Node Termination Helm chart version: [unspecified](https://github.com/ICESAT-2HackWeek/terraform-deploy/blob/master/aws/aws-node-termination-handler.tf#L10)
+
 Resource requests per-user:
 ```
     cpu:

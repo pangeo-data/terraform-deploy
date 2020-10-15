@@ -5,6 +5,16 @@ Relevant Links:
 - [Infrastructure Configuration](https://github.com/oceanhackweek/ohw-terraform-deploy/tree/main)
 - [Computational Environment](https://github.com/oceanhackweek/jupyter-image)
 
+### Versions:
+- Terraform version: [12.6](https://github.com/oceanhackweek/ohw-terraform-deploy/blob/main/aws/main.tf#L2)
+- Helm Version: 3. Minor version is not recalled or recorded.
+- JupyterHub Helm chart version: [v0.9.0-beta.3.n030.h796379e](https://github.com/oceanhackweek/jupyterhub/blob/staging/hub/requirements.yaml)
+- Prometheus Helm chart version: [11.2.1](https://github.com/oceanhackweek/ohw-terraform-deploy/blob/main/aws/monitoring.tf#L25)
+- Grafana Helm chart version: [5.0.24](https://github.com/oceanhackweek/ohw-terraform-deploy/blob/main/aws/monitoring.tf#L44)
+- Cluster-autoscaler Helm chart version: [unspecified](https://github.com/oceanhackweek/ohw-terraform-deploy/blob/main/aws/autoscaler.tf#L74)
+- EFS-Provisioner Helm chart version: [0.11.0](https://github.com/oceanhackweek/ohw-terraform-deploy/blob/main/aws/efs.tf#L64)
+- AWS Node Termination Helm chart version: [unspecified](https://github.com/oceanhackweek/ohw-terraform-deploy/blob/main/aws/aws-node-termination-handler.tf)
+
 ### Stand up JupyterHub, Notes
 
 Make new `terraform-bot` as `ohw-terraform-bot`. Command to use
