@@ -84,8 +84,9 @@ of EFS).
   - A more granular cost analysis was done for OceanHackweek, from
   that ~10-15% of costs are from machines that host user pods.
   The resources for each user were such that four users would share
-  a node.
-  Implementing the option above where users get their own node
+  a node. Other compute costs cover the hub's main compute instance
+  and data transfers.
+  - Implementing the option above where users get their own node
   would thus quadruple these costs for those users. This does not
   cover issues like data transfer, core node running costs, etc.
 - Image updating could use some instructions. `conda-lock` seems
