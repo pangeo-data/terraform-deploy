@@ -73,6 +73,21 @@ like instantaneous CPU % versus default averages over 10 minutes)
 person gets their own dedicated node (e.g. 8 cores, 32 Gb ram, 100Gb
 scratch drive, GPU? ) and the shared drive is AWS FSX Lustre instead
 of EFS).
+  - The vast majority of costs for the hackweeks are from compute
+  instances: IceSat-2's hackweek had these costs as ~90% of total
+  costs for the event itself, decreasing to ~80% including pre- and
+  post-event time when usage was lower but data storage was the
+  same.
+  - Similar percentages represent the cost breakdowns for
+  OceanHackWeek, 95% during the event and 80% with pre- and
+  post-event time.
+  - A more granular cost analysis was done for OceanHackweek, from
+  that ~10-15% of costs are from machines that host user pods.
+  The resources for each user were such that four users would share
+  a node.
+  Implementing the option above where users get their own node
+  would thus quadruple these costs for those users. This does not
+  cover issues like data transfer, core node running costs, etc.
 - Image updating could use some instructions. `conda-lock` seems
 essential for our use-case. Instructions on the order of github
 actions would be nice, I (Sebastian) messed that up once.
