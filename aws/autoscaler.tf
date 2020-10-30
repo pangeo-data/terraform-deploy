@@ -80,6 +80,7 @@ resource "helm_release" "cluster-autoscaler" {
   repository = data.helm_repository.stable.metadata[0].name
   chart = "cluster-autoscaler"
   version = "7.2.0"
+  depends_on = [null_resource.kubectl_config]
 
   values = [
     file("cluster-autoscaler-values.yml")
