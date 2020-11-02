@@ -53,7 +53,7 @@ module "eks" {
 
   worker_create_security_group = false
   worker_security_group_id = data.aws_security_group.worker_sg.id
-  
+
   node_groups_defaults = {
     ami_type  = "AL2_x86_64"
     disk_size = 50
@@ -104,5 +104,12 @@ provider "helm" {
     host                   = data.aws_eks_cluster.cluster.endpoint
     cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
     token                  = data.aws_eks_cluster_auth.cluster.token
+  }
+}
+
+resource "null_resource" "kubectl_config" {
+  depends_on = [module.eks]
+  provisioner "local-exec" {
+     command="aws eks update-kubeconfig --name ${var.cluster_name}"
   }
 }
