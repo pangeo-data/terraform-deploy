@@ -1,11 +1,11 @@
 terraform {
-  required_version = ">= 0.12.6"
+  required_version = ">= 0.13"
 }
 
 # Create IAM role + automatically make it available to cluster autoscaler service account
 module "iam_assumable_role_admin" {
   source                        = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version                       = "~> v2.6.0"
+  version                       = "~> v3.3.0"
   create_role                   = true
   role_name                     = "${module.eks.cluster_id}-cluster-autoscaler"
   role_permissions_boundary_arn = var.permissions_boundary
