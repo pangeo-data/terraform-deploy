@@ -53,7 +53,7 @@ variable "username" {
 
 
 # -------------------------------------------------------------------------
-#                     Networking config 
+#                     Networking config
 
 variable vpc_name {
    description = "Name of unmanaged VPC, e.g. created by IT department."
@@ -83,6 +83,14 @@ variable worker_sg_name {
 }
 
 # ========================================================================
+
+variable notebook_instance_type {
+   description = "EC2 instance type used for notebook sessions."
+   type = string
+   default = "t3.xlarge"
+}
+
+# ========================================================================
 variable allowed_roles {
     default = []
 }
@@ -92,4 +100,3 @@ variable cluster_version {
     default = "1.17"
     type = string
 }
-

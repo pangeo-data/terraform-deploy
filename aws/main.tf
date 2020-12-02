@@ -77,7 +77,7 @@ module "eks" {
      max_capacity     = 10
      min_capacity     = 1
 
-     instance_type = "t3.medium"
+     instance_type = var.notebook_instance_type
      k8s_labels = {
        "hub.jupyter.org/node-purpose" =  "user"
      }
