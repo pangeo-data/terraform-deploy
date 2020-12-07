@@ -1,3 +1,4 @@
+
 terraform {
   required_version = ">= 0.12.6"
 }
@@ -32,46 +33,26 @@ provider "kubernetes" {
 data "aws_availability_zones" "available" {
 }
 
-module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 2.6"
-
-  name                 = "${var.cluster_name}-vpc"
-  cidr                 = var.cidr
-  azs                  = data.aws_availability_zones.available.names
-  # We can use private subnets too once https://github.com/aws/containers-roadmap/issues/607
-  # is fixed
-  public_subnets       = var.public_subnets
-  private_subnets      = var.private_subnets
-  
-  enable_dns_hostnames = true
-  enable_dns_support   = true
-  enable_nat_gateway   = var.use_private_subnets
-  single_nat_gateway   = var.use_private_subnets
-  
-  tags = {
-    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
-  }
-
-  public_subnet_tags = {
-    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
-    "kubernetes.io/role/elb"                    = "1"
-  }
-
-  private_subnet_tags = {
-    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
-    "kubernetes.io/role/internal-elb"           = "1"
-  }
-}
-
 module "eks" {
   source       = "terraform-aws-modules/eks/aws"
   cluster_name = var.cluster_name
-  subnets      = var.use_private_subnets ? module.vpc.private_subnets : module.vpc.public_subnets
+  cluster_version = var.cluster_version
+
+  permissions_boundary = var.permissions_boundary
+
+  subnets      = local.private_subnet_ids
+
+  cluster_endpoint_public_access = false
   cluster_endpoint_private_access = true
-  vpc_id       = module.vpc.vpc_id
+
+  # Sets additional worker security groups on console.
+  cluster_create_security_group = false
+  cluster_security_group_id = data.aws_security_group.cluster_sg.id
+  vpc_id       = local.vpc_id
   enable_irsa  = true
 
+  worker_create_security_group = false
+  worker_security_group_id = data.aws_security_group.worker_sg.id
 
   node_groups_defaults = {
     ami_type  = "AL2_x86_64"
@@ -96,7 +77,7 @@ module "eks" {
      max_capacity     = 10
      min_capacity     = 1
 
-     instance_type = "t3.medium"
+     instance_type = var.notebook_instance_type
      k8s_labels = {
        "hub.jupyter.org/node-purpose" =  "user"
      }
@@ -105,15 +86,16 @@ module "eks" {
     }
   }
 
-
   map_accounts = var.map_accounts
+  map_users = var.map_users
 
   map_roles = concat([{
-    rolearn  = aws_iam_role.hubploy_eks.arn
-    username = aws_iam_role.hubploy_eks.name
+    rolearn  = var.rolearn
+    username = var.username
     # FIXME: Narrow these permissions down?
     groups   = ["system:masters"]
   }], var.map_roles)
+
 }
 
 
@@ -122,5 +104,12 @@ provider "helm" {
     host                   = data.aws_eks_cluster.cluster.endpoint
     cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
     token                  = data.aws_eks_cluster_auth.cluster.token
+  }
+}
+
+resource "null_resource" "kubectl_config" {
+  depends_on = [module.eks]
+  provisioner "local-exec" {
+     command="aws eks update-kubeconfig --name ${var.cluster_name} --role-arn ${var.rolearn}"
   }
 }

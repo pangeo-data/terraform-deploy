@@ -24,30 +24,79 @@ variable "map_roles" {
   ]
 }
 
-variable "use_private_subnets" {
-    description = "Use private subnets for EKS worker nodes."
-    type        = bool
-    default = false
+variable "map_users" {
+  description = "Additional IAM users to add to the aws-auth configmap."
+  type = list(object({
+    userarn  = string
+    username = string
+    groups   = list(string)
+  }))
+
+  default = [
+  ]
 }
 
-variable "public_subnets" {  
-    description = "Public subnet IP ranges."
-    type        = list(string)
-    default = ["172.16.1.0/24", "172.16.2.0/24", "172.16.3.0/24"]
+variable "permissions_boundary" {
+  description = "Specify the policy that enforces permissions boundaries"
+  type = string
 }
 
-variable "private_subnets" {  
-    description = "Private subnet IP ranges."
-    type        = list(string)
-    default = []   #   ["172.16.4.0/24", "172.16.5.0/24", "172.16.6.0/24"]
+variable "rolearn" {
+  description = "ARN of the primary deployment role"
+  type = string
 }
 
-variable "cidr" {
-    description = "IP range of subnets"
-    type = string
-    default = "172.16.0.0/16"
+variable "username" {
+  description = "The name of the primary deployment role"
+  type = string
 }
 
-variable "allowed_roles" {
+
+# -------------------------------------------------------------------------
+#                     Networking config
+
+variable vpc_name {
+   description = "Name of unmanaged VPC, e.g. created by IT department."
+   type = string
+}
+
+variable private_subnet_names {
+   description = "Patterns applied to Name tag to select unmanaged private subnets from the unmanaged vpc"
+   type = list(string)
+   default = ["*Private*"]
+}
+
+variable public_subnet_names {
+   description = "Patterns applied to Name tag to select unmanaged public subnets from the unmanaged vpc"
+   type = list(string)
+   default = ["*Public*"]
+}
+
+variable cluster_sg_name {
+   description = "Group added to EKS cluster granting access to API endpoint 443 to members of worker sg."
+   type = string
+}
+
+variable worker_sg_name {
+   description = "Group added to unmanaged workers.  Gives workers access to cluster 443 via the above, cluster access to workers, workers to workers."
+   type = string
+}
+
+# ========================================================================
+
+variable notebook_instance_type {
+   description = "EC2 instance type used for notebook sessions."
+   type = string
+   default = "t3.xlarge"
+}
+
+# ========================================================================
+variable allowed_roles {
     default = []
+}
+
+variable cluster_version {
+    description = "Kubernetes version used by the EKS module."
+    default = "1.17"
+    type = string
 }

@@ -1,0 +1,6 @@
+region = "us-east-1"
+
+repo_name = "<deployment-name>-secrets"
+sops_s3_bucket = "<deployment-name>-sops-config"
+sops_s3_source= ".sops.yaml"
+sops_s3_key = ".sops.yaml"

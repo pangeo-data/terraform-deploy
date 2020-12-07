@@ -2,6 +2,32 @@
 region = "us-east-1"
 
 # Name of your cluster
-cluster_name = "<cluster-name>"
+cluster_name = "<YOUR-CLUSTER>"
 
-allowed_roles = ["arn:aws:iam::<account-id>:role/jupyterhub-deploy"]
+# Version of k8s used by EKS
+cluster_version = "1.17"
+
+allowed_roles = ["<DEPLOY-ROLE>"]   
+
+permissions_boundary = "arn:aws:iam::<account-id>:policy/<perm-boundary-policy>"
+
+rolearn = "arn:aws:iam::<account-id>:role/jupyterhub-admin"
+
+username = "jupyterhub-admin"
+
+# ============================================================================================================
+
+# Configuration for unmanaged private subnets created by IT
+
+vpc_name = "<VPC-NAME>"   # "DEV-WF-SC-SB"
+
+public_subnet_names = ["<PUBLIC-SUBNET-NAMES-OR-PATTERNS>"]  # ["DEV-WF-SC-SB-Public-*"]
+private_subnet_names = ["<PRIVATE-SUBNET-NAMES-OR-PATTERNS>"]  # ["DEV-WF-SC-SB-DMZ-*"]
+
+# The security groups below should also be created by ITSD for any given account.
+
+cluster_sg_name = "jupyterhub-cluster-sg"  # "user-cluster-sg" modeled after Additional worker sg
+
+# Assign your CI-node to jupyerhub-cluster-sg before running Terraform.
+
+worker_sg_name = "jupyterhub-worker-sg"   # "user-worker-sg" modeled after Additional worker sg source group

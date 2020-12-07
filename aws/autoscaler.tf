@@ -1,13 +1,14 @@
 terraform {
-  required_version = ">= 0.12.6"
+  required_version = ">= 0.13"
 }
 
 # Create IAM role + automatically make it available to cluster autoscaler service account
 module "iam_assumable_role_admin" {
   source                        = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version                       = "~> v2.6.0"
+  version                       = "~> v3.3.0"
   create_role                   = true
   role_name                     = "${module.eks.cluster_id}-cluster-autoscaler"
+  role_permissions_boundary_arn = var.permissions_boundary
   provider_url                  = replace(module.eks.cluster_oidc_issuer_url, "https://", "")
   role_policy_arns              = [aws_iam_policy.cluster_autoscaler.arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:kube-system:cluster-autoscaler-service-account"]
@@ -30,6 +31,17 @@ data "aws_iam_policy_document" "cluster_autoscaler" {
       "autoscaling:DescribeLaunchConfigurations",
       "autoscaling:DescribeTags",
       "ec2:DescribeLaunchTemplateVersions",
+    ]
+
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "clusterAutoscalerIAM"
+    effect = "Allow"
+
+    actions = [
+      "iam:GetRole",
     ]
 
     resources = ["*"]
@@ -60,6 +72,7 @@ data "aws_iam_policy_document" "cluster_autoscaler" {
     }
   }
 }
+
 resource "helm_release" "cluster-autoscaler" {
   name = "cluster-autoscaler"
   # Check that this is good, kube-system should already exist
@@ -67,6 +80,7 @@ resource "helm_release" "cluster-autoscaler" {
   repository = data.helm_repository.stable.metadata[0].name
   chart = "cluster-autoscaler"
   version = "7.2.0"
+  depends_on = [null_resource.kubectl_config]
 
   values = [
     file("cluster-autoscaler-values.yml")
