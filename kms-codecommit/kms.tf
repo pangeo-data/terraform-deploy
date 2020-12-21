@@ -19,12 +19,17 @@ EOF
 
 # upload .sops.yaml to S3; it will be downloaded later in the process
 
-resource "aws_s3_bucket" "sops-config" {
+module "s3_bucket" {
+  source = "terraform-aws-modules/s3-bucket/aws"
+
   bucket = var.sops_s3_bucket
   acl    = "private"
+  block_public_acls = true
+  block_public_policy = true
+  ignore_public_acls = true
+  restrict_public_buckets = true
   tags = {
-    # TODO: pull this out into a variable
-    Env =  "sandbox"
+    Env = "sandbox"
   }
 }
 
