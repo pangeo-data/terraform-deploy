@@ -32,7 +32,8 @@ resource "aws_efs_mount_target" "home_dirs_targets" {
 
 data "helm_repository" "stable" {
   name = "stable"
-  url = "https://kubernetes-charts.storage.googleapis.com"
+  #url = "https://kubernetes-charts.storage.googleapis.com"
+  url = "https://charts.helm.sh/stable"
 }
 
 resource "kubernetes_namespace" "support" {

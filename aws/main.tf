@@ -39,7 +39,7 @@ module "eks" {
   cluster_version = var.cluster_version
 
   permissions_boundary = var.permissions_boundary
-
+  workers_additional_policies = [aws_iam_policy.cluster_autoscaler.arn] 
   subnets      = local.private_subnet_ids
 
   cluster_endpoint_public_access = false
@@ -51,12 +51,12 @@ module "eks" {
   vpc_id       = local.vpc_id
   enable_irsa  = true
 
-  worker_create_security_group = false
+  worker_create_security_group = true
   worker_security_group_id = data.aws_security_group.worker_sg.id
 
   node_groups_defaults = {
     ami_type  = "AL2_x86_64"
-    disk_size = 50
+    disk_size = 150
   }
 
   node_groups = {
@@ -65,7 +65,7 @@ module "eks" {
       max_capacity     = 3
       min_capacity     = 1
 
-      instance_type = "t3.small"
+      instance_type = "t3.xlarge"
       k8s_labels    = {
         "hub.jupyter.org/node-purpose" =  "core"
       }
@@ -106,6 +106,7 @@ provider "helm" {
     token                  = data.aws_eks_cluster_auth.cluster.token
   }
 }
+
 
 resource "null_resource" "kubectl_config" {
   depends_on = [module.eks]

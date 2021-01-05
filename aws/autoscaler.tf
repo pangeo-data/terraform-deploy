@@ -11,7 +11,7 @@ module "iam_assumable_role_admin" {
   role_permissions_boundary_arn = var.permissions_boundary
   provider_url                  = replace(module.eks.cluster_oidc_issuer_url, "https://", "")
   role_policy_arns              = [aws_iam_policy.cluster_autoscaler.arn]
-  oidc_fully_qualified_subjects = ["system:serviceaccount:kube-system:cluster-autoscaler-service-account"]
+  oidc_fully_qualified_subjects = ["system:serviceaccount:kube-system:eluster-autoscaler-service-account"]
 }
 
 resource "aws_iam_policy" "cluster_autoscaler" {
@@ -30,8 +30,11 @@ data "aws_iam_policy_document" "cluster_autoscaler" {
       "autoscaling:DescribeAutoScalingInstances",
       "autoscaling:DescribeLaunchConfigurations",
       "autoscaling:DescribeTags",
+      "autoscaling:SetDesiredCapacity",
+      "autoscaling:TerminateInstanceInAutoScalingGroup",
+      "autoscaling:UpdateAutoScalingGroup",
       "ec2:DescribeLaunchTemplateVersions",
-    ]
+	]
 
     resources = ["*"]
   }
@@ -52,10 +55,15 @@ data "aws_iam_policy_document" "cluster_autoscaler" {
     effect = "Allow"
 
     actions = [
+      "autoscaling:DescribeAutoScalingGroups",
+      "autoscaling:DescribeAutoScalingInstances",
+      "autoscaling:DescribeLaunchConfigurations",
+      "autoscaling:DescribeTags",
       "autoscaling:SetDesiredCapacity",
       "autoscaling:TerminateInstanceInAutoScalingGroup",
       "autoscaling:UpdateAutoScalingGroup",
-    ]
+      "ec2:DescribeLaunchTemplateVersions",
+   ]	
 
     resources = ["*"]
 
@@ -71,6 +79,11 @@ data "aws_iam_policy_document" "cluster_autoscaler" {
       values   = ["true"]
     }
   }
+}
+
+resource "aws_iam_role_policy_attachment" "autoscaler-attach" {
+  role = "${module.eks.cluster_id}-cluster-autoscaler"
+  policy_arn = aws_iam_policy.cluster_autoscaler.arn
 }
 
 resource "helm_release" "cluster-autoscaler" {
