@@ -45,7 +45,8 @@ resource "kubernetes_namespace" "support" {
 resource "helm_release" "efs-provisioner" {
   name = "${var.cluster_name}-efs-provisioner"
   namespace = kubernetes_namespace.support.metadata.0.name
-  repository = data.helm_repository.stable.metadata[0].name
+  #repository = data.helm_repository.stable.metadata[0].name
+  repository = "https://charts.helm.sh/stable"
   chart = "efs-provisioner"
   version = "0.11.0"
 
