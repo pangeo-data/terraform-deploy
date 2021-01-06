@@ -77,7 +77,7 @@ resource "helm_release" "cluster-autoscaler" {
   name = "cluster-autoscaler"
   # Check that this is good, kube-system should already exist
   namespace = "kube-system"
-  repository = data.helm_repository.stable.metadata[0].name
+  repository = "https://charts.helm.sh/stable/" 
   chart = "cluster-autoscaler"
   version = "7.2.0"
   depends_on = [null_resource.kubectl_config]
