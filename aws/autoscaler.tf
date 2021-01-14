@@ -11,7 +11,7 @@ module "iam_assumable_role_admin" {
   role_permissions_boundary_arn = var.permissions_boundary
   provider_url                  = replace(module.eks.cluster_oidc_issuer_url, "https://", "")
   role_policy_arns              = [aws_iam_policy.cluster_autoscaler.arn]
-  oidc_fully_qualified_subjects = ["system:serviceaccount:kube-system:eluster-autoscaler-service-account"]
+  oidc_fully_qualified_subjects = ["system:serviceaccount:kube-system:cluster-autoscaler-service-account"]
 }
 
 resource "aws_iam_policy" "cluster_autoscaler" {
