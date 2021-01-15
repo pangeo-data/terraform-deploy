@@ -39,7 +39,7 @@ module "eks" {
   cluster_version = var.cluster_version
 
   permissions_boundary = var.permissions_boundary
-  workers_additional_policies = [aws_iam_policy.cluster_autoscaler.arn] 
+  workers_additional_policies = [aws_iam_policy.cluster_autoscaler.arn]
   subnets      = local.private_subnet_ids
 
   cluster_endpoint_public_access = false
@@ -53,6 +53,11 @@ module "eks" {
 
   worker_create_security_group = true
   worker_security_group_id = data.aws_security_group.worker_sg.id
+
+  manage_cluster_iam_resources = false
+  manage_worker_iam_resources = false
+  workers_role_name = join("", [var.cluster_name, "-worker"])
+  cluster_iam_role_name = join("", [var.cluster_name, "-cluster"])
 
   node_groups_defaults = {
     ami_type  = "AL2_x86_64"
