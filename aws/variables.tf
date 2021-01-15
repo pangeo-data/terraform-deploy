@@ -51,6 +51,11 @@ variable "username" {
   type = string
 }
 
+#variable "workers_additional_policies" {
+#  description = "Additional policies to be added to workers"  
+#  type = list(string)
+#  default     = ["aws_iam_policy.cluster_autoscaler.arn"]
+#}
 
 # -------------------------------------------------------------------------
 #                     Networking config

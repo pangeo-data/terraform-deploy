@@ -30,8 +30,11 @@ data "aws_iam_policy_document" "cluster_autoscaler" {
       "autoscaling:DescribeAutoScalingInstances",
       "autoscaling:DescribeLaunchConfigurations",
       "autoscaling:DescribeTags",
+      "autoscaling:SetDesiredCapacity",
+      "autoscaling:TerminateInstanceInAutoScalingGroup",
+      "autoscaling:UpdateAutoScalingGroup",
       "ec2:DescribeLaunchTemplateVersions",
-    ]
+	]
 
     resources = ["*"]
   }
@@ -52,10 +55,15 @@ data "aws_iam_policy_document" "cluster_autoscaler" {
     effect = "Allow"
 
     actions = [
+      "autoscaling:DescribeAutoScalingGroups",
+      "autoscaling:DescribeAutoScalingInstances",
+      "autoscaling:DescribeLaunchConfigurations",
+      "autoscaling:DescribeTags",
       "autoscaling:SetDesiredCapacity",
       "autoscaling:TerminateInstanceInAutoScalingGroup",
       "autoscaling:UpdateAutoScalingGroup",
-    ]
+      "ec2:DescribeLaunchTemplateVersions",
+   ]	
 
     resources = ["*"]
 
@@ -71,6 +79,11 @@ data "aws_iam_policy_document" "cluster_autoscaler" {
       values   = ["true"]
     }
   }
+}
+
+resource "aws_iam_role_policy_attachment" "autoscaler-attach" {
+  role = "${module.eks.cluster_id}-cluster-autoscaler"
+  policy_arn = aws_iam_policy.cluster_autoscaler.arn
 }
 
 resource "helm_release" "cluster-autoscaler" {
