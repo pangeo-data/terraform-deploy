@@ -56,8 +56,8 @@ module "eks" {
 
   manage_cluster_iam_resources = false
   manage_worker_iam_resources = false
-  workers_role_name = join("", [var.cluster_name, "-worker"])
-  cluster_iam_role_name = join("", [var.cluster_name, "-cluster"])
+  workers_role_name = data.aws_iam_role.worker_role.name
+  cluster_iam_role_name = data.aws_iam_role.cluster_role.name
 
   node_groups_defaults = {
     ami_type  = "AL2_x86_64"
@@ -76,6 +76,7 @@ module "eks" {
       }
       additional_tags = {
       }
+      iam_role_arn = data.aws_iam_role.worker_role.arn
     }
     notebook = {
      desired_capacity = 1
@@ -88,6 +89,7 @@ module "eks" {
      }
      additional_tags = {
      }
+     iam_role_arn = data.aws_iam_role.worker_role.arn
     }
   }
 
@@ -103,6 +105,13 @@ module "eks" {
 
 }
 
+data aws_iam_role "worker_role" {
+   name = join("-", [var.cluster_name, "worker"])
+}
+
+data aws_iam_role "cluster_role" {
+   name = join("-", [var.cluster_name, "cluster"])
+}
 
 provider "helm" {
   kubernetes {
