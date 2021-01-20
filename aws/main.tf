@@ -38,8 +38,6 @@ module "eks" {
   cluster_name = var.cluster_name
   cluster_version = var.cluster_version
 
-  permissions_boundary = var.permissions_boundary
-  workers_additional_policies = [aws_iam_policy.cluster_autoscaler.arn]
   subnets      = local.private_subnet_ids
 
   cluster_endpoint_public_access = false
