@@ -106,11 +106,11 @@ module "eks" {
 }
 
 data aws_iam_role "worker_role" {
-   name = join("-", [var.cluster_name, "worker"])
+   name = "${var.cluster_name}-worker"
 }
 
 data aws_iam_role "cluster_role" {
-   name = join("-", [var.cluster_name, "cluster"])
+   name = "${var.cluster_name}-cluster"
 }
 
 provider "helm" {
