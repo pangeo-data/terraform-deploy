@@ -38,8 +38,6 @@ module "eks" {
   cluster_name = var.cluster_name
   cluster_version = var.cluster_version
 
-  permissions_boundary = var.permissions_boundary
-  workers_additional_policies = [aws_iam_policy.cluster_autoscaler.arn] 
   subnets      = local.private_subnet_ids
 
   cluster_endpoint_public_access = false
@@ -53,6 +51,11 @@ module "eks" {
 
   worker_create_security_group = true
   worker_security_group_id = data.aws_security_group.worker_sg.id
+
+  manage_cluster_iam_resources = false
+  manage_worker_iam_resources = false
+  workers_role_name = data.aws_iam_role.worker_role.name
+  cluster_iam_role_name = data.aws_iam_role.cluster_role.name
 
   node_groups_defaults = {
     ami_type  = "AL2_x86_64"
@@ -71,6 +74,7 @@ module "eks" {
       }
       additional_tags = {
       }
+      iam_role_arn = data.aws_iam_role.worker_role.arn
     }
     notebook = {
      desired_capacity = 1
@@ -83,6 +87,7 @@ module "eks" {
      }
      additional_tags = {
      }
+     iam_role_arn = data.aws_iam_role.worker_role.arn
     }
   }
 
@@ -98,6 +103,13 @@ module "eks" {
 
 }
 
+data aws_iam_role "worker_role" {
+   name = "${var.cluster_name}-worker"
+}
+
+data aws_iam_role "cluster_role" {
+   name = "${var.cluster_name}-cluster"
+}
 
 provider "helm" {
   kubernetes {

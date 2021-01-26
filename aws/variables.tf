@@ -36,11 +36,6 @@ variable "map_users" {
   ]
 }
 
-variable "permissions_boundary" {
-  description = "Specify the policy that enforces permissions boundaries"
-  type = string
-}
-
 variable "rolearn" {
   description = "ARN of the primary deployment role"
   type = string
