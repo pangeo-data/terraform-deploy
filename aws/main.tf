@@ -1,17 +1,3 @@
-
-terraform {
-  required_version = ">= 0.12.6"
-}
-
-provider "aws" {
-  version = ">= 2.28.1"
-  region  = var.region
-}
-
-provider "template" {
-  version = "~> 2.1"
-}
-
 data "aws_eks_cluster" "cluster" {
   name = module.eks.cluster_id
 }
@@ -22,19 +8,12 @@ data "aws_eks_cluster_auth" "cluster" {
 
 data "aws_caller_identity" "current" {}
 
-provider "kubernetes" {
-  host                   = data.aws_eks_cluster.cluster.endpoint
-  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
-  token                  = data.aws_eks_cluster_auth.cluster.token
-  load_config_file       = false
-  version                = "~> 1.11.1"
-}
-
 data "aws_availability_zones" "available" {
 }
 
 module "eks" {
-  source       = "terraform-aws-modules/eks/aws"
+  # See version.tf for source and version
+  
   cluster_name = var.cluster_name
   cluster_version = var.cluster_version
 
@@ -110,15 +89,6 @@ data aws_iam_role "worker_role" {
 data aws_iam_role "cluster_role" {
    name = "${var.cluster_name}-cluster"
 }
-
-provider "helm" {
-  kubernetes {
-    host                   = data.aws_eks_cluster.cluster.endpoint
-    cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
-    token                  = data.aws_eks_cluster_auth.cluster.token
-  }
-}
-
 
 resource "null_resource" "kubectl_config" {
   depends_on = [module.eks]
