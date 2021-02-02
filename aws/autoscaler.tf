@@ -2,6 +2,7 @@
 module "iam_assumable_role_admin" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
   version = "~> 3.3.0"
+  depends_on = [null_resource.kubectl_config,  module.eks]
 
   create_role                   = false
   role_name                     = "${module.eks.cluster_id}-cluster-autoscaler"
@@ -16,7 +17,7 @@ resource "helm_release" "cluster-autoscaler" {
   repository = "https://charts.helm.sh/stable/"
   chart = "cluster-autoscaler"
   version = "7.2.0"    # documented as requiring exact version,  not ~>
-  depends_on = [null_resource.kubectl_config]
+  depends_on = [null_resource.kubectl_config,  module.eks]
 
   values = [
     file("cluster-autoscaler-values.yml")

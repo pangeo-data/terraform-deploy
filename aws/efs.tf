@@ -38,7 +38,7 @@ resource "kubernetes_namespace" "support" {
 }
 
 resource "helm_release" "efs-provisioner" {
-  depends_on = [null_resource.kubectl_config]
+  depends_on = [null_resource.kubectl_config, module.eks]
   name = "${var.cluster_name}-efs-provisioner"
   namespace = kubernetes_namespace.support.metadata.0.name
 
