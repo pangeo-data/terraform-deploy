@@ -12,8 +12,9 @@ data "aws_availability_zones" "available" {
 }
 
 module "eks" {
-  # See version.tf for source and version
-  
+  source  = "terraform-aws-modules/eks/aws"
+  version = "~> 13.2.1"
+
   cluster_name = var.cluster_name
   cluster_version = var.cluster_version
 

@@ -1,14 +1,16 @@
 terraform {
-  required_version = ">= 0.13"
-}
+  required_version = "~> 0.14.5"
 
-provider "aws" {
-  version = ">= 2.28.1"
-  region  = var.region
-}
+  provider "aws" {
+      source  = "hashicorp/aws"
+      version = "~> 3.26.0"
+      region  = var.region
+  }
 
-provider "template" {
-  version = "~> 2.1"
+  provider "template" {
+      source  = "hashicorp/template"
+      version = "~> 2.1"
+  }
 }
 
 resource "aws_codecommit_repository" "secrets_repo" {

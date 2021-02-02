@@ -1,7 +1,8 @@
 # Create IAM role + automatically make it available to cluster autoscaler service account
 module "iam_assumable_role_admin" {
-  # See versions.tf for source and version
-  
+  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+  version = "~> 3.3.0"
+
   create_role                   = false
   role_name                     = "${module.eks.cluster_id}-cluster-autoscaler"
   provider_url                  = replace(module.eks.cluster_oidc_issuer_url, "https://", "")
