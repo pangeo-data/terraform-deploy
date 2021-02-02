@@ -10,15 +10,15 @@ terraform {
           version = "~> 2.1"
       }
       kubernetes = {
-          source                 = "hashicorp/kubernetes"
-          version                = "~> 1.11.1"
+          source  = "hashicorp/kubernetes"
+          version = "~> 1.11.1"
       }
       helm = {
-          source = "hashicorp/helm"
+          source  = "hashicorp/helm"
           version = "~> 2.0.2"
       }
       null = {
-          source = "hashicorp/null"
+          source  = "hashicorp/null"
           version = "~> 3.0.0"
       }
    }
@@ -42,4 +42,3 @@ provider "helm" {
      token                  = data.aws_eks_cluster_auth.cluster.token
   }
 }
-
