@@ -24,6 +24,7 @@ resource "aws_security_group" "home_dirs_sg" {
 
 # XXXX should the EFS subnets be public or private?
 resource "aws_efs_mount_target" "home_dirs_targets" {
+  depends_on = [null_resource.kubectl_config]
   count = length(local.private_subnet_ids)
   file_system_id = aws_efs_file_system.home_dirs.id
   subnet_id = local.private_subnet_ids[count.index]
@@ -37,6 +38,7 @@ resource "kubernetes_namespace" "support" {
 }
 
 resource "helm_release" "efs-provisioner" {
+  depends_on = [null_resource.kubectl_config, module.eks]
   name = "${var.cluster_name}-efs-provisioner"
   namespace = kubernetes_namespace.support.metadata.0.name
 
