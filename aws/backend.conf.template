@@ -1,0 +1,3 @@
+bucket = "<deployment-name>-tfstate"
+key = "tfstate/<deployment-name>"
+region = "us-east-1"
