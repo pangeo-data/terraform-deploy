@@ -82,6 +82,26 @@ variable worker_sg_name {
    type = string
 }
 
+variable vpc_security_group_ids {
+   description = "(List of one) VPC Security group for use in DB"
+   type = list(string)
+}
+
+variable db_subnet_group_ids {
+   description = "subnets allowed to access DB"
+   type = list(string)
+}
+# ========================================================================
+# TODO Find a better way to do this
+variable db_username {
+   description = "username for DB"
+   type = string
+}
+
+variable db_password {
+   description = "password for DB"
+   type = string
+}
 # ========================================================================
 
 variable notebook_instance_type {
