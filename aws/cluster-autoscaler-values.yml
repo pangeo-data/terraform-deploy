@@ -5,3 +5,10 @@ cloudProvider: aws
 
 autoDiscovery:
   enabled: true
+  clusterName: jwebbinar
+  tags:
+  - k8s.io/cluster-autoscaler/enabled
+  - k8s.io/cluster-autoscaler/{{ .Values.autoDiscovery.clusterName }}
+  #roles:
+  #- worker
+

@@ -13,7 +13,7 @@ data "aws_availability_zones" "available" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 13.2.1"
+  version = "17.1.0"
 
   cluster_name = var.cluster_name
   cluster_version = var.cluster_version
@@ -48,7 +48,7 @@ module "eks" {
       max_capacity     = 3
       min_capacity     = 1
 
-      instance_type = "t3.small"
+      instance_types = ["t3.small"]
       k8s_labels    = {
         "hub.jupyter.org/node-purpose" =  "core"
       }
@@ -61,7 +61,7 @@ module "eks" {
      max_capacity     = 10
      min_capacity     = 1
 
-     instance_type = var.notebook_instance_type
+     instance_types = [var.notebook_instance_type]
      k8s_labels = {
        "hub.jupyter.org/node-purpose" =  "user"
      }
